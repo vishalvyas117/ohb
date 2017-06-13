@@ -45,7 +45,6 @@ public class Booking {
 
 	public Booking() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	@JsonCreator
 	public Booking(@JsonProperty("bookingid")Integer bookingid, @JsonProperty("CheckIn")Date begin_date, @JsonProperty("CheckOut")Date end_date, @JsonProperty("available")boolean state, @JsonProperty("Customer")User user, @JsonProperty("Room")Room room) {
