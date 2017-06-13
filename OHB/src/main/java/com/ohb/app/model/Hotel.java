@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,48 +20,58 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
 @Entity
-@Table(name="hotel")
+@Table(name = "hotel")
 public class Hotel {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer hotelid;
-    
-    private String name;    
-    private String address;
-    private int rating;
-    
-    @ManyToOne
-    private Category category;
-    @ManyToOne
-    @JoinColumn(name = "cityid")
-    private City city;
-    
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="hotel", orphanRemoval = true)
-    @MapKeyColumn(name="roomid")
-    private Map<Long, Room> rooms = new HashMap<Long, Room>();
- 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="hotel", orphanRemoval = true)
-    @MapKeyColumn(name="commentid")
-    private Map<Long, Comment> comments = new HashMap<Long, Comment>();
-    
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> images = new HashSet<String>();
-    
-    public Hotel() {}
+	@Column(name = "HOTEL_ID")
+	@NotNull
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer hotelid;
+	@Column(name = "HOTEL_NAME")
+	private String name;
+	
+	@Column(name = "HOTEL_ADDRESS")
+	private String address;
+	
+	@Column(name = "HOTEL_RATING")
+	private int rating;
 
-   	public Hotel(Integer id, String name, String address, int rating, Category category) {    	
-       	this.hotelid = id;
-       	this.name = name;
-       	this.address = address;
-       	this.rating = rating;
-       	this.category = category;
-       }
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "CATEGORY_ID", nullable = true)
+	private Category category;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "ROOM_TYPE_ID", referencedColumnName = "ROOM_TYPE_ID", nullable = true)
+	private City city;
+
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
+	private Map<Long, Room> rooms = new HashMap<Long, Room>();
+
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
+	private Map<Long, Comment> comments = new HashMap<Long, Comment>();
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Set<String> images = new HashSet<String>();
+
+	public Hotel() {
+	}
+
+	public Hotel(Integer id, String name, String address, int rating, Category category) {
+		this.hotelid = id;
+		this.name = name;
+		this.address = address;
+		this.rating = rating;
+		this.category = category;
+	}
 
 	public Integer getHotelid() {
 		return hotelid;
@@ -132,5 +144,5 @@ public class Hotel {
 	public void setCity(City city) {
 		this.city = city;
 	}
-   	
+
 }

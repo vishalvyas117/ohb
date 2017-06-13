@@ -2,29 +2,41 @@ package com.ohb.app.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "review")
+@Table(name = "REVIEW")
 public class Comment {
 
 	@Id
+	@Column(name = "COMMENT_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer Commentid;
-
+	
+	@Column(name = "COMMENT_DESCRIPTION")
 	private String text;
+	
+	@Column(name = "COMMENT_DATE")
 	private Date date;
+	
+	@Column(name = "COMMENT_STATUS")
 	private boolean status;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
 	private Hotel hotel;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = true)
 	private User user;
 	
 	public Comment() {}

@@ -1,5 +1,6 @@
 package com.ohb.app.model.type;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,14 +12,15 @@ import javax.persistence.Table;
 public class Category {
 
 	@Id
+	@Column(name="CATEGORY_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer categoryid;
 	
+	@Column(name="CATEGORY_NAME")
 	private String name;
 
 	public Category() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Category(Integer categoryid, String name) {

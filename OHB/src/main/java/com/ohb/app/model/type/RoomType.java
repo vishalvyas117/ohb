@@ -12,21 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "room_type")
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class RoomType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "roomId")
+	@Column(name = "ROOM_TYPE_ID")
 	private Integer roomtypeid;
-	@Column(name = "description")
+	@Column(name = "DESCRIPTION")
 	private String description;
-	@Column(name = "occupancy")
+	@Column(name = "OCCUPANCY")
 	private int occupancy;
 
-	protected RoomType() {
+	public RoomType() {
 	}
-	@JsonCreator
-	public RoomType(@JsonProperty("roomtypeID")Integer roomid, @JsonProperty("brief_description")String description,@JsonProperty("space") int occupancy) {
+	
+	public RoomType(Integer roomid, String description,int occupancy) {
 		this.roomtypeid = roomid;
 		this.description = description;
 		this.occupancy = occupancy;
