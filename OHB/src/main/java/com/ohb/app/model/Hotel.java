@@ -23,7 +23,7 @@ import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
 @Entity
-@Table(name = "hotel")
+@Table(name = "HOTEL")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Hotel {
 
@@ -33,9 +33,11 @@ public class Hotel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer hotelid;
 	@Column(name = "HOTEL_NAME")
+	@NotNull
 	private String name;
 	
 	@Column(name = "HOTEL_ADDRESS")
+	@NotNull
 	private String address;
 	
 	@Column(name = "HOTEL_RATING")
