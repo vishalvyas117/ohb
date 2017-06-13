@@ -1,2 +1,2 @@
 # ohb
-Online Hotel app for learning
+Online Hotel application for learning
