@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "REVIEW")
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Comment {
 
 	@Id

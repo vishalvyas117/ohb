@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "user")
-@XmlRootElement
+@Table(name = "USER")
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
@@ -41,40 +41,52 @@ public class User implements Serializable {
 
 	@Id
 	@Basic(optional = false)
-	@Column(name = "user_id")
+	@Column(name = "USER_ID")
 	private String userId;
-	@Column(name = "username")
+	
+	@Column(name = "USER_NAME")
 	@Basic(optional = false)
 	private String username;
-	@Column(name = "email")
+	
+	@Column(name = "EMAIL")
 	@Basic(optional = false)
 	private String email;
-	@Column(name = "phone")
+	
+	@Column(name = "PHONE")
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
 	private String phone;
-	@Column(name = "fisrt_name")
+	
+	@Column(name = "FIRST_NAME")
 	@Basic(optional = false)
 	private String firstName;
-	@Column(name = "last_name")
+	
+	@Column(name = "LAST_NAME")
 	@Basic(optional = false)
 	private String lastName;
+	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@Column(name = "password")
+	@Column(name = "PASSWORD")
 	@Basic(optional = false)
 	private String password;
-	@Column(name = "last_login")
+	
+	@Column(name = "LAST_LOGIN")
 	private String lastLogin;
-	@Column(name = "status")
+	
+	@Column(name = "STATUS")
 	private int status;
+	
 	@JsonIgnore
 	@Basic(optional = false)
-	@Column(name = "create_date")
+	@Column(name = "CREATE_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
-	@Column(name = "address")
+	
+	@Column(name = "ADDRESS")
 	private String address;
-
+	
+	@Column(name = "TOKEN")
+	private String token;
 	public User() {
 		super();
 	}

@@ -15,10 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +24,7 @@ import com.ohb.app.model.type.City;
 
 @Entity
 @Table(name = "hotel")
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Hotel {
 
 	@Id

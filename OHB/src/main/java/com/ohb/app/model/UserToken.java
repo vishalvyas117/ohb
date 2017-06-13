@@ -15,8 +15,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "user_tokens")
-@XmlRootElement
+@Table(name = "USER_TOKENS")
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 @NamedQueries({
     @NamedQuery(name = "UserToken.findAll", query = "SELECT u FROM UserToken u"),
     @NamedQuery(name = "UserToken.findByToken", query = "SELECT u FROM UserToken u WHERE u.token = :token"),
@@ -32,21 +32,21 @@ public class UserToken implements Serializable {
 
 	@Id
     @Basic(optional = false)
-    @Column(name = "token")
+    @Column(name = "TOKEN")
     private String token;
     
     
     @Basic(optional = false)
-    @Column(name = "user_id")
+    @Column(name = "USER_ID")
     private String userId;
     
     @Basic(optional = false)
-    @Column(name = "login_date")
+    @Column(name = "LOGIN_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date loginDate;
     
     @Basic(optional = false)
-    @Column(name = "expiration_date")
+    @Column(name = "EXPIRATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date expirationDate;
 
