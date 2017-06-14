@@ -20,6 +20,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer>, JpaSpeci
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByName(String name);
 
+	@Query(value = "SELECT ho.* FROM Hotel AS a LEFT JOIN Hotel AS ho2 ON a.name = a2.name AND a.rating <= a2.rating GROUP BY a.city HAVING COUNT(*) <= 3;")
+	List<Hotel> findtop3HotelsforeachCity();
+	
 	@Query(value = "select ho from Hotel ro where ro.city = :city_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByCity(@Param("city_id") Integer city_id);
