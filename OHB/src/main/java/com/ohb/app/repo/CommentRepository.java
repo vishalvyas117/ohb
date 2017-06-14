@@ -23,7 +23,11 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaS
 	
 	@Query(value = "select co from Comment ro where co.user =:User_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByUserId(@Param("User_id") Integer User_id);
+	public List<Comment> findCommentsByUserId(@Param("User_id") String User_id);
+	
+	@Query(value = "select co from Comment ro where co.hotel=:Hotel_id and co.user =:User_id")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	public List<Comment> findCommentsByUserIdagainstHotel(@Param("Hotel_id") Integer Hotel_id,@Param("User_id") String User_id);
 	
 	@Query(value = "select co from Comment ro where date(co.date) =:date")
 	public List<Comment> findCommentsByDate(@Param("date") Date date);

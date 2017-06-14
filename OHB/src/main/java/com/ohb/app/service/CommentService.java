@@ -1,5 +1,9 @@
 package com.ohb.app.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +47,61 @@ public class CommentService {
 		dto.setUser(comment.getUser());
 		dto.setDate(comment.getDate());
 		return dto;
+	}
+
+	public List<Comment> findCommentsByHotelId(Integer hotelId) {
+		List<Comment> page = this.commentRepository.findCommentsByHotelId(hotelId);
+		List<Comment> commentList = new ArrayList<Comment>();
+		for (Comment comment : page) {
+			Comment dto = new Comment();
+			dto.setHotel(comment.getHotel());
+			dto.setText(comment.getText());
+			dto.setUser(comment.getUser());
+			dto.setDate(comment.getDate());
+			commentList.add(dto);
+		}
+		return commentList;
+	}
+
+	public List<Comment> findCommentsByUserId(String UserId) {
+		List<Comment> page = this.commentRepository.findCommentsByUserId(UserId);
+		List<Comment> commentList = new ArrayList<Comment>();
+		for (Comment comment : page) {
+			Comment dto = new Comment();
+			dto.setHotel(comment.getHotel());
+			dto.setText(comment.getText());
+			dto.setUser(comment.getUser());
+			dto.setDate(comment.getDate());
+			commentList.add(dto);
+		}
+		return commentList;
+	}
+
+	public List<Comment> findCommentsByUserIdagainstHotel(Integer hotelId, String UserId) {
+		List<Comment> page = this.commentRepository.findCommentsByUserIdagainstHotel(hotelId, UserId);
+		List<Comment> commentList = new ArrayList<Comment>();
+		for (Comment comment : page) {
+			Comment dto = new Comment();
+			dto.setHotel(comment.getHotel());
+			dto.setText(comment.getText());
+			dto.setUser(comment.getUser());
+			dto.setDate(comment.getDate());
+			commentList.add(dto);
+		}
+		return commentList;
+	}
+
+	public List<Comment> findCommentsByDate(Date date) {
+		List<Comment> page = this.commentRepository.findCommentsByDate(date);
+		List<Comment> commentList = new ArrayList<Comment>();
+		for (Comment comment : page) {
+			Comment dto = new Comment();
+			dto.setHotel(comment.getHotel());
+			dto.setText(comment.getText());
+			dto.setUser(comment.getUser());
+			dto.setDate(comment.getDate());
+			commentList.add(dto);
+		}
+		return commentList;
 	}
 }
