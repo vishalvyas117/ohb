@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ohb.app.model.Booking;
 
-@Repository(value = "hotelRepository")
+@Repository(value = "bookingRepository")
 public interface BookingRepository extends JpaRepository<Booking, Integer>, JpaSpecificationExecutor<Booking>{
 
 }
