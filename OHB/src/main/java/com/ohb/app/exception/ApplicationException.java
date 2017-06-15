@@ -4,6 +4,10 @@ import com.ohb.app.util.api.APIStatus;
 
 public class ApplicationException extends RuntimeException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int errorCode = 0;
     private String desctiption;
 

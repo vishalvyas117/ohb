@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
-import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Image;
 
 public interface ImageRepository extends JpaRepository<Image, Integer>, JpaSpecificationExecutor<Image> {
