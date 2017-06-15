@@ -39,11 +39,11 @@ public class Room {
 	private String room_number;	
 	
 	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.MERGE})
-	@JoinColumn(name = "ROOM_TYPE_ID", referencedColumnName = "ROOM_TYPE_ID")
+	@JoinColumn(name = "ROOM_TYPE_ID", referencedColumnName = "roomtypeid")
 	private RoomType type;
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.MERGE})
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID")
+	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotelid")
 	private Hotel hotel;
 	
 	@Column(name="PRICE")
@@ -54,7 +54,7 @@ public class Room {
 	private Map<Date, Integer> days_reserved = new HashMap<Date, Integer>();
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID", nullable = true)
+	@JoinColumn(name = "ROOM_ID", referencedColumnName = "roomId", nullable = true)
 	 private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
 
 	public Room() {

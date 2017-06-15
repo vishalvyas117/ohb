@@ -48,7 +48,7 @@ public class Hotel {
 	private Category category;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "ROOM_TYPE_ID", referencedColumnName = "ROOM_TYPE_ID", nullable = true)
+	@JoinColumn(name = "CITY_ID", referencedColumnName = "CITY_ID", nullable = true)
 	private City city;
 
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)

@@ -1,6 +1,7 @@
 package com.ohb.app.rest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ import io.swagger.annotations.ApiOperation;
 public class HotelController extends APIUtil{
 	@Autowired
 	HotelService hotelService;
+	@Autowired
+	HotelRepository hotelRepository;
 
 	@ApiOperation(value = "get list of Hotels", notes = "")
     @RequestMapping(method = RequestMethod.GET, produces = APIName.CHARSET)
@@ -44,8 +47,8 @@ public class HotelController extends APIUtil{
             @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
 		Map<String, Object> result = new HashMap();
 			
-        Page<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
-        statusResponse = new StatusResponse(APIStatus.OK.getCode(), products.getContent(), products.getTotalElements());
+        List<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), products);
         return writeObjectToJson(statusResponse);
     }
 	
@@ -53,7 +56,7 @@ public class HotelController extends APIUtil{
     @RequestMapping(path = APIName.HOTEL_BY_ID, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getProductById( @PathVariable Integer hotel_id) {
         // get product
-        Hotel hotel = hotelService.hotelRepository.findOne(hotel_id);
+        Hotel hotel = hotelRepository.findOne(hotel_id);
         // get all attributes of product
 
         Map<String, Object> result = new HashMap();
