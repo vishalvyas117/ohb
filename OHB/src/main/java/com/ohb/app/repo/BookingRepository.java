@@ -20,18 +20,18 @@ public interface BookingRepository extends JpaRepository<Booking, Integer>, JpaS
 
 	@Query(value = "select book from Booking book where book.user = :user_id order by begin_date DESC")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true")})
-	List<Hotel> findBookingsByUser(@Param("user_id") Integer user_id);
+	List<Booking> findBookingsByUser(@Param("user_id") String user_id);
 
 	@Query(value = "select book from Booking book where book.room = :room_id order by begin_date DESC")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true")})
-	List<Hotel> findBookingsByRoom(@Param("room_id") Integer room_id);
+	List<Booking> findBookingsByRoom(@Param("room_id") Integer room_id);
 
 	@Query(value = "select book from Booking book where book.begin_date => date(:begindDay) and book.end_date <= date(:endDay) order by begin_date DESC")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true")})
-	List<Hotel> findBookingsByreservedDays(@Param("begindDay") Date begindDay, @Param("endDay") Date endDay);
+	List<Booking> findBookingsByreservedDays(@Param("begindDay") String begindDay, @Param("endDay") String endDay);
 
 	@Query(value = "select book from Booking book where book.status = :status order by begin_date DESC")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true")})
-	List<Hotel> findBookingsByStatus(@Param("status") boolean status);
+	List<Booking> findBookingsByStatus(@Param("status") boolean status);
 
 }
