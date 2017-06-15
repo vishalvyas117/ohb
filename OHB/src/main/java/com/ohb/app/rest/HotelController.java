@@ -1,6 +1,7 @@
 package com.ohb.app.rest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.repo.UserRepository;
+import com.ohb.app.service.HotelService;
 import com.ohb.app.util.OhbUtil;
 import com.ohb.app.util.api.*;
 import io.swagger.annotations.Api;
@@ -32,70 +34,36 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(APIName.HOTEL)
 public class HotelController extends APIUtil{
-
-	HotelRepository hotels;
-
-	CategoryRepository categories;
-
-	RoomTypeRepository roomTypes;
-
-	RoomRepository rooms;
-	CityRepository cities;
-
-	UserRepository users;
-
 	@Autowired
-	public HotelController(HotelRepository hotels, CategoryRepository categories, RoomTypeRepository roomTypes,
-			RoomRepository rooms, UserRepository users, CityRepository cities) {
-		super();
-		this.hotels = hotels;
-		this.categories = categories;
-		this.roomTypes = roomTypes;
-		this.rooms = rooms;
-		this.users = users;
-		this.cities = cities;
-	}
+	HotelService hotelService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String index(@RequestParam(required = false) HashMap<String, String> allRequestParams,
-			HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) String City,
-			@RequestParam(required = false) String checkIn, @RequestParam(required = false) String checkOut)
-			throws Throwable {
-		
-
-		return null;
-		//OhbUtil.convertToJSONWithoutNull();
-	}
-
-	/*@RequestMapping(method = RequestMethod.POST)
-	public String addHotel(@RequestBody Hotel hotel, Model model) throws Throwable {
-		String msg = "";
-		if (hotel == null) {
-			msg = "Hotel Information not found";
-			model.addAttribute("message", msg);
-			return OhbUtil.convertToJSONWithoutNull(model);
-		}
-		Hotel addHotel = hotels.save(hotel);
-		if (addHotel == null) {
-			msg = "Sorry Unable to add Hotel";
-			model.addAttribute("message", msg);
-			return OhbUtil.convertToJSONWithoutNull(model);
-		}
-		model.addAttribute("hotel", addHotel);
-		return OhbUtil.convertToJSONWithoutNull(addHotel);
-	}*/
-	
-	@SuppressWarnings("unchecked")
-	@ApiOperation(value = "get product by company id", notes = "")
+	@ApiOperation(value = "get list of Hotels", notes = "")
     @RequestMapping(method = RequestMethod.GET, produces = APIName.CHARSET)
-    public String getAllProducts(
+    public String getAllHotels(
             @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
             @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
+		Map<String, Object> result = new HashMap();
+			
+        Page<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), products.getContent(), products.getTotalElements());
+        return writeObjectToJson(statusResponse);
+    }
+	
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_BY_ID, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String getProductById( @PathVariable Integer hotel_id) {
+        // get product
+        Hotel hotel = hotelService.hotelRepository.findOne(hotel_id);
+        // get all attributes of product
 
-        Page<Hotel> allhotels = (Page<Hotel>) hotels.findAll();
-        statusResponse = new StatusResponse(APIStatus.OK.getCode(), allhotels.getContent(), allhotels.getTotalElements());
+        Map<String, Object> result = new HashMap();
+        /*result.put("product", p);
+        result.put("attributes", pad);*/
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 
         return writeObjectToJson(statusResponse);
-    }	
+    }
+
+	
 
 }

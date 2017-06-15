@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.QueryHint;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +23,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer>, JpaSpeci
 	List<Hotel> findHotelsByName(String name);
 
 	@Query(value = "SELECT ho.* FROM Hotel AS a LEFT JOIN Hotel AS ho2 ON a.name = a2.name AND a.rating <= a2.rating GROUP BY a.city HAVING COUNT(*) <= 3;")
-	List<Hotel> findtop3HotelsforeachCity();
+	Page<Hotel> findtop3HotelsforeachCity(Pageable pageable);
 	
 	@Query(value = "select ho from Hotel ro where ro.city = :city_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })

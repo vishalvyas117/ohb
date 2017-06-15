@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ohb.app.model.Hotel;
@@ -17,19 +19,19 @@ import com.ohb.app.util.TokenizerUtil;
 @Service
 public class HotelService {
 	@Autowired
-	HotelRepository hotelRepository;
+	 public HotelRepository hotelRepository;
 
 	@Autowired
-	CategoryService categoryService;
+	public CategoryService categoryService;
 
 	@Autowired
-	UserRepository userRepository;
+	public UserRepository userRepository;
 
 	@Autowired
-	RoomRepository roomRepository;
+	public RoomRepository roomRepository;
 
 	@Autowired
-	RoomTypeRepository roomTypeRepository;
+	public RoomTypeRepository roomTypeRepository;
 
 	public Hotel createHotel(Hotel hotel) {
 		Hotel dto = new Hotel();
@@ -53,10 +55,10 @@ public class HotelService {
 		return outHotel;
 	}
 
-	public List<Hotel> findAllforUser() {
-		List<Hotel> page = this.hotelRepository.findtop3HotelsforeachCity();
-		List<Hotel> hotellist = fillList( page);
-		return hotellist;
+	public Page<Hotel> findAllforUser(int pageNumber, int pageSize) {
+		Page<Hotel> page = this.hotelRepository.findtop3HotelsforeachCity(new PageRequest(pageNumber, pageSize));
+		
+		return page;
 	}
 
 	public List<Hotel> findAll() {
@@ -129,5 +131,21 @@ public class HotelService {
 		}
 		return hotellist;
 	}
+	/*public Page<Hotel> fillList(Page<Hotel> page) {
+		Page<Hotel> hotellist = new Page<Hotel>();
+		for (Hotel hotel : page) {
+			Hotel dto = new Hotel();
+			dto.setHotelid(hotel.getHotelid());
+			dto.setName(hotel.getName());
+			dto.setRating(hotel.getRating());
+			dto.setCategory(hotel.getCategory());
+			dto.setAddress(hotel.getAddress());
+			dto.setImages(hotel.getImages());
+			dto.setCity(hotel.getCity());
+			dto.setRooms(hotel.getRooms());
+			hotellist.add(dto);
+		}
+		return hotellist;
+	}*/
 
 }
