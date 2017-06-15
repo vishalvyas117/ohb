@@ -55,133 +55,65 @@ public class HotelService {
 
 	public List<Hotel> findAllforUser() {
 		List<Hotel> page = this.hotelRepository.findtop3HotelsforeachCity();
-
-		List<Hotel> hotellist = new ArrayList<Hotel>();
-		for (Hotel hotel : page) {
-			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
-			dto.setImages(hotel.getImages());
-			dto.setCity(hotel.getCity());
-			dto.setRooms(hotel.getRooms());
-			hotellist.add(dto);
-		}
+		List<Hotel> hotellist = fillList( page);
 		return hotellist;
 	}
 
 	public List<Hotel> findAll() {
 		List<Hotel> page = this.hotelRepository.findAll();
 
-		List<Hotel> hotellist = new ArrayList<Hotel>();
-		for (Hotel hotel : page) {
-			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
-			dto.setImages(hotel.getImages());
-			dto.setCity(hotel.getCity());
-			dto.setRooms(hotel.getRooms());
-			hotellist.add(dto);
-		}
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
 	public List<Hotel> findHotelsByCity(Integer city_id) {
-		if(city_id==null){
-			city_id=0;
+		if (city_id == null) {
+			city_id = 0;
 		}
 		List<Hotel> page = this.hotelRepository.findHotelsByCity(city_id);
 
-		List<Hotel> hotellist = new ArrayList<Hotel>();
-		for (Hotel hotel : page) {
-			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
-			dto.setImages(hotel.getImages());
-			dto.setCity(hotel.getCity());
-			dto.setRooms(hotel.getRooms());
-			hotellist.add(dto);
-		}
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
-	
+
 	public List<Hotel> findHotelsByAddress(String address) {
-		if(address==null){
+		if (address == null) {
 			return null;
 		}
-		Set<String>addr=TokenizerUtil.addressTokenizer(address);
+		Set<String> addr = TokenizerUtil.addressTokenizer(address);
 		List<Hotel> page = this.hotelRepository.findHotelsByAddress(addr);
-		List<Hotel> hotellist = new ArrayList<Hotel>();
-		for (Hotel hotel : page) {
-			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
-			dto.setImages(hotel.getImages());
-			dto.setCity(hotel.getCity());
-			dto.setRooms(hotel.getRooms());
-			hotellist.add(dto);
-		}
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
-	
+
 	public List<Hotel> findHotelsByRating(Integer rating) {
-		if(rating==null){
-			rating=0;
+		if (rating == null) {
+			rating = 0;
 		}
 		List<Hotel> page = this.hotelRepository.findHotelsByRating(rating);
-		List<Hotel> hotellist = new ArrayList<Hotel>();
-		for (Hotel hotel : page) {
-			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
-			dto.setImages(hotel.getImages());
-			dto.setCity(hotel.getCity());
-			dto.setRooms(hotel.getRooms());
-			hotellist.add(dto);
-		}
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
-	
+
 	public List<Hotel> findHotelsByUptoRating(Integer rating) {
-		if(rating==null){
-			rating=0;
+		if (rating == null) {
+			rating = 0;
 		}
 		List<Hotel> page = this.hotelRepository.findHotelsByUptoRating(rating);
-		List<Hotel> hotellist = new ArrayList<Hotel>();
-		for (Hotel hotel : page) {
-			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
-			dto.setImages(hotel.getImages());
-			dto.setCity(hotel.getCity());
-			dto.setRooms(hotel.getRooms());
-			hotellist.add(dto);
-		}
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
-	
+
 	public List<Hotel> findHotelsByCategory(Integer rating) {
-		if(rating==null){
-			rating=0;
+		if (rating == null) {
+			rating = 0;
 		}
 		List<Hotel> page = this.hotelRepository.findHotelsByCategory(rating);
+		List<Hotel> hotellist = fillList(page);
+		return hotellist;
+	}
+
+	public List<Hotel> fillList(List<Hotel> page) {
 		List<Hotel> hotellist = new ArrayList<Hotel>();
 		for (Hotel hotel : page) {
 			Hotel dto = new Hotel();
