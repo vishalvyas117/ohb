@@ -13,22 +13,23 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ohb.app.model.Comment;
+import com.ohb.app.model.Hotel;
 
 @Repository(value="commentRepository")
 public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
 	
-	@Query(value = "select co from Comment ro where co.hotel =:Hotel_id")
+	//@Query(value = "select co from Comment ro where co.hotel =:Hotel_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByHotelId(@Param("Hotel_id") Integer Hotel_id);
+	public List<Comment> findCommentsByHotel(Hotel hotel_id);
 	
-	@Query(value = "select co from Comment ro where co.user =:User_id")
+	//@Query(value = "select co from Comment ro where co.user =:User_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByUserId(@Param("User_id") String User_id);
+	public List<Comment> findCommentsByUser(String User_id);
 	
-	@Query(value = "select co from Comment ro where co.hotel=:Hotel_id and co.user =:User_id")
+	//@Query(value = "select co from Comment ro where co.hotel=:Hotel_id and co.user =:User_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByUserIdagainstHotel(@Param("Hotel_id") Integer Hotel_id,@Param("User_id") String User_id);
+	public List<Comment> findCommentsByUserAndHotel(Integer Hotel_id,String User_id);
 	
-	@Query(value = "select co from Comment ro where date(co.date) =:date")
+	//@Query(value = "select co from Comment ro where date(co.date) =:date")
 	public List<Comment> findCommentsByDate(@Param("date") Date date);
 }

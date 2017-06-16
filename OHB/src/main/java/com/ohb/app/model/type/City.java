@@ -25,7 +25,7 @@ public class City {
 	@Id
 	@Column(name = "CITY_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer cityid;
+	private Integer city_id;
 
 	@Column(name = "CITY_NAME")
 	private String name;
@@ -37,16 +37,16 @@ public class City {
 	@JsonCreator
 	public City(@JsonProperty("cityid") Integer cityid, @JsonProperty("city_name") String name) {
 		super();
-		this.cityid = cityid;
+		this.city_id = cityid;
 		this.setName(name);
 	}
 
 	public Integer getCityid() {
-		return cityid;
+		return city_id;
 	}
 
 	public void setCityid(Integer cityid) {
-		this.cityid = cityid;
+		this.city_id = cityid;
 	}
 
 	public String getName() {

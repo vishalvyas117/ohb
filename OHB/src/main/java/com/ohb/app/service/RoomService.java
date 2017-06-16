@@ -12,8 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
 import com.ohb.app.model.type.RoomType;
+import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 
@@ -22,12 +24,14 @@ public class RoomService {
 
 	RoomTypeRepository roomTypeRepository;
 	RoomRepository roomRepository;
+	HotelRepository hotelRepository;
 
 	@Autowired
-	public RoomService(RoomTypeRepository roomTypeRepository, RoomRepository roomRepository) {
+	public RoomService(RoomTypeRepository roomTypeRepository, RoomRepository roomRepository,HotelRepository hotelRepository) {
 		super();
 		this.roomTypeRepository = roomTypeRepository;
 		this.roomRepository = roomRepository;
+		this.hotelRepository=hotelRepository;
 	}
 
 	public RoomType createRoomType(RoomType roomtype) {
@@ -44,7 +48,7 @@ public class RoomService {
 
 	public List<RoomType> getAllRoomType() {
 		List<RoomType> roomtypelist = new ArrayList<RoomType>();
-		roomtypelist = this.roomTypeRepository.findAll(sortByRoomTypeName());
+		roomtypelist = this.roomTypeRepository.findAll();
 		return roomtypelist;
 	}
 
@@ -82,7 +86,8 @@ public class RoomService {
 	}
 
 	public List<Room> getRoomsbyhotel(Integer hotelId) {
-		List<Room> page = this.roomRepository.getRoomsbyhotel(hotelId);
+		Hotel hotel=this.hotelRepository.findOne(hotelId);
+		List<Room> page = this.roomRepository.findByHotel(hotelId);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -120,7 +125,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbydaysReserved(Date checkIn,Date checkout) {
-		List<Room> page = this.roomRepository.getRoomsbydaysReserved(checkIn,checkout);
+		List<Room> page = this.roomRepository.findRoomByDateReservedIsBetween(checkIn,checkout);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -138,7 +143,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbyprice(double price) {
-		List<Room> page = this.roomRepository.getRoomsbyprice(price);
+		List<Room> page = this.roomRepository.findRoomByPriceLessThanEqual(price);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -156,7 +161,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbypriceRange(double minprice,double maxprice) {
-		List<Room> page = this.roomRepository.getRoomsbypriceRange(minprice,maxprice);
+		List<Room> page = this.roomRepository.findRoomByPriceBetween(minprice,maxprice);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -175,7 +180,7 @@ public class RoomService {
 
 	private Sort sortByRoomTypeName() {
 
-		return new Sort(Sort.Direction.ASC, "roomtypeid");
+		return new Sort(Sort.Direction.ASC, "room_type_id");
 	}
 
 }

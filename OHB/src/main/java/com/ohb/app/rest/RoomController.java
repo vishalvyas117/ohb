@@ -11,6 +11,7 @@ import com.ohb.app.model.Room;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
+import com.ohb.app.service.BookingService;
 import com.ohb.app.util.OhbUtil;
 
 @RestController
@@ -25,6 +26,8 @@ public class RoomController {
     RoomRepository rooms;
     @Autowired
     HotelRepository hotels;
+    @Autowired
+    BookingService bookingServise;
     
 	@RequestMapping(value="{id}/rooms/new", method=RequestMethod.GET)
     public String newRoom(@PathVariable("id") Integer id, Model model) throws Throwable {

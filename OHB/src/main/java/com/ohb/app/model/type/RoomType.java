@@ -1,14 +1,18 @@
 package com.ohb.app.model.type;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ohb.app.model.Room;
 
 @Entity
 @Table(name = "room_type")
@@ -18,7 +22,7 @@ public class RoomType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ROOM_TYPE_ID")
-	private Integer roomtypeid;
+	private Integer room_type_id;
 	@Column(name = "DESCRIPTION")
 	private String description;
 	@Column(name = "OCCUPANCY")
@@ -28,17 +32,17 @@ public class RoomType {
 	}
 	
 	public RoomType(Integer roomid, String description,int occupancy) {
-		this.roomtypeid = roomid;
+		this.room_type_id = roomid;
 		this.description = description;
 		this.occupancy = occupancy;
 	}
 
 	public Integer getRoomid() {
-		return roomtypeid;
+		return room_type_id;
 	}
 
 	public void setRoomid(Integer roomid) {
-		this.roomtypeid = roomid;
+		this.room_type_id = roomid;
 	}
 
 	public String getDescription() {

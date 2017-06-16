@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ohb.app.model.Comment;
+import com.ohb.app.model.Hotel;
 import com.ohb.app.repo.CommentRepository;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.UserRepository;
@@ -50,7 +51,8 @@ public class CommentService {
 	}
 
 	public List<Comment> findCommentsByHotelId(Integer hotelId) {
-		List<Comment> page = this.commentRepository.findCommentsByHotelId(hotelId);
+		Hotel hotel=hotelRepository.findOne(hotelId);
+		List<Comment> page = this.commentRepository.findCommentsByHotel(hotel);
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
@@ -64,7 +66,7 @@ public class CommentService {
 	}
 
 	public List<Comment> findCommentsByUserId(String UserId) {
-		List<Comment> page = this.commentRepository.findCommentsByUserId(UserId);
+		List<Comment> page = this.commentRepository.findCommentsByUser(UserId);
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
@@ -78,7 +80,7 @@ public class CommentService {
 	}
 
 	public List<Comment> findCommentsByUserIdagainstHotel(Integer hotelId, String UserId) {
-		List<Comment> page = this.commentRepository.findCommentsByUserIdagainstHotel(hotelId, UserId);
+		List<Comment> page = this.commentRepository.findCommentsByUserAndHotel(hotelId, UserId);
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();

@@ -1,5 +1,7 @@
 package com.ohb.app.util.api;
 
+import com.ohb.app.model.Room;
+
 public class APIName {
 
 	// version
@@ -19,8 +21,9 @@ public class APIName {
     
  // Hotel api links
     public static final String HOTEL = "/hotels";
+    public static final String HOTEL_REGISTER = "/register";
     public static final String HOTEL_BY_NAME = "/{hotelname}";
-    public static final String HOTEL_BY_ID = "/{productId}";
+    public static final String HOTEL_BY_ID = "/{hotelid}";
     public static final String HOTEL_BY_IDS = "/list";
     public static final String PRODUCTS_FILTER_LIST = "/filter";
 //    public static final String HOTEL_DETAILS = VERSION + "/{product_id}";

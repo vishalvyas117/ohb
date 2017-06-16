@@ -21,7 +21,7 @@ public class Comment {
 	@Id
 	@Column(name = "COMMENT_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer Commentid;
+	private Integer Comment_id;
 	
 	@Column(name = "COMMENT_DESCRIPTION")
 	private String text;
@@ -33,17 +33,17 @@ public class Comment {
 	private boolean status;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
+	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotel_id", nullable = true)
 	private Hotel hotel;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = true)
+	@JoinColumn(name = "USER_ID", referencedColumnName = "user_id", nullable = true)
 	private User user;
 	
 	public Comment() {}
 
 	public Comment(Integer id, String text, Date date, User user, boolean status, Hotel hotel) {
-		this.Commentid = id;
+		this.Comment_id = id;
 		this.text = text;
 		this.date = date;
 		this.user = user;
@@ -52,11 +52,11 @@ public class Comment {
 	}
 
 	public Integer getCommentid() {
-		return Commentid;
+		return Comment_id;
 	}
 
 	public void setCommentid(Integer commentid) {
-		Commentid = commentid;
+		Comment_id = commentid;
 	}
 
 	public String getText() {

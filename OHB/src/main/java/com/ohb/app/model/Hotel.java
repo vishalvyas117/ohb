@@ -29,9 +29,8 @@ public class Hotel {
 
 	@Id
 	@Column(name = "HOTEL_ID")
-	@NotNull
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer hotelid;
+	private Integer hotel_id;
 	@Column(name = "HOTEL_NAME")
 	@NotNull
 	private String name;
@@ -44,20 +43,18 @@ public class Hotel {
 	private int rating;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "CATEGORY_ID", nullable = true)
+	@JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = true)
 	private Category category;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "CITY_ID", referencedColumnName = "CITY_ID", nullable = true)
+	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = true)
 	private City city;
 
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
+	@OneToMany(mappedBy = "hotel",fetch=FetchType.LAZY, cascade=CascadeType.ALL,targetEntity=Room.class)
 	private Map<Long, Room> rooms = new HashMap<Long, Room>();
 
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
-	private Map<Long, Comment> comments = new HashMap<Long, Comment>();
+	@OneToMany(mappedBy = "hotel",fetch=FetchType.LAZY, cascade=CascadeType.ALL,targetEntity=Comment.class)
+	private Map<Long, Comment> comment = new HashMap<Long, Comment>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> images = new HashSet<String>();
@@ -66,7 +63,7 @@ public class Hotel {
 	}
 
 	public Hotel(Integer id, String name, String address, int rating, Category category) {
-		this.hotelid = id;
+		this.hotel_id = id;
 		this.name = name;
 		this.address = address;
 		this.rating = rating;
@@ -74,11 +71,11 @@ public class Hotel {
 	}
 
 	public Integer getHotelid() {
-		return hotelid;
+		return hotel_id;
 	}
 
 	public void setHotelid(Integer hotelid) {
-		this.hotelid = hotelid;
+		this.hotel_id = hotelid;
 	}
 
 	public String getName() {
@@ -122,11 +119,11 @@ public class Hotel {
 	}
 
 	public Map<Long, Comment> getComments() {
-		return comments;
+		return comment;
 	}
 
 	public void setComments(Map<Long, Comment> comments) {
-		this.comments = comments;
+		this.comment = comments;
 	}
 
 	public Set<String> getImages() {

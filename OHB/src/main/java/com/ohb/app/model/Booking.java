@@ -24,7 +24,7 @@ public class Booking {
 	@Id
 	@Column(name="BOOKING_ID")
     @GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer bookingid;
+	private Integer booking_id;
 	
 	@Column(name="BOOKING_BEGIN_DATE")
 	private Date begin_date;
@@ -46,10 +46,10 @@ public class Booking {
 	public Booking() {
 		super();
 	}
-	@JsonCreator
+	
 	public Booking(@JsonProperty("bookingid")Integer bookingid, @JsonProperty("CheckIn")Date begin_date, @JsonProperty("CheckOut")Date end_date, @JsonProperty("available")boolean state, @JsonProperty("Customer")User user, @JsonProperty("Room")Room room) {
 		super();
-		this.bookingid = bookingid;
+		this.booking_id = bookingid;
 		this.begin_date = begin_date;
 		this.end_date = end_date;
 		this.state = state;
@@ -58,11 +58,11 @@ public class Booking {
 	}
 
 	public Integer getBookingid() {
-		return bookingid;
+		return booking_id;
 	}
 
 	public void setBookingid(Integer bookingid) {
-		this.bookingid = bookingid;
+		this.booking_id = bookingid;
 	}
 
 	public Date getBegin_date() {

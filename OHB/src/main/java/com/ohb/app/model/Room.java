@@ -21,41 +21,40 @@ import javax.validation.constraints.NotNull;
 import com.ohb.app.model.type.RoomType;
 
 @Entity
-@Table(name="ROOM")
+@Table(name = "ROOM")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Room {
 	@Id
 	@NotNull
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ROOM_ID")
-	private Integer roomId;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ROOM_ID")
+	private Integer room_id;
+
 	@NotNull
-	@Column(name="FLOOR")
-	private int floor;	
-	
+	@Column(name = "FLOOR")
+	private int floor;
+
 	@NotNull
-	@Column(name="ROOM_NUMBER")
-	private String room_number;	
-	
-	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.MERGE})
-	@JoinColumn(name = "ROOM_TYPE_ID", referencedColumnName = "roomtypeid")
+	@Column(name = "ROOM_NUMBER")
+	private String room_number;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "room_type_id", referencedColumnName = "room_type_id")
 	private RoomType type;
-	
-	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.MERGE})
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotelid")
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
 	private Hotel hotel;
-	
-	@Column(name="PRICE")
+
+	@Column(name = "PRICE")
 	private double price;
-	
+
 	@ElementCollection
-	@Column(name="DAYS_RESERVED")
-	private Map<Date, Integer> days_reserved = new HashMap<Date, Integer>();
-	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "ROOM_ID", referencedColumnName = "roomId", nullable = true)
-	 private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
+	@Column(name = "DAYS_RESERVED")
+	private Map<Date, Integer> dateReserved = new HashMap<Date, Integer>();
+
+	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Booking.class)
+	private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
 
 	public Room() {
 		super();
@@ -63,7 +62,7 @@ public class Room {
 
 	public Room(Integer roomId, int floor, String room_number, RoomType type, Hotel hotel, double price) {
 		super();
-		this.roomId = roomId;
+		this.room_id = roomId;
 		this.floor = floor;
 		this.room_number = room_number;
 		this.type = type;
@@ -72,11 +71,11 @@ public class Room {
 	}
 
 	public Integer getRoomId() {
-		return roomId;
+		return room_id;
 	}
 
 	public void setRoomId(Integer roomId) {
-		this.roomId = roomId;
+		this.room_id = roomId;
 	}
 
 	public int getFloor() {
@@ -120,11 +119,11 @@ public class Room {
 	}
 
 	public Map<Date, Integer> getDays_reserved() {
-		return days_reserved;
+		return dateReserved;
 	}
 
 	public void setDays_reserved(Map<Date, Integer> days_reserved) {
-		this.days_reserved = days_reserved;
+		this.dateReserved = days_reserved;
 	}
 
 	public Map<Long, Booking> getBookings() {
@@ -134,6 +133,5 @@ public class Room {
 	public void setBookings(Map<Long, Booking> bookings) {
 		this.bookings = bookings;
 	}
-	 
-	 
+
 }

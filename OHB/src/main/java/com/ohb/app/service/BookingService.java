@@ -65,7 +65,7 @@ public class BookingService {
 		List<Booking> bookingList = fillList(page);
 		return bookingList;
 	}
-	public List<Booking>findBookingsByreservedDays(String begindDay,String end_date){
+	/*public List<Booking>findBookingsByreservedDays(String begindDay,String end_date){
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");//at create time date should be String format and MM/dd/yyyy formate
 		LocalDate localDate = LocalDate.now();
 		if(begindDay==null){
@@ -74,15 +74,15 @@ public class BookingService {
 		if(end_date==null){
 			end_date= dtf.format(localDate);
 		}
-		List<Booking> page = this.bookingRepository.findBookingsByreservedDays(begindDay,end_date);
+		List<Booking> page = this.bookingRepository.findBookingsByBegin_dateAndEnd_DateIsBetween(begindDay,end_date);
 		List<Booking> bookingList = fillList(page);
 		return bookingList;
-	}
+	}*/
 	public List<Booking>findBookingsByStatus(boolean status){
 		if(!status){
 			status= false;
 		}
-		List<Booking> page = this.bookingRepository.findBookingsByStatus(status);
+		List<Booking> page = this.bookingRepository.findBookingsByState(status);
 		List<Booking> bookingList = fillList(page);
 		return bookingList;
 	}

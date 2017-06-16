@@ -16,14 +16,14 @@ import com.ohb.app.model.Hotel;
 
 @Repository(value = "hotelRepository")
 public interface HotelRepository extends JpaRepository<Hotel, Integer>, JpaSpecificationExecutor<Hotel> {
-	@Query(value = "select ho from Hotel ho where ho.name like :name")
+	@Query(nativeQuery = true,value = "select ho from Hotel ho where ho.name like :name")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByName(@Param("name")String name);
 
 	/*@Query(value = "SELECT ho,ho.hotelid from Hotel as ho left join ho.name as ho2 group by ho.city having count(ho.hotelid) <= 3")
 	List<Hotel> findtop3HotelsforeachCity();*/
 	
-	@Query(value = "select ho from Hotel ho where ho.city = :city_id")
+	@Query(nativeQuery = true, value = "select ho from Hotel ho where ho.city = :city_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByCity(@Param("city_id") Integer city_id);
 

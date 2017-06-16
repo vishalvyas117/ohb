@@ -23,16 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "USER")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
-@NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
-    @NamedQuery(name = "User.findByUserName", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
-    @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
-    @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status"),
-    @NamedQuery(name = "User.findByCreateDate", query = "SELECT u FROM User u WHERE u.createDate = :createDate")
-    })
 public class User implements Serializable {
 	/**
 	 * 
@@ -42,7 +32,7 @@ public class User implements Serializable {
 	@Id
 	@Basic(optional = false)
 	@Column(name = "USER_ID")
-	private String userId;
+	private String user_id;
 	
 	@Column(name = "USER_NAME")
 	@Basic(optional = false)
@@ -100,11 +90,11 @@ public class User implements Serializable {
 	}
 
 	public String getUserId() {
-		return userId;
+		return user_id;
 	}
 
 	public void setUserId(String userId) {
-		this.userId = userId;
+		this.user_id = userId;
 	}
 
 	public String getUsername() {
@@ -193,7 +183,7 @@ public class User implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
+        hash += (user_id != null ? user_id.hashCode() : 0);
         return hash;
 	}
 
@@ -206,7 +196,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+        if ((this.user_id == null && other.user_id != null) || (this.user_id != null && !this.user_id.equals(other.user_id))) {
             return false;
         }
         return true;

@@ -18,20 +18,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohb.app.api.response.StatusResponse;
+import com.ohb.app.model.Booking;
+import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
+import com.ohb.app.model.Room;
 import com.ohb.app.repo.CategoryRepository;
 import com.ohb.app.repo.CityRepository;
+import com.ohb.app.repo.CommentRepository;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.repo.UserRepository;
 import com.ohb.app.service.HotelService;
+import com.ohb.app.service.RoomService;
 import com.ohb.app.util.OhbUtil;
 import com.ohb.app.util.api.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "products")
+@Api(value = "hotel")
 @RestController
 @RequestMapping(APIName.HOTEL)
 public class HotelController extends APIUtil{
@@ -39,6 +44,18 @@ public class HotelController extends APIUtil{
 	HotelService hotelService;
 	@Autowired
 	HotelRepository hotelRepository;
+	
+	@Autowired
+	RoomRepository rooms;
+	
+	@Autowired
+	RoomService roomsType;
+	
+	@Autowired
+	CommentRepository comments;
+	
+	@Autowired
+	UserRepository users;
 
 	@ApiOperation(value = "get list of Hotels", notes = "")
     @RequestMapping(method = RequestMethod.GET, produces = APIName.CHARSET)
@@ -54,14 +71,38 @@ public class HotelController extends APIUtil{
 	
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_ID, method = RequestMethod.GET, produces = APIName.CHARSET)
-    public String getProductById( @PathVariable Integer hotel_id) {
+    public String getProductById(@PathVariable(value="hotelid") int hotel_id) {
         // get product
         Hotel hotel = hotelRepository.findOne(hotel_id);
+        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+
+        Map<String, Object> result = new HashMap();
+        result.put("Hotel", hotel);
+        result.put("Booking", new Booking());
+        result.put("comments",hotel_comments);
+        result.put("reply", new Comment());
+        result.put("users", users.findAll());
+        result.put("roomTypes", roomsType.getAllRoomType());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+
+        return writeObjectToJson(statusResponse);
+    }
+	
+	
+	
+	
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
+    public String saveHotel(@RequestBody Hotel hotel) {
+        // get product
+        Hotel currenthotel = hotelService.createHotel(hotel);
         // get all attributes of product
 
         Map<String, Object> result = new HashMap();
-        /*result.put("product", p);
-        result.put("attributes", pad);*/
+        result.put("Hotels", currenthotel);
+        result.put("Rooms", new Room());
+        result.put("RoomsType", roomsType.getAllRoomType());
+        
         statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 
         return writeObjectToJson(statusResponse);
