@@ -22,10 +22,16 @@ public class APIName {
  // Hotel api links
     public static final String HOTEL = "/hotels";
     public static final String HOTEL_REGISTER = "/register";
-    public static final String HOTEL_BY_NAME = "/{hotelname}";
+    public static final String HOTEL_BY_NAME = "/name/{hotelname}";
     public static final String HOTEL_BY_ID = "/{hotelid}";
     public static final String HOTEL_BY_IDS = "/list";
+    public static final String HOTEL_BY_CITY="/city/{cityName}";
+    public static final String HOTEL_BY_ADDRESS="/address/{address}";
     public static final String PRODUCTS_FILTER_LIST = "/filter";
+    public static final String HOTEL_BY_RATING="/rating/{rating}";
+    public static final String HOTEL_BY_RATING_GREATOR="/ratings/{rating}";
+    
+    
 //    public static final String HOTEL_DETAILS = VERSION + "/{product_id}";
 //    public static final String PRODUCT_ATTRIBUTES = VERSION + "/productattributes";
     

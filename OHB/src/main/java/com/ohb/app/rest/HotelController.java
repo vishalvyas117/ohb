@@ -22,6 +22,7 @@ import com.ohb.app.model.Booking;
 import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
+import com.ohb.app.model.type.City;
 import com.ohb.app.repo.CategoryRepository;
 import com.ohb.app.repo.CityRepository;
 import com.ohb.app.repo.CommentRepository;
@@ -52,10 +53,15 @@ public class HotelController extends APIUtil{
 	RoomService roomsType;
 	
 	@Autowired
+	CategoryRepository categories;
+	
+	@Autowired
 	CommentRepository comments;
 	
 	@Autowired
 	UserRepository users;
+	@Autowired
+	CityRepository cities;
 
 	@ApiOperation(value = "get list of Hotels", notes = "")
     @RequestMapping(method = RequestMethod.GET, produces = APIName.CHARSET)
@@ -71,7 +77,7 @@ public class HotelController extends APIUtil{
 	
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_ID, method = RequestMethod.GET, produces = APIName.CHARSET)
-    public String getProductById(@PathVariable(value="hotelid") int hotel_id) {
+    public String getHotelById(@PathVariable(value="hotelid") int hotel_id) {
         // get product
         Hotel hotel = hotelRepository.findOne(hotel_id);
         List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
@@ -80,6 +86,7 @@ public class HotelController extends APIUtil{
         result.put("Hotel", hotel);
         result.put("Booking", new Booking());
         result.put("comments",hotel_comments);
+        result.put("Category", categories.findAll());
         result.put("reply", new Comment());
         result.put("users", users.findAll());
         result.put("roomTypes", roomsType.getAllRoomType());
@@ -89,6 +96,101 @@ public class HotelController extends APIUtil{
     }
 	
 	
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_BY_NAME, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String getProductByName(@PathVariable(value="hotelname") String hotelname) {
+		Map<String, Object> result = new HashMap();
+        List<Hotel> hotels = hotelService.findHotelsByNameIn(hotelname);
+        for(Hotel hotel:hotels){
+        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+        result.put("comments",hotel_comments);
+        }
+        result.put("Hotels", hotels);
+        result.put("Booking", new Booking());
+        result.put("Category", categories.findAll());
+        result.put("reply", new Comment());
+        result.put("users", users.findAll());
+        result.put("roomTypes", roomsType.getAllRoomType());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+        return writeObjectToJson(statusResponse);
+    }
+	
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_BY_CITY, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String getProductByCityName(@PathVariable(value="cityName") String cityName) {
+		Map<String, Object> result = new HashMap();
+		
+		City city=cities.findByName(cityName);
+        List<Hotel> hotels = hotelService.findHotelsByCity(city);
+        for(Hotel hotel:hotels){
+        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+        result.put("comments",hotel_comments);
+        }
+        result.put("Hotels", hotels);
+        result.put("Booking", new Booking());
+        result.put("Category", categories.findAll());
+        result.put("reply", new Comment());
+        result.put("users", users.findAll());
+        result.put("roomTypes", roomsType.getAllRoomType());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+        return writeObjectToJson(statusResponse);
+    }
+	
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_BY_ADDRESS, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String getProductByaddressName(@PathVariable(value="address") String address) {
+		Map<String, Object> result = new HashMap();
+        List<Hotel> hotels = hotelService.findHotelsByAddress(address.trim());
+        for(Hotel hotel:hotels){
+        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+        result.put("comments",hotel_comments);
+        }
+        result.put("Hotels", hotels);
+        result.put("Booking", new Booking());
+        result.put("Category", categories.findAll());
+        result.put("reply", new Comment());
+        result.put("users", users.findAll());
+        result.put("roomTypes", roomsType.getAllRoomType());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+        return writeObjectToJson(statusResponse);
+    }
+	
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_BY_RATING, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String getHotelstByRating(@PathVariable(value="rating") int rating) {
+		Map<String, Object> result = new HashMap();
+        List<Hotel> hotels = hotelService.findHotelsByRating(rating);
+        for(Hotel hotel:hotels){
+        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+        result.put("comments",hotel_comments);
+        }
+        result.put("Hotels", hotels);
+        result.put("Booking", new Booking());
+        result.put("Category", categories.findAll());
+        result.put("reply", new Comment());
+        result.put("users", users.findAll());
+        result.put("roomTypes", roomsType.getAllRoomType());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+        return writeObjectToJson(statusResponse);
+    }
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_BY_RATING_GREATOR, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String getHotelstByRatingGreator(@PathVariable(value="rating") int rating) {
+		Map<String, Object> result = new HashMap();
+        List<Hotel> hotels = hotelService.findHotelsByUptoRating(rating);
+        for(Hotel hotel:hotels){
+        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+        result.put("comments",hotel_comments);
+        }
+        result.put("Hotels", hotels);
+        result.put("Booking", new Booking());
+        result.put("Category", categories.findAll());
+        result.put("reply", new Comment());
+        result.put("users", users.findAll());
+        result.put("roomTypes", roomsType.getAllRoomType());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+        return writeObjectToJson(statusResponse);
+    }
 	
 	
 	@ApiOperation(value = "get Hotel by Id", notes = "")
@@ -101,6 +203,7 @@ public class HotelController extends APIUtil{
         Map<String, Object> result = new HashMap();
         result.put("Hotels", currenthotel);
         result.put("Rooms", new Room());
+        result.put("Category", categories.findAll());
         result.put("RoomsType", roomsType.getAllRoomType());
         
         statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);

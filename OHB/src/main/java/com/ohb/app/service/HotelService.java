@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ohb.app.model.Hotel;
+import com.ohb.app.model.type.Category;
+import com.ohb.app.model.type.City;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
@@ -67,11 +69,11 @@ public class HotelService {
 		return hotellist;
 	}
 
-	public List<Hotel> findHotelsByCity(Integer city_id) {
-		if (city_id == null) {
-			city_id = 0;
+	public List<Hotel> findHotelsByCity(City city) {
+		if (city == null) {
+			return null;
 		}
-		List<Hotel> page = this.hotelRepository.findHotelsByCity(city_id);
+		List<Hotel> page = this.hotelRepository.findHotelsByCity(city);
 
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
@@ -82,7 +84,17 @@ public class HotelService {
 			return null;
 		}
 		Set<String> addr = TokenizerUtil.addressTokenizer(address);
-		List<Hotel> page = this.hotelRepository.findHotelsByAddress(addr);
+		List<Hotel> page = this.hotelRepository.findHotelsByAddressContains(address);
+		List<Hotel> hotellist = fillList(page);
+		return hotellist;
+	}
+	
+	public List<Hotel> findHotelsByNameIn(String name) {
+		if (name == null) {
+			return null;
+		}
+		Set<String> names = TokenizerUtil.addressTokenizer(name);
+		List<Hotel> page = this.hotelRepository.findHotelsByNameContaining(name);
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
@@ -91,7 +103,7 @@ public class HotelService {
 		if (rating == null) {
 			rating = 0;
 		}
-		List<Hotel> page = this.hotelRepository.findHotelsByRating(rating);
+		List<Hotel> page = this.hotelRepository.findHotelsByRatingLessThanEqual(rating);
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
@@ -100,16 +112,17 @@ public class HotelService {
 		if (rating == null) {
 			rating = 0;
 		}
-		List<Hotel> page = this.hotelRepository.findHotelsByUptoRating(rating);
+		List<Hotel> page = this.hotelRepository.findHotelsByRatingGreaterThanEqual(rating);
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public List<Hotel> findHotelsByCategory(Integer rating) {
-		if (rating == null) {
-			rating = 0;
+	public List<Hotel> findHotelsByCategory(String category_id) {
+		if (category_id == null) {
+			category_id = "";
 		}
-		List<Hotel> page = this.hotelRepository.findHotelsByCategory(rating);
+		Category category=categoryService.findByName(category_id);
+		List<Hotel> page = this.hotelRepository.findHotelsByCategory(category);
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}

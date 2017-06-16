@@ -1,5 +1,6 @@
 package com.ohb.app.repo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -13,33 +14,34 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ohb.app.model.Hotel;
+import com.ohb.app.model.type.Category;
+import com.ohb.app.model.type.City;
 
 @Repository(value = "hotelRepository")
 public interface HotelRepository extends JpaRepository<Hotel, Integer>, JpaSpecificationExecutor<Hotel> {
-	@Query(nativeQuery = true,value = "select ho from Hotel ho where ho.name like :name")
+	//@Query(nativeQuery = true,value = "select ho from Hotel as ho where ho.name in ?1")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	List<Hotel> findHotelsByName(@Param("name")String name);
+	List<Hotel> findHotelsByNameContaining(String name);
 
 	/*@Query(value = "SELECT ho,ho.hotelid from Hotel as ho left join ho.name as ho2 group by ho.city having count(ho.hotelid) <= 3")
 	List<Hotel> findtop3HotelsforeachCity();*/
 	
-	@Query(nativeQuery = true, value = "select ho from Hotel ho where ho.city = :city_id")
+	//@Query(nativeQuery = true, value = "select ho from Hotel ho where ho.city = :city_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	List<Hotel> findHotelsByCity(@Param("city_id") Integer city_id);
+	List<Hotel> findHotelsByCity(City city);
 
-	@Query(value = "select ho from Hotel ho where ho.address in (:address)")
-	List<Hotel> findHotelsByAddress(@Param("address") Set<String> address);
+	//@Query(nativeQuery = true, value = "select ho from Hotel ho where ho.address in %?1%")
+	List<Hotel> findHotelsByAddressContains(String address);
 
-	@Query(value = "select ho from Hotel ho where ho.rating = :rating")
+//	@Query(value = "select ho from Hotel ho where ho.rating = :rating")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	List<Hotel> findHotelsByRating(@Param("rating") int rating);
+	List<Hotel> findHotelsByRatingLessThanEqual(int rating);
 
-	@Query(value = "select ho from Hotel ho where ho.rating <= :rating")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	List<Hotel> findHotelsByUptoRating(@Param("rating") int rating);
+	List<Hotel> findHotelsByRatingGreaterThanEqual(@Param("rating") int rating);
 
 	@Query(value = "select ho from Hotel ho where ho.category = :category_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	List<Hotel> findHotelsByCategory(@Param("category_id") Integer category_id);
+	List<Hotel> findHotelsByCategory(@Param("category_id") Category category_id);
 
 }
