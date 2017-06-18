@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ohb.app.model.Hotel;
@@ -58,81 +55,81 @@ public class HotelService {
 		return outHotel;
 	}
 
-	public Page<Hotel> findAllforUser(int pageNumber,int pageSize) {
-		Page<Hotel> page = (Page<Hotel>) this.hotelRepository.findtop3HotelsforeachCity();
+	public List<Hotel> findAllforUser(int pageNumber, int pageSize) {
+		List<Hotel> page = this.hotelRepository.findAll();
 
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> findAll(Pageable pageable) {
-		Page<Hotel> page = this.hotelRepository.findAll(pageable);
+	public List<Hotel> findAll() {
+		List<Hotel> page = this.hotelRepository.findAll();
 
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> findHotelsByCity(City city,int pageNumber,int pageSize) {
+	public List<Hotel> findHotelsByCity(City city) {
 		if (city == null) {
 			return null;
 		}
-		Page<Hotel> page = this.hotelRepository.findHotelsByCity(city, new PageRequest(pageNumber, pageSize));
+		List<Hotel> page = this.hotelRepository.findHotelsByCity(city);
 
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> findHotelsByAddress(String address,int pageNumber,int pageSize) {
+	public List<Hotel> findHotelsByAddress(String address) {
 		if (address == null) {
 			return null;
 		}
 		Set<String> addr = TokenizerUtil.addressTokenizer(address);
-		Page<Hotel> page = this.hotelRepository.findHotelsByAddressContains(address,new PageRequest(pageNumber, pageSize));
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> page = this.hotelRepository.findHotelsByAddressContains(address);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 	
-	public Page<Hotel> findHotelsByNameIn(String name,int pageNumber,int pageSize ) {
+	public List<Hotel> findHotelsByNameIn(String name) {
 		if (name == null) {
 			return null;
 		}
 		Set<String> names = TokenizerUtil.addressTokenizer(name);
-		Page<Hotel> page = this.hotelRepository.findHotelsByNameContaining(name,new PageRequest(pageNumber, pageSize));
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> page = this.hotelRepository.findHotelsByNameContaining(name);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> findHotelsByRating(Integer rating,int pageNumber, int pageSize) {
+	public List<Hotel> findHotelsByRating(Integer rating) {
 		if (rating == null) {
 			rating = 0;
 		}
-		Page<Hotel> page = this.hotelRepository.findHotelsByRatingLessThanEqual(rating,new PageRequest(pageNumber, pageSize));
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> page = this.hotelRepository.findHotelsByRatingLessThanEqual(rating);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> findHotelsByUptoRating(Integer rating,int pageNumber, int pageSize) {
+	public List<Hotel> findHotelsByUptoRating(Integer rating) {
 		if (rating == null) {
 			rating = 0;
 		}
-		Page<Hotel> page = this.hotelRepository.findHotelsByRatingGreaterThanEqual(rating,new PageRequest(pageNumber, pageSize));
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> page = this.hotelRepository.findHotelsByRatingGreaterThanEqual(rating);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> findHotelsByCategory(String category_id,int pageNumber, int pageSize) {
+	public List<Hotel> findHotelsByCategory(String category_id) {
 		if (category_id == null) {
 			category_id = "";
 		}
 		Category category=categoryService.findByName(category_id);
-		Page<Hotel> page = this.hotelRepository.findHotelsByCategory(category,new PageRequest(pageNumber, pageSize));
-		Page<Hotel> hotellist = fillList(page);
+		List<Hotel> page = this.hotelRepository.findHotelsByCategory(category);
+		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
-	public Page<Hotel> fillList(Page<Hotel> page) {
-		Page<Hotel> hotellist = page;
-		/*for (Hotel hotel : page) {
+	public List<Hotel> fillList(List<Hotel> page) {
+		List<Hotel> hotellist = new ArrayList<Hotel>();
+		for (Hotel hotel : page) {
 			Hotel dto = new Hotel();
 			dto.setHotelid(hotel.getHotelid());
 			dto.setName(hotel.getName());
@@ -143,7 +140,7 @@ public class HotelService {
 			dto.setCity(hotel.getCity());
 			dto.setRooms(hotel.getRooms());
 			hotellist.add(dto);
-		}*/
+		}
 		return hotellist;
 	}
 	/*

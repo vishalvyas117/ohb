@@ -19,15 +19,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-
 import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
 @Entity
 @Table(name = "HOTEL")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
-@Document(indexName="hotels",type="hotels", shards = 1, replicas = 0, refreshInterval = "-1")
 public class Hotel {
 
 	@Id
