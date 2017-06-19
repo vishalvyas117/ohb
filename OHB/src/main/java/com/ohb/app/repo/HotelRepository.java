@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,7 @@ import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
 @Repository(value = "hotelRepository")
-public interface HotelRepository extends JpaRepository<Hotel, Integer>, JpaSpecificationExecutor<Hotel> {
+public interface HotelRepository extends CrudRepository<Hotel, Integer>, JpaSpecificationExecutor<Hotel> {
 	//@Query(nativeQuery = true,value = "select ho from Hotel as ho where ho.name in ?1")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByNameContaining(String name);

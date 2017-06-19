@@ -48,7 +48,7 @@ public class RoomService {
 
 	public List<RoomType> getAllRoomType() {
 		List<RoomType> roomtypelist = new ArrayList<RoomType>();
-		roomtypelist = this.roomTypeRepository.findAll();
+		roomtypelist = (List<RoomType>) this.roomTypeRepository.findAll();
 		return roomtypelist;
 	}
 

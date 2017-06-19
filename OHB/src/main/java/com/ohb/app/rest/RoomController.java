@@ -73,35 +73,30 @@ public class RoomController extends APIUtil {
 		return writeObjectToJson(statusResponse);
 	}
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
 	@RequestMapping(path = APIName.ROOMS_ID, method = RequestMethod.PUT, produces = APIName.CHARSET)
 	public String UpdateRooms(@PathVariable("hotel_id") Integer id,@PathVariable("room_id") Integer room_id,@RequestBody Room room) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(id);
-		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
-		hotel_rooms.forEach(item->{
-			if(room_id.equals(item.getRoomId())){
-				item=this.rooms.save(room);
-			}
-			rooms.put(Integer.parseInt(item.getRoom_number()), item);
-		});
-		List<Room> orderedRooms = new ArrayList<Room>();
-		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
-		for (Integer key : orderedSet)
-			orderedRooms.add(rooms.get(key));
-		result.put("hotel", orderedRooms.get(0).getHotel());
-		result.put("orderedRooms", orderedRooms);
+		Hotel hotel=this.hotels.findOne(id);
+		Room currentRoom=this.rooms.findOne(room_id);
+		room.setHotel(hotel);
+		room.setRoomId(room_id);
+		room.setType(currentRoom.getType());
+		currentRoom=this.rooms.save(room);
+		result.put("hotel", currentRoom.getHotel());
+		result.put("room", currentRoom);
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
-	}*/
+	}
 	
 	@ApiOperation(value = "save rooms ", notes = "by hotel management")
 	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.GET, consumes=APIName.CHARSET,produces = APIName.CHARSET)
 	public String getRoom(@PathVariable("hotel_id") Integer id) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Hotel hotel = hotels.findOne(id);
-		List<RoomType> roomtype=this.roomTypes.findAll();
+		List<RoomType> roomtype=(List<RoomType>) this.roomTypes.findAll();
 		result.put("hotel", hotel);
 		result.put("room", new Room());
 		result.put("roomType",roomtype);

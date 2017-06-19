@@ -18,11 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ohb.app.model.type.RoomType;
 
 @Entity
@@ -44,11 +40,12 @@ public class Room implements Comparable<Object>{
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "room_type_id", referencedColumnName = "room_type_id")
+	@JoinColumn(name = "room_type_id",nullable=false, updatable=true)
 	private RoomType type;
 	
 	@JsonIgnore
-	@ManyToOne
+	@ManyToOne(optional=false) 
+    @JoinColumn(name="hotel_id", nullable=false, updatable=true)
 	private Hotel hotel;
 
 	@Column(name = "PRICE")

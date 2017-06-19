@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +20,7 @@ import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
 
 @Repository(value = "roomRepository")
-public interface RoomRepository extends JpaRepository<Room, Integer>,
+public interface RoomRepository extends CrudRepository<Room, Integer>,
 JpaSpecificationExecutor<Room> {
 	
 	//@Query(value="select ro from Room ro where ro.floor = :floor")

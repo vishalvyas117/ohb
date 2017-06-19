@@ -56,14 +56,14 @@ public class HotelService {
 	}
 
 	public List<Hotel> findAllforUser(int pageNumber, int pageSize) {
-		List<Hotel> page = this.hotelRepository.findAll();
+		List<Hotel> page = (List<Hotel>) this.hotelRepository.findAll();
 
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 
 	public List<Hotel> findAll() {
-		List<Hotel> page = this.hotelRepository.findAll();
+		List<Hotel> page = (List<Hotel>) this.hotelRepository.findAll();
 
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
@@ -143,14 +143,5 @@ public class HotelService {
 		}
 		return hotellist;
 	}
-	/*
-	 * public Page<Hotel> fillList(Page<Hotel> page) { Page<Hotel> hotellist =
-	 * new Page<Hotel>(); for (Hotel hotel : page) { Hotel dto = new Hotel();
-	 * dto.setHotelid(hotel.getHotelid()); dto.setName(hotel.getName());
-	 * dto.setRating(hotel.getRating()); dto.setCategory(hotel.getCategory());
-	 * dto.setAddress(hotel.getAddress()); dto.setImages(hotel.getImages());
-	 * dto.setCity(hotel.getCity()); dto.setRooms(hotel.getRooms());
-	 * hotellist.add(dto); } return hotellist; }
-	 */
 
 }
