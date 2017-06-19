@@ -3,7 +3,6 @@ package com.ohb.app.util.api;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ohb.app.model.Room;
-import com.ohb.app.model.type.RoomType;
 import com.ohb.app.repo.RoomTypeRepository;
 
 public class DtoUtil {
@@ -30,6 +29,9 @@ public class DtoUtil {
 		}
 		if(room.getHotel()!=null){
 			currentRoom.setHotel(room.getHotel());
+		}
+		if(room.getBookings()!=null){
+			currentRoom.setBookings(room.getBookings());
 		}
 		return currentRoom;
 	}

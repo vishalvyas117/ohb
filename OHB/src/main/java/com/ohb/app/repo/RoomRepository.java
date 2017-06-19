@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
@@ -42,4 +43,7 @@ JpaSpecificationExecutor<Room> {
 	//@Query(value="select ro from Room ro where ro.price between 1? and ?2")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
 	public List<Room> findRoomByPriceBetween(double minprice,double maxprice);
+	@Modifying
+	@Query(value="update Room ro where ro.price between 1? and ?2")
+	public Room updateRoomById(Integer room_id);
 }
