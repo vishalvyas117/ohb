@@ -1,42 +1,122 @@
 package com.ohb.app.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ohb.app.api.response.StatusResponse;
+import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
+import com.ohb.app.model.type.RoomType;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.service.BookingService;
+import com.ohb.app.service.RoomService;
 import com.ohb.app.util.OhbUtil;
+import com.ohb.app.util.api.APIName;
+import com.ohb.app.util.api.APIStatus;
+import com.ohb.app.util.api.APIUtil;
+import com.ohb.app.util.api.Constant;
+import com.ohb.app.util.api.DtoUtil;
+
+import io.swagger.annotations.ApiOperation;
+import scala.annotation.meta.setter;
 
 @RestController
-@RequestMapping(value="hotel")
-public class RoomController {
-	 
-	
+@RequestMapping(value = APIName.HOTELROOM)
+public class RoomController extends APIUtil {
+
 	@Autowired
-    RoomTypeRepository roomTypes;
-    
-    @Autowired
-    RoomRepository rooms;
-    @Autowired
-    HotelRepository hotels;
-    @Autowired
-    BookingService bookingServise;
-    
-	@RequestMapping(value="{id}/rooms/new", method=RequestMethod.GET)
-    public String newRoom(@PathVariable("id") Integer id, Model model) throws Throwable {
-    	Room r = new Room();
-    	model.addAttribute("hotel", hotels.findOne(id));
-    	
-    	model.addAttribute("room", r);
-    	model.addAttribute("roomTypes", roomTypes.findAll());
-    	return OhbUtil.convertToJSONWithoutNull(model);
-    }
+	RoomTypeRepository roomTypes;
+
+	@Autowired
+	RoomRepository rooms;
+
+	@Autowired
+	RoomService roomService;
+	@Autowired
+	HotelRepository hotels;
+	@Autowired
+	BookingService bookingServise;
+
+	@SuppressWarnings("unchecked")
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String showRooms(@PathVariable("hotel_id") Integer id,
+			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		/*Hotel hotel = this.hotels.findOne(id);*/
+		//Map<Integer, Room> hotel_rooms = hotel.getRooms();
+		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(id);
+		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+		hotel_rooms.forEach(r->
+		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		);
+		/*for(Room r:hotel_rooms)*/
+		/*for (Integer entry : hotel_rooms.keySet()) {
+			Room r = hotel_rooms.get(entry);
+			rooms.put(Integer.parseInt(r.getRoom_number()), r);
+		}*/
+		List<Room> orderedRooms = new ArrayList<Room>();
+		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
+		for (Integer key : orderedSet)
+			orderedRooms.add(rooms.get(key));
+		result.put("hotel", orderedRooms.get(0).getHotel());
+		result.put("orderedRooms", orderedRooms);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+	
+	@ApiOperation(value = "save rooms ", notes = "by hotel management")
+	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.GET, consumes=APIName.CHARSET,produces = APIName.CHARSET)
+	public String getRoom(@PathVariable("hotel_id") Integer id) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Hotel hotel = hotels.findOne(id);
+		List<RoomType> roomtype=this.roomTypes.findAll();
+		result.put("hotel", hotel);
+		result.put("room", new Room());
+		result.put("roomType",roomtype);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+
+	@ApiOperation(value = "save rooms ", notes = "by hotel management")
+	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
+	@ResponseBody
+	public String saveRooms(@PathVariable("hotel_id") Integer id, @RequestBody Room room) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Hotel hotel = hotels.findOne(id);
+		room.setHotel(hotel);
+		Room currentroom=new Room();
+		RoomType roomtype=new RoomType();
+		currentroom=roomService.createRoom(room);
+		if(currentroom.getType()!=null){
+			roomtype=this.roomTypes.findOne(currentroom.getType().getRoomid());
+			currentroom.setType(roomtype);
+		}
+		currentroom.setHotel(hotel);
+		Room updateRoom=DtoUtil.roomDtoUtil(currentroom);
+		result.put("hotel", hotel);
+		result.put("room", updateRoom);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
 
 }

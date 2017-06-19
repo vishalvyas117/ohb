@@ -1,13 +1,10 @@
 package com.ohb.app.model;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,10 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
@@ -34,30 +33,44 @@ public class Hotel {
 	@Column(name = "HOTEL_NAME")
 	@NotNull
 	private String name;
-	
+
 	@Column(name = "HOTEL_ADDRESS")
 	@NotNull
 	private String address;
-	
+
 	@Column(name = "HOTEL_RATING")
 	private int rating;
+	private boolean status;
 
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true)
+	private User manager;
+
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = true)
 	private Category category;
-	
+
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = true)
 	private City city;
 
-	@OneToMany(mappedBy = "hotel",fetch=FetchType.LAZY, cascade=CascadeType.ALL,targetEntity=Room.class)
-	private Map<Long, Room> rooms = new HashMap<Long, Room>();
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", orphanRemoval = true)
+	@MapKeyColumn(name = "room_id")
+	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hotel", orphanRemoval = true)
+	@MapKeyColumn(name = "comment_id")
+	private Map<Integer, Comment> comment = new HashMap<Integer, Comment>();
 
-	@OneToMany(mappedBy = "hotel",fetch=FetchType.LAZY, cascade=CascadeType.ALL,targetEntity=Comment.class)
-	private Map<Long, Comment> comment = new HashMap<Long, Comment>();
-
-	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<String> images = new HashSet<String>();
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hotel", orphanRemoval = true)
+	@MapKeyColumn(name = "image_id")
+	private Map<Long, Image> images = new HashMap<Long, Image>();
 
 	public Hotel() {
 	}
@@ -110,27 +123,43 @@ public class Hotel {
 		this.category = category;
 	}
 
-	public Map<Long, Room> getRooms() {
+	public Map<Integer, Room> getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(Map<Long, Room> rooms) {
+	public void setRooms(Map<Integer, Room> rooms) {
 		this.rooms = rooms;
 	}
 
-	public Map<Long, Comment> getComments() {
+	public Map<Integer, Comment> getComments() {
 		return comment;
 	}
 
-	public void setComments(Map<Long, Comment> comments) {
+	public void setComments(Map<Integer, Comment> comments) {
 		this.comment = comments;
 	}
 
-	public Set<String> getImages() {
+	public Integer getHotel_id() {
+		return hotel_id;
+	}
+
+	public void setHotel_id(Integer hotel_id) {
+		this.hotel_id = hotel_id;
+	}
+
+	public Map<Integer, Comment> getComment() {
+		return comment;
+	}
+
+	public void setComment(Map<Integer, Comment> comment) {
+		this.comment = comment;
+	}
+
+	public Map<Long, Image> getImages() {
 		return images;
 	}
 
-	public void setImages(Set<String> images) {
+	public void setImages(Map<Long, Image> images) {
 		this.images = images;
 	}
 
@@ -141,5 +170,26 @@ public class Hotel {
 	public void setCity(City city) {
 		this.city = city;
 	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public User getManager() {
+		return manager;
+	}
+
+	public void setManager(User manager) {
+		this.manager = manager;
+	}
+	
+	@Override
+    public String toString() {
+    	return "HotelID: " + getHotel_id() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\nRating: " + getRating() + "\nCategory: " + category.getName() + "\nManager: " + getManager();
+    }
 
 }

@@ -47,8 +47,11 @@ public class APIName {
     public static final String REVIEWS_ADD = "/add";
     
  // rooms api links
-    public static final String ROOMS = VERSION + "/rooms";
-    public static final String ROOMS_ID = VERSION + "/{id}";
+    public static final String HOTELROOM = "/hotel/{hotel_id}";
+    public static final String ROOMS = "/rooms";
+    public static final String ROOMS_ID = "/{room_id}";
+    public static final String ROOMS_TYPE = "/type/{type}";
+    public static final String ROOMS_OCCUPANCY = "/occupancy/{number}";
     
   //BOOKINGS
     public static final String BOOKINGS = VERSION + "bookings";

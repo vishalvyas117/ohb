@@ -18,14 +18,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ohb.app.model.type.RoomType;
 
 @Entity
 @Table(name = "ROOM")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
-public class Room {
+public class Room implements Comparable<Object>{
 	@Id
-	@NotNull
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ROOM_ID")
 	private Integer room_id;
@@ -37,13 +41,15 @@ public class Room {
 	@NotNull
 	@Column(name = "ROOM_NUMBER")
 	private String room_number;
-
+	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "room_type_id", referencedColumnName = "room_type_id")
 	private RoomType type;
-
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = true)
 	private Hotel hotel;
 
 	@Column(name = "PRICE")
@@ -52,7 +58,8 @@ public class Room {
 	@ElementCollection
 	@Column(name = "DAYS_RESERVED")
 	private Map<Date, Integer> dateReserved = new HashMap<Date, Integer>();
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Booking.class)
 	private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
 
@@ -132,6 +139,11 @@ public class Room {
 
 	public void setBookings(Map<Long, Booking> bookings) {
 		this.bookings = bookings;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return getRoom_number().compareTo(((Room) o).getRoom_number());
 	}
 
 }

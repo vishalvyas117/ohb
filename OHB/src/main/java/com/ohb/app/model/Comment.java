@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "REVIEW")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
@@ -31,11 +33,13 @@ public class Comment {
 	
 	@Column(name = "COMMENT_STATUS")
 	private boolean status;
-
+	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotel_id", nullable = true)
 	private Hotel hotel;
-
+	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "USER_ID", referencedColumnName = "user_id", nullable = true)
 	private User user;

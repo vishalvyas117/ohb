@@ -29,7 +29,7 @@ JpaSpecificationExecutor<Room> {
 	
 	//@Query(value="from Room ro where ro.hotel_id = :hotel_id")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
-	public List<Room> findByHotel(Integer hotel_id);
+	public List<Room> findByHotel(Hotel hotel_id);
 	
 	//@Query(value="select ro from Room ro where date(ro.days_reserved) >= :checkIn and date(so.days_reserved) <= :checkout")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})

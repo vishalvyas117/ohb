@@ -196,9 +196,7 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
     public String saveHotel(@RequestBody Hotel hotel) {
-        // get product
         Hotel currenthotel = hotelService.createHotel(hotel);
-        // get all attributes of product
 
         Map<String, Object> result = new HashMap();
         result.put("Hotels", currenthotel);

@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "IMAGE")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
@@ -24,8 +26,9 @@ public class Image {
 	@Column(name = "IMAGE_PATH")
 	@NotNull
 	private String path;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
 	private Hotel hotel;
 

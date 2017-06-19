@@ -87,7 +87,7 @@ public class RoomService {
 
 	public List<Room> getRoomsbyhotel(Integer hotelId) {
 		Hotel hotel=this.hotelRepository.findOne(hotelId);
-		List<Room> page = this.roomRepository.findByHotel(hotelId);
+		List<Room> page = this.roomRepository.findByHotel(hotel);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
