@@ -8,6 +8,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -140,6 +141,28 @@ public class RoomController extends APIUtil {
 		Room updateRoom=DtoUtil.roomDtoUtil(room);
 		result.put("room", updateRoom);
 		result.put("roomType",this.roomService.getAllRoomType());
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS_FLOOR, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String getRoomsbyFloor(@PathVariable("hotel_id") Integer hotel_id,@PathVariable("floor") Integer floor,
+			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Room>hotel_rooms=this.roomService.getRoomsbyFloor(floor, pageNumber, pageSize);
+		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+		hotel_rooms.forEach(r->
+		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		);
+		List<Room> orderedRooms = new ArrayList<Room>();
+		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
+		for (Integer key : orderedSet)
+			orderedRooms.add(rooms.get(key));
+		result.put("hotel", orderedRooms.get(0).getHotel());
+		result.put("orderedRooms", orderedRooms);
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 	}

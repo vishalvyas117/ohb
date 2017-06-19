@@ -22,8 +22,8 @@ import com.ohb.app.model.Room;
 public interface RoomRepository extends JpaRepository<Room, Integer>,
 JpaSpecificationExecutor<Room> {
 	
-	@Query(value="select ro from Room ro where ro.floor = :floor")
-	public Page<Room> getRoomsbyFloor(@Param("floor") int floor,  Pageable pageable);
+	//@Query(value="select ro from Room ro where ro.floor = :floor")
+	public List<Room> findByFloor(int floor);
 	
 	@Query(value="select ro from Room ro where ro.room_number = :roomNumber")
 	public Page<Room> getRoomsbyRoomNumber(@Param("roomNumber") String roomNumber,  Pageable pageable);

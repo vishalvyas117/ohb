@@ -155,7 +155,7 @@ public class Constant {
 
     // define paging results, use for default value of @RequestParam, so type of data is String
     public static final String DEFAULT_PAGE_SIZE = "25";
-    public static final String DEFAULT_PAGE_NUMBER = "0";
+    public static final String DEFAULT_PAGE_NUMBER = "1";
 
     // define sort key value
     public static final int SORT_BY_HOTEL_NAME = 1;

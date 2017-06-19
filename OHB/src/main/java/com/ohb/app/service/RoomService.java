@@ -66,10 +66,10 @@ public class RoomService {
 
 	public List<Room> getRoomsbyFloor(int floor, Integer pageNum, Integer pageSize) {
 		Pageable pageable = new PageRequest(pageNum, pageSize, Direction.ASC, "hotel");
-		Page<Room> page = this.roomRepository.getRoomsbyFloor(floor, pageable);
+		/*Page<Room> page = this.roomRepository.findByFloor(floor, pageable);
 
-		Long totalCount = page.getTotalElements();
-		List<Room> rooms = page.getContent();
+		Long totalCount = page.getTotalElements();*/
+		List<Room> rooms = this.roomRepository.findByFloor(floor);
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : rooms) {
 			Room dto = new Room();

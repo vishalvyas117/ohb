@@ -48,8 +48,7 @@ public class Room implements Comparable<Object>{
 	private RoomType type;
 	
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = true)
+	@ManyToOne
 	private Hotel hotel;
 
 	@Column(name = "PRICE")

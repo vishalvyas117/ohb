@@ -50,6 +50,7 @@ public class APIName {
     public static final String HOTELROOM = "/hotel/{hotel_id}";
     public static final String ROOMS = "/rooms";
     public static final String ROOMS_ID = "/{room_id}";
+    public static final String ROOMS_FLOOR = "/floor/{floor}";
     public static final String ROOMS_TYPE = "/type/{type}";
     public static final String ROOMS_OCCUPANCY = "/occupancy/{number}";
     
