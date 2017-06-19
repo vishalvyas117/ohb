@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ohb.app.model.type.RoomType;
 
@@ -40,7 +42,8 @@ public class Room implements Comparable<Object>{
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "room_type_id",nullable=false, updatable=true)
+	@JoinColumn(name = "room_type_id", referencedColumnName = "room_type_id")
+	@JsonProperty(value="type")
 	private RoomType type;
 	
 	@JsonIgnore

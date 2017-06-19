@@ -85,8 +85,10 @@ public class RoomController extends APIUtil {
 		room.setRoomId(room_id);
 		room.setType(currentRoom.getType());
 		currentRoom=this.rooms.save(room);
+		currentRoom=this.rooms.findOne(room_id);
 		result.put("hotel", currentRoom.getHotel());
 		result.put("room", currentRoom);
+		result.put("roomtype", currentRoom.getType());
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 	}
