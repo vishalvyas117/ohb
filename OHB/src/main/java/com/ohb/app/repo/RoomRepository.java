@@ -43,7 +43,7 @@ JpaSpecificationExecutor<Room> {
 	//@Query(value="select ro from Room ro where ro.price between 1? and ?2")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
 	public List<Room> findRoomByPriceBetween(double minprice,double maxprice);
-	@Modifying
+	/*@Modifying
 	@Query(value="update Room ro where ro.price between 1? and ?2")
-	public Room updateRoomById(Integer room_id);
+	public Room updateRoomById(Integer room_id);*/
 }
