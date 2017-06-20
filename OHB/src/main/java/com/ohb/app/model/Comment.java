@@ -12,7 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -25,10 +32,14 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer Comment_id;
 	
+	@Length(min = 13, max = 10000)
 	@Column(name = "COMMENT_DESCRIPTION")
 	private String text;
 	
 	@Column(name = "COMMENT_DATE")
+	@Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
 	private Date date;
 	
 	@Column(name = "COMMENT_STATUS")

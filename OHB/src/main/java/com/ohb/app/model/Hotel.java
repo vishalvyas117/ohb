@@ -17,7 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
@@ -43,6 +47,9 @@ public class Hotel {
 	private boolean status;
 
 	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize	
+	@JsonProperty
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true)
 	private User manager;
