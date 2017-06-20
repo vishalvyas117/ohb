@@ -1,7 +1,5 @@
 package com.ohb.app.util.api;
 
-import com.ohb.app.model.Room;
-
 public class APIName {
 
 	// version
@@ -42,7 +40,7 @@ public class APIName {
     public static final String USERS_LOGOUT = "/logout";
 
     //review api link
-    public static final String REVIEWS = "/reviews";
+    public static final String REVIEWS = "/reviews/{hotel_id}";
     public static final String REVIEWS_BY_HOTEL_ID = "/{id}";
     public static final String REVIEWS_BY_HOTEL_ADD = "/{id}/add";
     public static final String REVIEWS_BY_USER_ID = "/{id}";

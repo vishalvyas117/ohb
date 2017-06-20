@@ -7,8 +7,8 @@ import javax.persistence.QueryHint;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
 
 @Repository(value="commentRepository")
-public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
+public interface CommentRepository extends CrudRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
 	
 	//@Query(value = "select co from Comment ro where co.hotel =:Hotel_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })

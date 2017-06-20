@@ -60,10 +60,10 @@ public class DateUtil {
 
        SimpleDateFormat fmt = null;
        if (dateStr.length() == 19) {
-           fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+           fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
            fmt.setTimeZone(tz);
        } else {
-           fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+           fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss z");
        }
        try {
            return fmt.parse(dateStr);
@@ -93,7 +93,7 @@ public class DateUtil {
        if (date.after(getMax()))
            date = getMax();
        SimpleDateFormat outputXmlFmt =
-           new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+           new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
        outputXmlFmt.setTimeZone(tz);
        String result =
            outputXmlFmt.format(date) + " " + getGMTString(date, tz);
@@ -111,7 +111,7 @@ public class DateUtil {
        if (date.after(getMax()))
            date = getMax();
        SimpleDateFormat outputXmlFmt =
-           new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+           new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
        outputXmlFmt.setTimeZone(tz);
        return outputXmlFmt.format(date);
    }
@@ -132,7 +132,7 @@ public class DateUtil {
            return null;
        if (timezone == null)
            timezone = TimeZone.getDefault();
-       SimpleDateFormat dbFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       SimpleDateFormat dbFmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
        dbFmt.setTimeZone(timezone);
        return dbFmt.format(date);
    }
@@ -142,7 +142,7 @@ public class DateUtil {
        if (date == null) return null;
        if (timezone == null)
            timezone = TimeZone.getDefault();
-       SimpleDateFormat dbFmt = new SimpleDateFormat("yyyy/MM/dd");
+       SimpleDateFormat dbFmt = new SimpleDateFormat("MM/dd/yyyy");
        dbFmt.setTimeZone(timezone);
        return dbFmt.format(date);
    }
