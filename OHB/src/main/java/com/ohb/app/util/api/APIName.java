@@ -42,8 +42,10 @@ public class APIName {
     public static final String USERS_LOGOUT = "/logout";
 
     //review api link
-    public static final String REVIEWS = VERSION + "/reviews";
+    public static final String REVIEWS = "/reviews";
     public static final String REVIEWS_BY_HOTEL_ID = "/{id}";
+    public static final String REVIEWS_BY_HOTEL_ADD = "/{id}/add";
+    public static final String REVIEWS_BY_USER_ID = "/{id}";
     public static final String REVIEWS_ADD = "/add";
     
  // rooms api links
@@ -52,7 +54,11 @@ public class APIName {
     public static final String ROOMS_ID = "/{room_id}";
     public static final String ROOMS_FLOOR = "/floor/{floor}";
     public static final String ROOMS_TYPE = "/type/{type}";
+    public static final String ROOMS_NUMBER = "/number/{room_number}";
+    public static final String ROOMS_DAYSRESERVED = "/reserved";
     public static final String ROOMS_OCCUPANCY = "/occupancy/{number}";
+    public static final String ROOMS_PRICE = "/price/{price}";
+    public static final String ROOMS_PRICERANGE = "/price";
     
   //BOOKINGS
     public static final String BOOKINGS = VERSION + "bookings";

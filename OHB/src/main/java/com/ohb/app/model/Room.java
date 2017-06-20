@@ -16,11 +16,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ohb.app.model.type.RoomType;
 
 @Entity
@@ -41,14 +45,18 @@ public class Room implements Comparable<Object>{
 	private String room_number;
 	
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "room_type_id", referencedColumnName = "room_type_id")
-	@JsonProperty(value="type")
+	@JsonSerialize
+	@JsonDeserialize	
+	@JsonProperty
+	@ManyToOne(optional=false)
+	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id",nullable=false,updatable=false)
 	private RoomType type;
 	
 	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize
 	@ManyToOne(optional=false) 
-    @JoinColumn(name="hotel_id", nullable=false, updatable=true)
+    @JoinColumn(name="hotel_id", nullable=false, updatable=false)
 	private Hotel hotel;
 
 	@Column(name = "PRICE")
@@ -56,7 +64,7 @@ public class Room implements Comparable<Object>{
 
 	@ElementCollection
 	@Column(name = "DAYS_RESERVED")
-	private Map<Date, Integer> dateReserved = new HashMap<Date, Integer>();
+	private Map<String, Integer> dateReserved = new HashMap<String, Integer>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Booking.class)
@@ -66,9 +74,9 @@ public class Room implements Comparable<Object>{
 		super();
 	}
 
-	public Room(Integer roomId, int floor, String room_number, RoomType type, Hotel hotel, double price) {
+	public Room(Integer room_Id, int floor, String room_number, RoomType type, Hotel hotel, double price) {
 		super();
-		this.room_id = roomId;
+		this.room_id = room_Id;
 		this.floor = floor;
 		this.room_number = room_number;
 		this.type = type;
@@ -124,11 +132,11 @@ public class Room implements Comparable<Object>{
 		this.price = price;
 	}
 
-	public Map<Date, Integer> getDays_reserved() {
+	public Map<String, Integer> getDays_reserved() {
 		return dateReserved;
 	}
 
-	public void setDays_reserved(Map<Date, Integer> days_reserved) {
+	public void setDays_reserved(Map<String, Integer> days_reserved) {
 		this.dateReserved = days_reserved;
 	}
 

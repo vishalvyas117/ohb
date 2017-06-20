@@ -78,12 +78,10 @@ public class RoomController extends APIUtil {
 	@RequestMapping(path = APIName.ROOMS_ID, method = RequestMethod.PUT, produces = APIName.CHARSET)
 	public String UpdateRooms(@PathVariable("hotel_id") Integer id,@PathVariable("room_id") Integer room_id,@RequestBody Room room) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(id);
 		Hotel hotel=this.hotels.findOne(id);
 		Room currentRoom=this.rooms.findOne(room_id);
 		room.setHotel(hotel);
 		room.setRoomId(room_id);
-		room.setType(currentRoom.getType());
 		currentRoom=this.rooms.save(room);
 		currentRoom=this.rooms.findOne(room_id);
 		result.put("hotel", currentRoom.getHotel());
@@ -164,6 +162,82 @@ public class RoomController extends APIUtil {
 		return writeObjectToJson(statusResponse);
 	}
 	
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS_NUMBER, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String getRoomsbyRoomNumber(@PathVariable("hotel_id") String hotel_id,@PathVariable("room_number") String room_number,
+			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Room>hotel_rooms=this.roomService.getRoomsbyRoomNumber(room_number, pageNumber, pageSize);
+		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+		hotel_rooms.forEach(r->
+		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		);
+		List<Room> orderedRooms = new ArrayList<Room>();
+		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
+		for (Integer key : orderedSet)
+			orderedRooms.add(rooms.get(key));
+		result.put("hotel", orderedRooms.get(0).getHotel());
+		result.put("orderedRooms", orderedRooms);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
 	
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS_DAYSRESERVED, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String getRoomsbydaysReserved(@RequestParam(name="fromDate",defaultValue="") String fromDate, @RequestParam(name="toDate",defaultValue="")String toDate) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Room>hotel_rooms=this.roomService.getRoomsbydaysReserved(fromDate,toDate);
+		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+		hotel_rooms.forEach(r->
+		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		);
+		List<Room> orderedRooms = new ArrayList<Room>();
+		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
+		for (Integer key : orderedSet)
+			orderedRooms.add(rooms.get(key));
+		result.put("hotel", orderedRooms.get(0).getHotel());
+		result.put("orderedRooms", orderedRooms);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+	
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS_PRICE, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String getRoomsbyprice(@PathVariable("hotel_id") String hotel_id,@PathVariable("price") double price) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Room>hotel_rooms=this.roomService.getRoomsbyprice(price);
+		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+		hotel_rooms.forEach(r->
+		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		);
+		List<Room> orderedRooms = new ArrayList<Room>();
+		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
+		for (Integer key : orderedSet)
+			orderedRooms.add(rooms.get(key));
+		result.put("hotel", orderedRooms.get(0).getHotel());
+		result.put("orderedRooms", orderedRooms);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+	
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS_PRICERANGE, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String getRoomsbypriceRange(@RequestParam(name="from",defaultValue="") double from, @RequestParam(name="to",defaultValue="")double to) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Room>hotel_rooms=this.roomService.getRoomsbypriceRange(from,to);
+		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+		hotel_rooms.forEach(r->
+		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		);
+		List<Room> orderedRooms = new ArrayList<Room>();
+		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
+		for (Integer key : orderedSet)
+			orderedRooms.add(rooms.get(key));
+		result.put("hotel", orderedRooms.get(0).getHotel());
+		result.put("orderedRooms", orderedRooms);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
 
 }

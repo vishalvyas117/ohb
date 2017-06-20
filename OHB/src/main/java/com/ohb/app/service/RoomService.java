@@ -57,6 +57,7 @@ public class RoomService {
 		if (room == null) {
 			return null;
 		}
+		System.out.println("room type  :  "+room.getType());
 		currentroom = this.roomRepository.save(room);
 		if (currentroom == null) {
 			return null;
@@ -69,7 +70,7 @@ public class RoomService {
 		/*Page<Room> page = this.roomRepository.findByFloor(floor, pageable);
 
 		Long totalCount = page.getTotalElements();*/
-		List<Room> rooms = this.roomRepository.findByFloor(floor);
+		List<Room> rooms = this.roomRepository.findRoomsByFloor(floor);
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : rooms) {
 			Room dto = new Room();
@@ -106,11 +107,11 @@ public class RoomService {
 
 	public List<Room> getRoomsbyRoomNumber(String roomNumber, Integer pageNum, Integer pageSize) {
 		Pageable pageable = new PageRequest(pageNum, pageSize, Direction.ASC, "hotel");
-		Page<Room> page = this.roomRepository.getRoomsbyRoomNumber(roomNumber, pageable);
-		Long totalCount = page.getTotalElements();
-		List<Room> rooms = page.getContent();
+		List<Room> page = this.roomRepository.getRoomsbyRoomNumber(roomNumber);
+		/*Long totalCount = page.getTotalElements();
+		List<Room> rooms = page.getContent();*/
 		List<Room> roomlist = new ArrayList<Room>();
-		for (Room room : rooms) {
+		for (Room room : page) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
 			dto.setRoom_number(room.getRoom_number());
@@ -124,7 +125,8 @@ public class RoomService {
 		return roomlist;
 	}
 	
-	public List<Room> getRoomsbydaysReserved(Date checkIn,Date checkout) {
+	public List<Room> getRoomsbydaysReserved(String checkIn,String checkout) {
+		
 		List<Room> page = this.roomRepository.findRoomByDateReservedIsBetween(checkIn,checkout);
 
 		List<Room> roomlist = new ArrayList<Room>();

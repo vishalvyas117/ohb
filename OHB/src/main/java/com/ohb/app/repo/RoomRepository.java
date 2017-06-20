@@ -23,11 +23,11 @@ import com.ohb.app.model.Room;
 public interface RoomRepository extends CrudRepository<Room, Integer>,
 JpaSpecificationExecutor<Room> {
 	
-	//@Query(value="select ro from Room ro where ro.floor = :floor")
-	public List<Room> findByFloor(int floor);
+	@Query(value="select ro from Room ro where ro.floor = ?1")
+	public List<Room> findRoomsByFloor(int floor);
 	
 	@Query(value="select ro from Room ro where ro.room_number = :roomNumber")
-	public Page<Room> getRoomsbyRoomNumber(@Param("roomNumber") String roomNumber,  Pageable pageable);
+	public List<Room> getRoomsbyRoomNumber(@Param("roomNumber") String roomNumber);
 	
 	//@Query(value="from Room ro where ro.hotel_id = :hotel_id")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
@@ -35,7 +35,7 @@ JpaSpecificationExecutor<Room> {
 	
 	//@Query(value="select ro from Room ro where date(ro.days_reserved) >= :checkIn and date(so.days_reserved) <= :checkout")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
-	public List<Room> findRoomByDateReservedIsBetween(Date checkIn,Date checkout);
+	public List<Room> findRoomByDateReservedIsBetween(String checkIn,String checkout);
 	
 	//@Query(value="select ro from Room ro where ro.price <= :price")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})

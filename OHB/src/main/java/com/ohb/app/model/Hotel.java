@@ -54,7 +54,7 @@ public class Hotel {
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = true)
+	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false)
 	private City city;
 
 	@JsonIgnore

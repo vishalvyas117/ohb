@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 @Entity
 @Table(name = "room_type")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
@@ -24,8 +26,8 @@ public class RoomType {
 	public RoomType() {
 	}
 	
-	public RoomType(Integer roomid, String description,int occupancy) {
-		this.room_type_id = roomid;
+	public RoomType(Integer room_type_id, String description,int occupancy) {
+		this.room_type_id = room_type_id;
 		this.description = description;
 		this.occupancy = occupancy;
 	}
@@ -34,8 +36,8 @@ public class RoomType {
 		return room_type_id;
 	}
 
-	public void setRoomid(Integer roomid) {
-		this.room_type_id = roomid;
+	public void setRoomid(Integer room_type_id) {
+		this.room_type_id = room_type_id;
 	}
 
 	public String getDescription() {
