@@ -21,6 +21,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "REVIEW")
@@ -45,9 +48,14 @@ public class Comment {
 	@Column(name = "COMMENT_STATUS")
 	private boolean status;
 	
-	@JsonIgnore
+	/*@JsonIgnore
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotel_id", nullable = true)
+	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotel_id", nullable = true)*/
+	//@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "hotel_id")
+	@JsonIgnoreProperties({"comment"})
 	private Hotel hotel;
 	
 	@JsonIgnore

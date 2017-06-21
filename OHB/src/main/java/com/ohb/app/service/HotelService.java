@@ -35,8 +35,8 @@ public class HotelService {
 
 	public Hotel createHotel(Hotel hotel) {
 		Hotel dto = new Hotel();
-		if (hotel.getAddress() != null) {
-			dto.setAddress(hotel.getAddress());
+		if (hotel.getHotelAddress() != null) {
+			dto.setHotelAddress(hotel.getHotelAddress());
 		}
 		if (hotel.getName() != null) {
 			dto.setName(hotel.getName());

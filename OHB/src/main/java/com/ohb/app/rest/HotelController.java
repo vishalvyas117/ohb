@@ -1,5 +1,6 @@
 package com.ohb.app.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,30 @@ public class HotelController extends APIUtil{
 		Map<String, Object> result = new HashMap();
 			
         List<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
-        statusResponse = new StatusResponse(APIStatus.OK.getCode(), products);
+        /*products.forEach(hotel->
+        Map::<Integer, Comment> comments=new HashMap<>();
+        hotel.setComments(comments.findCommentsByHotel(hotel))
+		);*/
+        List<Comment> comment=new ArrayList<Comment>();
+        for(Hotel hotel:products){
+        comment=this.comments.findCommentsByHotel(hotel);
+        System.out.println("comment  "+comment.toString());
+		}
+        
+        /*for(Hotel hotel:products){
+        	int index=0;
+        	Map<Integer, Comment> newcomments=new HashMap<>();
+        	List<Comment> comment=this.comments.findCommentsByHotel(hotel);
+        	for(Comment com:comment){
+        		newcomments.put(com.getCommentid(), com);
+        	}
+        	hotel.setComment(newcomments);
+        	
+        	products.set(index, hotel);
+        }*/
+        result.put("hotels", products);
+        result.put("comments", comment);
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
         return writeObjectToJson(statusResponse);
     }
 	

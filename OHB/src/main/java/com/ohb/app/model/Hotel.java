@@ -18,185 +18,205 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Set;
+
+
+/**
+ * The persistent class for the hotel database table.
+ * 
+ */
 @Entity
-@Table(name = "HOTEL")
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
-public class Hotel {
+@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
+public class Hotel implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "HOTEL_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer hotel_id;
-	@Column(name = "HOTEL_NAME")
-	@NotNull
-	private String name;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="hotel_id")
+	private int hotelId;
 
-	@Column(name = "HOTEL_ADDRESS")
-	@NotNull
-	private String address;
+	@Column(name="hotel_address")
+	private String hotelAddress;
 
-	@Column(name = "HOTEL_RATING")
-	private int rating;
-	private boolean status;
+	@Column(name="hotel_name")
+	private String hotelName;
 
-	@JsonIgnore
-	@JsonSerialize
-	@JsonDeserialize	
-	@JsonProperty
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true)
-	private User manager;
+	@Column(name="hotel_rating")
+	private int hotelRating;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = true)
-	private Category category;
+	private byte status;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false)
+	//bi-directional many-to-one association to HotelCategory
+	@ManyToOne
+	@JoinColumn(name="category_id")
+	private Category hotelCategory;
+
+	//bi-directional many-to-one association to City
+	@ManyToOne
+	@JoinColumn(name="city_id")
 	private City city;
 
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", orphanRemoval = true)
-	@MapKeyColumn(name = "room_id")
-	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
-	
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hotel", orphanRemoval = true)
-	@MapKeyColumn(name = "comment_id")
-	private Map<Integer, Comment> comment = new HashMap<Integer, Comment>();
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hotel", orphanRemoval = true)
-	@MapKeyColumn(name = "image_id")
-	private Map<Long, Image> images = new HashMap<Long, Image>();
+	//bi-directional many-to-one association to Image
+	@OneToMany(mappedBy="hotel", fetch=FetchType.EAGER)
+	private Set<Image> images;
+
+	//bi-directional many-to-one association to Review
+	@OneToMany(mappedBy="hotel", fetch=FetchType.EAGER)
+	private Set<Comment> reviews;
+
+	//bi-directional many-to-one association to Room
+	@OneToMany(mappedBy="hotel", fetch=FetchType.EAGER)
+	private Set<Room> rooms;
 
 	public Hotel() {
 	}
 
-	public Hotel(Integer id, String name, String address, int rating, Category category) {
-		this.hotel_id = id;
-		this.name = name;
-		this.address = address;
-		this.rating = rating;
-		this.category = category;
+	public int getHotelId() {
+		return this.hotelId;
 	}
 
-	public Integer getHotelid() {
-		return hotel_id;
+	public void setHotelId(int hotelId) {
+		this.hotelId = hotelId;
 	}
 
-	public void setHotelid(Integer hotelid) {
-		this.hotel_id = hotelid;
+	public String getHotelAddress() {
+		return this.hotelAddress;
 	}
 
-	public String getName() {
-		return name;
+	public void setHotelAddress(String hotelAddress) {
+		this.hotelAddress = hotelAddress;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getHotelName() {
+		return this.hotelName;
 	}
 
-	public String getAddress() {
-		return address;
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public int getHotelRating() {
+		return this.hotelRating;
 	}
 
-	public int getRating() {
-		return rating;
+	public void setHotelRating(int hotelRating) {
+		this.hotelRating = hotelRating;
 	}
 
-	public void setRating(int rating) {
-		this.rating = rating;
+	public byte getStatus() {
+		return this.status;
 	}
 
-	public Category getCategory() {
-		return category;
+	public void setStatus(byte status) {
+		this.status = status;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public Category getHotelCategory() {
+		return this.hotelCategory;
 	}
 
-	public Map<Integer, Room> getRooms() {
-		return rooms;
-	}
-
-	public void setRooms(Map<Integer, Room> rooms) {
-		this.rooms = rooms;
-	}
-
-	public Map<Integer, Comment> getComments() {
-		return comment;
-	}
-
-	public void setComments(Map<Integer, Comment> comments) {
-		this.comment = comments;
-	}
-
-	public Integer getHotel_id() {
-		return hotel_id;
-	}
-
-	public void setHotel_id(Integer hotel_id) {
-		this.hotel_id = hotel_id;
-	}
-
-	public Map<Integer, Comment> getComment() {
-		return comment;
-	}
-
-	public void setComment(Map<Integer, Comment> comment) {
-		this.comment = comment;
-	}
-
-	public Map<Long, Image> getImages() {
-		return images;
-	}
-
-	public void setImages(Map<Long, Image> images) {
-		this.images = images;
+	public void setHotelCategory(Category hotelCategory) {
+		this.hotelCategory = hotelCategory;
 	}
 
 	public City getCity() {
-		return city;
+		return this.city;
 	}
 
 	public void setCity(City city) {
 		this.city = city;
 	}
 
-	public boolean isStatus() {
-		return status;
+	public User getUser() {
+		return this.user;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public User getManager() {
-		return manager;
+	public Set<Image> getImages() {
+		return this.images;
 	}
 
-	public void setManager(User manager) {
-		this.manager = manager;
+	public void setImages(Set<Image> images) {
+		this.images = images;
 	}
-	
-	@Override
-    public String toString() {
-    	return "HotelID: " + getHotel_id() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\nRating: " + getRating() + "\nCategory: " + category.getName() + "\nManager: " + getManager();
-    }
+
+	public Image addImage(Image image) {
+		getImages().add(image);
+		image.setHotel(this);
+
+		return image;
+	}
+
+	public Image removeImage(Image image) {
+		getImages().remove(image);
+		image.setHotel(null);
+
+		return image;
+	}
+
+	public Set<Comment> getReviews() {
+		return this.reviews;
+	}
+
+	public void setReviews(Set<Comment> reviews) {
+		this.reviews = reviews;
+	}
+
+	public Comment addReview(Comment review) {
+		getReviews().add(review);
+		review.setHotel(this);
+
+		return review;
+	}
+
+	public Comment removeReview(Comment review) {
+		getReviews().remove(review);
+		review.setHotel(null);
+
+		return review;
+	}
+
+	public Set<Room> getRooms() {
+		return this.rooms;
+	}
+
+	public void setRooms(Set<Room> rooms) {
+		this.rooms = rooms;
+	}
+
+	public Room addRoom(Room room) {
+		getRooms().add(room);
+		room.setHotel(this);
+
+		return room;
+	}
+
+	public Room removeRoom(Room room) {
+		getRooms().remove(room);
+		room.setHotel(null);
+
+		return room;
+	}
 
 }

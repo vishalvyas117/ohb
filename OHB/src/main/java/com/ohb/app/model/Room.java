@@ -52,11 +52,9 @@ public class Room implements Comparable<Object>{
 	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id",nullable=false,updatable=false)
 	private RoomType type;
 	
-	@JsonIgnore
-	@JsonSerialize
-	@JsonDeserialize
-	@ManyToOne(optional=false) 
-    @JoinColumn(name="hotel_id", nullable=false, updatable=false)
+	@ManyToOne
+    @JoinColumn(name="room_id",insertable=false, updatable=false)
+    //@JoinColumn(name="hotel_id", referencedColumnName="hotel_id", nullable=false, updatable=false)
 	private Hotel hotel;
 
 	@Column(name = "PRICE")
@@ -68,6 +66,7 @@ public class Room implements Comparable<Object>{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Booking.class)
+	
 	private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
 
 	public Room() {
