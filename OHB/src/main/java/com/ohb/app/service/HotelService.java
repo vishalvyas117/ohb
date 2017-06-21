@@ -38,16 +38,16 @@ public class HotelService {
 		if (hotel.getHotelAddress() != null) {
 			dto.setHotelAddress(hotel.getHotelAddress());
 		}
-		if (hotel.getName() != null) {
-			dto.setName(hotel.getName());
+		if (hotel.getHotelName() != null) {
+			dto.setHotelName(hotel.getHotelName());
 		}
-		if (hotel.getRating() > 0) {
-			dto.setRating(hotel.getRating());
+		if (hotel.getHotelRating()> 0) {
+			dto.setHotelRating(hotel.getHotelRating());
 		} else {
-			dto.setRating(1);
+			dto.setHotelRating(1);
 		}
 		dto.setCity(hotel.getCity());
-		dto.setCategory(hotel.getCategory());
+		dto.setHotelCategory(hotel.getHotelCategory());
 		Hotel outHotel = this.hotelRepository.save(dto);
 		if (outHotel == null) {
 			return null;
@@ -131,11 +131,11 @@ public class HotelService {
 		List<Hotel> hotellist = new ArrayList<Hotel>();
 		for (Hotel hotel : page) {
 			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
-			dto.setName(hotel.getName());
-			dto.setRating(hotel.getRating());
-			dto.setCategory(hotel.getCategory());
-			dto.setAddress(hotel.getAddress());
+			dto.setHotelId(hotel.getHotelId());
+			dto.setHotelName(hotel.getHotelName());
+			dto.setHotelRating(hotel.getHotelRating());
+			dto.setHotelCategory(hotel.getHotelCategory());
+			dto.setHotelAddress(hotel.getHotelAddress());
 			dto.setImages(hotel.getImages());
 			dto.setCity(hotel.getCity());
 			dto.setRooms(hotel.getRooms());
