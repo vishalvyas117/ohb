@@ -57,7 +57,7 @@ public class RoomService {
 		if (room == null) {
 			return null;
 		}
-		System.out.println("room type  :  "+room.getType());
+		System.out.println("room type  :  "+room.getRoomType());
 		currentroom = this.roomRepository.save(room);
 		if (currentroom == null) {
 			return null;
@@ -75,12 +75,12 @@ public class RoomService {
 		for (Room room : rooms) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
-			dto.setRoom_number(room.getRoom_number());
-			dto.setType(room.getType());
+			dto.setRoomNumber(room.getRoomNumber());
+			dto.setRoomType(room.getRoomType());
 			dto.setPrice(room.getPrice());
 			dto.setHotel(room.getHotel());
 			dto.setBookings(room.getBookings());
-			dto.setDays_reserved(room.getDays_reserved());
+			dto.setRoomDateReserveds(room.getRoomDateReserveds());
 			roomlist.add(dto);
 		}
 		return roomlist;
@@ -94,12 +94,12 @@ public class RoomService {
 		for (Room room : page) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
-			dto.setRoom_number(room.getRoom_number());
-			dto.setType(room.getType());
+			dto.setRoomNumber(room.getRoomNumber());
+			dto.setRoomType(room.getRoomType());
 			dto.setPrice(room.getPrice());
 			dto.setHotel(room.getHotel());
 			dto.setBookings(room.getBookings());
-			dto.setDays_reserved(room.getDays_reserved());
+			dto.setRoomDateReserveds(room.getRoomDateReserveds());
 			roomlist.add(dto);
 		}
 		return roomlist;
@@ -114,12 +114,12 @@ public class RoomService {
 		for (Room room : page) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
-			dto.setRoom_number(room.getRoom_number());
-			dto.setType(room.getType());
+			dto.setRoomNumber(room.getRoomNumber());
+			dto.setRoomType(room.getRoomType());
 			dto.setPrice(room.getPrice());
 			dto.setHotel(room.getHotel());
 			dto.setBookings(room.getBookings());
-			dto.setDays_reserved(room.getDays_reserved());
+			dto.setRoomDateReserveds(room.getRoomDateReserveds());
 			roomlist.add(dto);
 		}
 		return roomlist;
@@ -133,12 +133,12 @@ public class RoomService {
 		for (Room room : page) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
-			dto.setRoom_number(room.getRoom_number());
-			dto.setType(room.getType());
+			dto.setRoomNumber(room.getRoomNumber());
+			dto.setRoomType(room.getRoomType());
 			dto.setPrice(room.getPrice());
 			dto.setHotel(room.getHotel());
 			dto.setBookings(room.getBookings());
-			dto.setDays_reserved(room.getDays_reserved());
+			dto.setRoomDateReserveds(room.getRoomDateReserveds());
 			roomlist.add(dto);
 		}
 		return roomlist;
@@ -151,12 +151,12 @@ public class RoomService {
 		for (Room room : page) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
-			dto.setRoom_number(room.getRoom_number());
-			dto.setType(room.getType());
+			dto.setRoomNumber(room.getRoomNumber());
+			dto.setRoomType(room.getRoomType());
 			dto.setPrice(room.getPrice());
 			dto.setHotel(room.getHotel());
 			dto.setBookings(room.getBookings());
-			dto.setDays_reserved(room.getDays_reserved());
+			dto.setRoomDateReserveds(room.getRoomDateReserveds());
 			roomlist.add(dto);
 		}
 		return roomlist;
@@ -169,12 +169,12 @@ public class RoomService {
 		for (Room room : page) {
 			Room dto = new Room();
 			dto.setRoomId(room.getRoomId());
-			dto.setRoom_number(room.getRoom_number());
-			dto.setType(room.getType());
+			dto.setRoomNumber(room.getRoomNumber());
+			dto.setRoomType(room.getRoomType());
 			dto.setPrice(room.getPrice());
 			dto.setHotel(room.getHotel());
 			dto.setBookings(room.getBookings());
-			dto.setDays_reserved(room.getDays_reserved());
+			dto.setRoomDateReserveds(room.getRoomDateReserveds());
 			roomlist.add(dto);
 		}
 		return roomlist;

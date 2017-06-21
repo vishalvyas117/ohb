@@ -60,7 +60,7 @@ public class RoomController extends APIUtil {
 		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(id);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
-		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		rooms.put(Integer.parseInt(r.getRoomNumber()), r)
 		);
 		List<Room> orderedRooms = new ArrayList<Room>();
 		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
@@ -85,7 +85,7 @@ public class RoomController extends APIUtil {
 		currentRoom=this.rooms.findOne(room_id);
 		result.put("hotel", currentRoom.getHotel());
 		result.put("room", currentRoom);
-		result.put("roomtype", currentRoom.getType());
+		result.put("roomtype", currentRoom.getRoomType());
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 	}
@@ -113,9 +113,9 @@ public class RoomController extends APIUtil {
 		Room currentroom=new Room();
 		RoomType roomtype=new RoomType();
 		currentroom=roomService.createRoom(room);
-		if(currentroom.getType()!=null){
-			roomtype=this.roomTypes.findOne(currentroom.getType().getRoomid());
-			currentroom.setType(roomtype);
+		if(currentroom.getRoomType()!=null){
+			roomtype=this.roomTypes.findOne(currentroom.getRoomType().getRoomid());
+			currentroom.setRoomType(roomtype);
 		}
 		currentroom.setHotel(hotel);
 		Room updateRoom=DtoUtil.roomDtoUtil(currentroom);
@@ -149,7 +149,7 @@ public class RoomController extends APIUtil {
 		List<Room>hotel_rooms=this.roomService.getRoomsbyFloor(floor, pageNumber, pageSize);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
-		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		rooms.put(Integer.parseInt(r.getRoomNumber()), r)
 		);
 		List<Room> orderedRooms = new ArrayList<Room>();
 		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
@@ -170,7 +170,7 @@ public class RoomController extends APIUtil {
 		List<Room>hotel_rooms=this.roomService.getRoomsbyRoomNumber(room_number, pageNumber, pageSize);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
-		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		rooms.put(Integer.parseInt(r.getRoomNumber()), r)
 		);
 		List<Room> orderedRooms = new ArrayList<Room>();
 		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
@@ -189,7 +189,7 @@ public class RoomController extends APIUtil {
 		List<Room>hotel_rooms=this.roomService.getRoomsbydaysReserved(fromDate,toDate);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
-		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		rooms.put(Integer.parseInt(r.getRoomNumber()), r)
 		);
 		List<Room> orderedRooms = new ArrayList<Room>();
 		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
@@ -208,7 +208,7 @@ public class RoomController extends APIUtil {
 		List<Room>hotel_rooms=this.roomService.getRoomsbyprice(price);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
-		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		rooms.put(Integer.parseInt(r.getRoomNumber()), r)
 		);
 		List<Room> orderedRooms = new ArrayList<Room>();
 		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());
@@ -227,7 +227,7 @@ public class RoomController extends APIUtil {
 		List<Room>hotel_rooms=this.roomService.getRoomsbypriceRange(from,to);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
-		rooms.put(Integer.parseInt(r.getRoom_number()), r)
+		rooms.put(Integer.parseInt(r.getRoomNumber()), r)
 		);
 		List<Room> orderedRooms = new ArrayList<Room>();
 		SortedSet<Integer> orderedSet = new TreeSet<Integer>(rooms.keySet());

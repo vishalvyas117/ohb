@@ -12,20 +12,20 @@ public class DtoUtil {
 	
 	public static Room roomDtoUtil(Room room){
 		Room currentRoom=new Room();
-		if(room.getRoomId()!=null){
+		if(room.getRoomId()>0){
 			currentRoom.setRoomId(room.getRoomId());
 		}
 		if(room.getFloor()>=0){
 			room.setFloor(room.getFloor());
 		}
-		if(room.getRoom_number()!=null){
-			currentRoom.setRoom_number(room.getRoom_number());
+		if(room.getRoomNumber()!=null){
+			currentRoom.setRoomNumber(room.getRoomNumber());
 		}
 		if(room.getPrice()>0){
 			currentRoom.setPrice(room.getPrice());
 		}
-		if(room.getType()!=null){
-			currentRoom.setType(room.getType());
+		if(room.getRoomType()!=null){
+			currentRoom.setRoomType(room.getRoomType());
 		}
 		if(room.getHotel()!=null){
 			currentRoom.setHotel(room.getHotel());

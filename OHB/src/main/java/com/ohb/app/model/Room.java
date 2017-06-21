@@ -1,155 +1,148 @@
 package com.ohb.app.model;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import javax.persistence.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ohb.app.model.type.RoomDateReserved;
 import com.ohb.app.model.type.RoomType;
 
-@Entity
-@Table(name = "ROOM")
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
-public class Room implements Comparable<Object>{
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ROOM_ID")
-	private Integer room_id;
+import java.util.List;
 
-	@NotNull
-	@Column(name = "FLOOR")
+
+/**
+ * The persistent class for the room database table.
+ * 
+ */
+@Entity
+@Table(name="room")
+@NamedQuery(name="Room.findAll", query="SELECT r FROM Room r")
+public class Room implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="room_id", unique=true, nullable=false)
+	private int roomId;
+
+	@Column(nullable=false)
 	private int floor;
 
-	@NotNull
-	@Column(name = "ROOM_NUMBER")
-	private String room_number;
-	
-	@JsonIgnore
-	@JsonSerialize
-	@JsonDeserialize	
-	@JsonProperty
-	@ManyToOne(optional=false)
-	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id",nullable=false,updatable=false)
-	private RoomType type;
-	
-	@ManyToOne
-    @JoinColumn(name="room_id",insertable=false, updatable=false)
-    //@JoinColumn(name="hotel_id", referencedColumnName="hotel_id", nullable=false, updatable=false)
-	private Hotel hotel;
-
-	@Column(name = "PRICE")
 	private double price;
 
-	@ElementCollection
-	@Column(name = "DAYS_RESERVED")
-	private Map<String, Integer> dateReserved = new HashMap<String, Integer>();
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Booking.class)
-	
-	private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
+	@Column(name="room_number", nullable=false, length=255)
+	private String roomNumber;
+
+	//bi-directional many-to-one association to Booking
+	@OneToMany(mappedBy="room")
+	private List<Booking> bookings;
+
+	//bi-directional many-to-one association to RoomType
+	@ManyToOne
+	@JoinColumn(name="room_type_id")
+	private RoomType roomType;
+
+	//bi-directional many-to-one association to Hotel
+	@ManyToOne
+	@JoinColumn(name="hotel_id", nullable=false)
+	private Hotel hotel;
+
+	//bi-directional many-to-one association to RoomDateReserved
+	@OneToMany(mappedBy="room")
+	private List<RoomDateReserved> roomDateReserveds;
 
 	public Room() {
-		super();
 	}
 
-	public Room(Integer room_Id, int floor, String room_number, RoomType type, Hotel hotel, double price) {
-		super();
-		this.room_id = room_Id;
-		this.floor = floor;
-		this.room_number = room_number;
-		this.type = type;
-		this.hotel = hotel;
-		this.setPrice(price);
+	public int getRoomId() {
+		return this.roomId;
 	}
 
-	public Integer getRoomId() {
-		return room_id;
-	}
-
-	public void setRoomId(Integer roomId) {
-		this.room_id = roomId;
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
 	public int getFloor() {
-		return floor;
+		return this.floor;
 	}
 
 	public void setFloor(int floor) {
 		this.floor = floor;
 	}
 
-	public String getRoom_number() {
-		return room_number;
-	}
-
-	public void setRoom_number(String room_number) {
-		this.room_number = room_number;
-	}
-
-	public RoomType getType() {
-		return type;
-	}
-
-	public void setType(RoomType type) {
-		this.type = type;
-	}
-
-	public Hotel getHotel() {
-		return hotel;
-	}
-
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
-	}
-
 	public double getPrice() {
-		return price;
+		return this.price;
 	}
 
 	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	public Map<String, Integer> getDays_reserved() {
-		return dateReserved;
+	public String getRoomNumber() {
+		return this.roomNumber;
 	}
 
-	public void setDays_reserved(Map<String, Integer> days_reserved) {
-		this.dateReserved = days_reserved;
+	public void setRoomNumber(String roomNumber) {
+		this.roomNumber = roomNumber;
 	}
 
-	public Map<Long, Booking> getBookings() {
-		return bookings;
+	public List<Booking> getBookings() {
+		return this.bookings;
 	}
 
-	public void setBookings(Map<Long, Booking> bookings) {
+	public void setBookings(List<Booking> bookings) {
 		this.bookings = bookings;
 	}
 
-	@Override
-	public int compareTo(Object o) {
-		return getRoom_number().compareTo(((Room) o).getRoom_number());
+	public Booking addBooking(Booking booking) {
+		getBookings().add(booking);
+		booking.setRoom(this);
+
+		return booking;
+	}
+
+	public Booking removeBooking(Booking booking) {
+		getBookings().remove(booking);
+		booking.setRoom(null);
+
+		return booking;
+	}
+
+	public RoomType getRoomType() {
+		return this.roomType;
+	}
+
+	public void setRoomType(RoomType roomType) {
+		this.roomType = roomType;
+	}
+
+	public Hotel getHotel() {
+		return this.hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
+
+	public List<RoomDateReserved> getRoomDateReserveds() {
+		return this.roomDateReserveds;
+	}
+
+	public void setRoomDateReserveds(List<RoomDateReserved> roomDateReserveds) {
+		this.roomDateReserveds = roomDateReserveds;
+	}
+
+	public RoomDateReserved addRoomDateReserved(RoomDateReserved roomDateReserved) {
+		getRoomDateReserveds().add(roomDateReserved);
+		roomDateReserved.setRoom(this);
+
+		return roomDateReserved;
+	}
+
+	public RoomDateReserved removeRoomDateReserved(RoomDateReserved roomDateReserved) {
+		getRoomDateReserveds().remove(roomDateReserved);
+		roomDateReserved.setRoom(null);
+
+		return roomDateReserved;
 	}
 
 }
