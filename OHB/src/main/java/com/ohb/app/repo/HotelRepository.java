@@ -34,7 +34,7 @@ public interface HotelRepository extends CrudRepository<Hotel, Integer>, JpaSpec
 		/*@Query(nativeQuery = true, value = "select * from Hotel as ho join room as ro on ro.hotel_id=ho.hotel_id")
 		@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 		List<Hotel> findHotelswithRooms();*/
-
+	
 	//@Query(nativeQuery = true, value = "select ho from Hotel ho where ho.address in %?1%")
 	List<Hotel> findHotelsByAddressContains(String address);
 

@@ -78,7 +78,7 @@ public class HotelController extends APIUtil{
 		);*/
         List<Comment> comment=new ArrayList<Comment>();
         for(Hotel hotel:products){
-        comment=this.comments.findCommentsByHotel(hotel);
+        //comment=this.comments.findCommentsByHotel(hotel.getHotel_id());
         System.out.println("comment  "+comment.toString());
 		}
         
@@ -104,12 +104,12 @@ public class HotelController extends APIUtil{
     public String getHotelById(@PathVariable(value="hotelid") int hotel_id) {
         // get product
         Hotel hotel = hotelRepository.findOne(hotel_id);
-        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
+       /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel_id);*/
 
         Map<String, Object> result = new HashMap();
         result.put("Hotel", hotel);
         result.put("Booking", new Booking());
-        result.put("comments",hotel_comments);
+        //result.put("comments",hotel_comments);
         result.put("Category", categories.findAll());
         result.put("reply", new Comment());
         result.put("users", users.findAll());
@@ -126,8 +126,8 @@ public class HotelController extends APIUtil{
 		Map<String, Object> result = new HashMap();
         List<Hotel> hotels = hotelService.findHotelsByNameIn(hotelname);
         for(Hotel hotel:hotels){
-        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
-        result.put("comments",hotel_comments);
+       /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
+        result.put("comments",hotel_comments);*/
         }
         result.put("Hotels", hotels);
         result.put("Booking", new Booking());
@@ -147,8 +147,8 @@ public class HotelController extends APIUtil{
 		City city=cities.findByName(cityName);
         List<Hotel> hotels = hotelService.findHotelsByCity(city);
         for(Hotel hotel:hotels){
-        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
-        result.put("comments",hotel_comments);
+        /*List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
+        result.put("comments",hotel_comments);*/
         }
         result.put("Hotels", hotels);
         result.put("Booking", new Booking());
@@ -166,8 +166,8 @@ public class HotelController extends APIUtil{
 		Map<String, Object> result = new HashMap();
         List<Hotel> hotels = hotelService.findHotelsByAddress(address.trim());
         for(Hotel hotel:hotels){
-        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
-        result.put("comments",hotel_comments);
+        /*List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
+        result.put("comments",hotel_comments);*/
         }
         result.put("Hotels", hotels);
         result.put("Booking", new Booking());
@@ -185,8 +185,8 @@ public class HotelController extends APIUtil{
 		Map<String, Object> result = new HashMap();
         List<Hotel> hotels = hotelService.findHotelsByRating(rating);
         for(Hotel hotel:hotels){
-        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
-        result.put("comments",hotel_comments);
+       /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
+        result.put("comments",hotel_comments);*/
         }
         result.put("Hotels", hotels);
         result.put("Booking", new Booking());
@@ -203,8 +203,8 @@ public class HotelController extends APIUtil{
 		Map<String, Object> result = new HashMap();
         List<Hotel> hotels = hotelService.findHotelsByUptoRating(rating);
         for(Hotel hotel:hotels){
-        List<Comment> hotel_comments = comments.findCommentsByHotel(hotel);
-        result.put("comments",hotel_comments);
+        /*List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
+        result.put("comments",hotel_comments);*/
         }
         result.put("Hotels", hotels);
         result.put("Booking", new Booking());

@@ -49,9 +49,9 @@ public class CommentService {
 		return dto;
 	}
 
-	public List<Comment> findCommentsByHotelId(Integer hotelId) {
+	/*public List<Comment> findCommentsByHotelId(Integer hotelId) {
 		Hotel hotel=hotelRepository.findOne(hotelId);
-		List<Comment> page = this.commentRepository.findCommentsByHotel(hotel);
+		List<Comment> page = this.commentRepository.findCommentsByHotel(hotelId);
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
@@ -62,7 +62,7 @@ public class CommentService {
 			commentList.add(dto);
 		}
 		return commentList;
-	}
+	}*/
 
 	public List<Comment> findCommentsByUserId(String UserId) {
 		List<Comment> page = this.commentRepository.findCommentsByUser(UserId);

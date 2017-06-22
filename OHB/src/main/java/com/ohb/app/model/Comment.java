@@ -50,7 +50,7 @@ public class Comment {
 	
 	
 	
-	@JoinColumn(name = "HOTEL_ID")
+	@Column(name = "HOTEL")
 	private Integer hotel_id;
 	
 	@JsonIgnore
