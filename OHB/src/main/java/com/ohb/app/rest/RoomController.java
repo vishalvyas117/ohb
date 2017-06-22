@@ -130,7 +130,7 @@ public class RoomController extends APIUtil {
 	public String showRoom(@PathVariable("room_id") Integer room_id) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Room room=this.rooms.findOne(room_id);
-		Hotel hotel=this.hotels.findOne(room.getHotel().getHotelId());
+		Hotel hotel=this.hotels.findOne(room.getHotel().getHotel_id());
 		room.setHotel(hotel);
 		Room updateRoom=DtoUtil.roomDtoUtil(room);
 		result.put("room", updateRoom);

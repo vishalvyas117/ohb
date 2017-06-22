@@ -35,19 +35,19 @@ public class HotelService {
 
 	public Hotel createHotel(Hotel hotel) {
 		Hotel dto = new Hotel();
-		if (hotel.getHotelAddress() != null) {
-			dto.setHotelAddress(hotel.getHotelAddress());
+		if (hotel.getAddress() != null) {
+			dto.setAddress(hotel.getAddress());
 		}
-		if (hotel.getHotelName() != null) {
-			dto.setHotelName(hotel.getHotelName());
+		if (hotel.getName() != null) {
+			dto.setName(hotel.getName());
 		}
-		if (hotel.getHotelRating()> 0) {
-			dto.setHotelRating(hotel.getHotelRating());
+		if (hotel.getRating() > 0) {
+			dto.setRating(hotel.getRating());
 		} else {
-			dto.setHotelRating(1);
+			dto.setRating(1);
 		}
 		dto.setCity(hotel.getCity());
-		dto.setHotelCategory(hotel.getHotelCategory());
+		dto.setCategory(hotel.getCategory());
 		Hotel outHotel = this.hotelRepository.save(dto);
 		if (outHotel == null) {
 			return null;
@@ -131,11 +131,11 @@ public class HotelService {
 		List<Hotel> hotellist = new ArrayList<Hotel>();
 		for (Hotel hotel : page) {
 			Hotel dto = new Hotel();
-			dto.setHotelId(hotel.getHotelId());
-			dto.setHotelName(hotel.getHotelName());
-			dto.setHotelRating(hotel.getHotelRating());
-			dto.setHotelCategory(hotel.getHotelCategory());
-			dto.setHotelAddress(hotel.getHotelAddress());
+			dto.setHotelid(hotel.getHotelid());
+			dto.setName(hotel.getName());
+			dto.setRating(hotel.getRating());
+			dto.setCategory(hotel.getCategory());
+			dto.setAddress(hotel.getAddress());
 			dto.setImages(hotel.getImages());
 			dto.setCity(hotel.getCity());
 			dto.setRooms(hotel.getRooms());
