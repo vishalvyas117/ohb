@@ -52,10 +52,9 @@ public class Room implements Comparable<Object>{
 	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id",nullable=false,updatable=false)
 	private RoomType type;
 	
-	@ManyToOne
-    @JoinColumn(name="room_id",insertable=false, updatable=false)
-    //@JoinColumn(name="hotel_id", referencedColumnName="hotel_id", nullable=false, updatable=false)
-	private Hotel hotel;
+	
+    @Column(name = "hotel_id")
+	private Integer hotel;
 
 	@Column(name = "PRICE")
 	private double price;
@@ -73,7 +72,7 @@ public class Room implements Comparable<Object>{
 		super();
 	}
 
-	public Room(Integer room_Id, int floor, String room_number, RoomType type, Hotel hotel, double price) {
+	public Room(Integer room_Id, int floor, String room_number, RoomType type, Integer hotel, double price) {
 		super();
 		this.room_id = room_Id;
 		this.floor = floor;
@@ -115,11 +114,11 @@ public class Room implements Comparable<Object>{
 		this.type = type;
 	}
 
-	public Hotel getHotel() {
+	public Integer getHotel() {
 		return hotel;
 	}
 
-	public void setHotel(Hotel hotel) {
+	public void setHotel(Integer hotel) {
 		this.hotel = hotel;
 	}
 

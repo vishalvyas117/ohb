@@ -48,15 +48,10 @@ public class Comment {
 	@Column(name = "COMMENT_STATUS")
 	private boolean status;
 	
-	/*@JsonIgnore
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "hotel_id", nullable = true)*/
-	//@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "hotel_id")
-	@JsonIgnoreProperties({"comment"})
-	private Hotel hotel;
+	
+	@JoinColumn(name = "HOTEL_ID")
+	private Integer hotel_id;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
@@ -65,22 +60,15 @@ public class Comment {
 	
 	public Comment() {}
 
-	public Comment(Integer id, String text, Date date, User user, boolean status, Hotel hotel) {
+	public Comment(Integer id, String text, Date date, User user, boolean status, Integer hotel) {
 		this.Comment_id = id;
 		this.text = text;
 		this.date = date;
 		this.user = user;
 		this.status = status;
-		this.hotel = hotel;
+		this.hotel_id = hotel;
 	}
 
-	public Integer getCommentid() {
-		return Comment_id;
-	}
-
-	public void setCommentid(Integer commentid) {
-		Comment_id = commentid;
-	}
 
 	public String getText() {
 		return text;
@@ -106,12 +94,22 @@ public class Comment {
 		this.status = status;
 	}
 
-	public Hotel getHotel() {
-		return hotel;
+	
+
+	public Integer getComment_id() {
+		return Comment_id;
 	}
 
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
+	public void setComment_id(Integer comment_id) {
+		Comment_id = comment_id;
+	}
+
+	public Integer getHotel_id() {
+		return hotel_id;
+	}
+
+	public void setHotel_id(Integer hotel_id) {
+		this.hotel_id = hotel_id;
 	}
 
 	public User getUser() {

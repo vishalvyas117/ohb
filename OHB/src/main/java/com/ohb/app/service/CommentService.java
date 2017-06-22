@@ -27,10 +27,10 @@ public class CommentService {
 
 	public Comment createCommentbyHotel(Integer hotelId, Comment Comment) {
 		Comment dto = new Comment();
-		Comment.setHotel(hotelRepository.findOne(hotelId));
+		Comment.setHotel_id(hotelId);
 		Comment.setStatus(true);
 		Comment comment = this.commentRepository.save(Comment);
-		dto.setHotel(comment.getHotel());
+		dto.setHotel_id(comment.getHotel_id());
 		dto.setText(comment.getText());
 		dto.setUser(comment.getUser());
 		dto.setDate(comment.getDate());
@@ -39,11 +39,10 @@ public class CommentService {
 
 	public Comment createCommentbyUserAgainstHotel(Integer hotelId, String userId, Comment Comment) {
 		Comment dto = new Comment();
-		Comment.setHotel(hotelRepository.findOne(hotelId));
-		Comment.setUser(userRepository.findOne(userId));
+		Comment.setHotel_id(hotelId);
 		Comment.setStatus(true);
 		Comment comment = this.commentRepository.save(Comment);
-		dto.setHotel(comment.getHotel());
+		dto.setHotel_id(comment.getHotel_id());
 		dto.setText(comment.getText());
 		dto.setUser(comment.getUser());
 		dto.setDate(comment.getDate());
@@ -56,7 +55,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel(comment.getHotel());
+			dto.setHotel_id(comment.getHotel_id());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());
@@ -70,7 +69,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel(comment.getHotel());
+			dto.setHotel_id(comment.getHotel_id());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());
@@ -84,7 +83,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel(comment.getHotel());
+			dto.setHotel_id(comment.getHotel_id());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());
@@ -98,7 +97,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel(comment.getHotel());
+			dto.setHotel_id(comment.getHotel_id());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());

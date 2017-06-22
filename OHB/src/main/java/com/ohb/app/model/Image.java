@@ -27,10 +27,8 @@ public class Image {
 	@NotNull
 	private String path;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "HOTEL_ID", referencedColumnName = "HOTEL_ID", nullable = true)
-	private Hotel hotel;
+	@JoinColumn(name = "HOTEL_ID")
+	private Integer hotel_id;
 
 	@Id
 	@Column(name = "IMAGE_ID")
@@ -46,10 +44,10 @@ public class Image {
 		super();
 	}
 
-	public Image(String path, Hotel hotel, Date insertion_date) {
+	public Image(String path, Integer hotel, Date insertion_date) {
 		super();
 		this.path = path;
-		this.hotel = hotel;
+		this.hotel_id = hotel;
 		this.insertion_date = insertion_date;
 	}
 
@@ -61,12 +59,12 @@ public class Image {
 		this.path = path;
 	}
 
-	public Hotel getHotel() {
-		return hotel;
+	public Integer getHotel_id() {
+		return hotel_id;
 	}
 
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
+	public void setHotel_id(Integer hotel_id) {
+		this.hotel_id = hotel_id;
 	}
 
 	public long getImageId() {

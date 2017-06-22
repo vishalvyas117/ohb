@@ -56,9 +56,9 @@ public class ReviewController extends APIUtil{
     	comment.setDate(date);
     	User user =users.findOne(id);
     	comment.setUser(user);
-    	comment.setHotel(hotel);
+    	comment.setHotel_id(hotel_id);
     	Comment current=comments.save(comment);
-    	current=comments.findOne(current.getCommentid());
+    	current=comments.findOne(current.getComment_id());
 		result.put("hotel", hotel);
 		result.put("comment", current);
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);

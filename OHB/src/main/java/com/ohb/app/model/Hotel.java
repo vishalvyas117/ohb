@@ -69,25 +69,18 @@ public class Hotel {
 	private City city;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_id")
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", orphanRemoval = true)
-	@MapKeyColumn(name = "room_id")*/
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", orphanRemoval = true)
-	@MapKeyColumn(name = "comment_id")
-	@JsonIgnore*/
-	/*@OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Comment.class)
-	@MapKeyColumn(name = "comment_id")*/
-	@OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
-	@JsonIgnoreProperties({"hotel"})
-	@MapKeyColumn(name = "comment_id")
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
 	private Map<Integer, Comment> comment = new HashMap<Integer, Comment>();
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hotel", orphanRemoval = true)
-	@MapKeyColumn(name = "image_id")
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
 	private Map<Long, Image> images = new HashMap<Long, Image>();
 
 	public Hotel() {
