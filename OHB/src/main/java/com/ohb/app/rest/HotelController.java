@@ -78,24 +78,14 @@ public class HotelController extends APIUtil{
         hotel.setComments(comments.findCommentsByHotel(hotel))
 		);*/
         List<Comment> comment=new ArrayList<Comment>();
+        Map<Integer, List<Comment>> comments=new HashMap<>();
         for(Hotel hotel:products){
-        //comment=this.comments.findCommentsByHotel(hotel.getHotel_id());
-        System.out.println("comment  "+comment.toString());
+        comment=this.comments.findByHotel(hotel);
+        comments.put(hotel.getHotel_id(), comment);
+        System.out.println("comment  "+comments);
 		}
-        
-        /*for(Hotel hotel:products){
-        	int index=0;
-        	Map<Integer, Comment> newcomments=new HashMap<>();
-        	List<Comment> comment=this.comments.findCommentsByHotel(hotel);
-        	for(Comment com:comment){
-        		newcomments.put(com.getCommentid(), com);
-        	}
-        	hotel.setComment(newcomments);
-        	
-        	products.set(index, hotel);
-        }*/
         result.put("hotels", products);
-        result.put("comments", comment);
+        result.put("comments", comments);
         statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
         return writeObjectToJson(statusResponse);
     }
@@ -103,18 +93,28 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_ID, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getHotelById(@PathVariable(value="hotelid") int hotel_id) {
-        // get product
         Hotel hotel = hotelRepository.findOne(hotel_id);
-       /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel_id);*/
-
+        List<Comment> hotel_comments = comments.findByHotel(hotel);
+        Map<Integer,Comment> com=new HashMap<Integer,Comment>();
+        List<Room> hotel_rooms = rooms.findByHotel(hotel);
+        Map<Integer,Room> rom=new HashMap<Integer,Room>();
+        hotel_comments.forEach(co->
+        com.put(co.getComment_id(), co)
+		);
+        hotel_rooms.forEach(ro->
+        rom.put(ro.getRoom_id(), ro)
+        
+		);
+        hotel.setComments(com);
         ResponsePayLoad result=new ResponsePayLoad();
         result.put("Hotel", hotel);
         result.put("Booking", new Booking());
-        //result.put("comments",hotel_comments);
+        result.put("comments",hotel_comments);
         result.put("Category", categories.findAll());
         result.put("reply", new Comment());
         result.put("users", users.findAll());
         result.put("roomTypes", roomsType.getAllRoomType());
+        result.put("rooms", rom);
         statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 
         return writeObjectToJson(statusResponse);

@@ -19,9 +19,9 @@ import com.ohb.app.model.Hotel;
 @Repository(value="commentRepository")
 public interface CommentRepository extends CrudRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
 	
-	/*@Query(nativeQuery=true,value = "select co from Comment ro where co.hotel_id =:Hotel_id")
+	/*@Query(nativeQuery=true,value = "select co from Comment ro where co.hotel_id =:Hotel_id")*/
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByHotel(Integer hotel_id);*/
+	public List<Comment> findByHotel(Hotel hotel);
 	
 	//@Query(value = "select co from Comment ro where co.user =:User_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })

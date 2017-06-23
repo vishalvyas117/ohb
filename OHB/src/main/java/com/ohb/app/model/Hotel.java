@@ -13,18 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ohb.app.model.type.Category;
@@ -67,7 +62,7 @@ public class Hotel implements Serializable{
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
-	@JsonProperty
+	@JsonProperty	
 	@ManyToOne(optional=false)
 	@JoinColumn(name = "category_id", referencedColumnName="category_id",nullable=false,updatable=false)
 	private Category category;
@@ -82,7 +77,7 @@ public class Hotel implements Serializable{
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "hotel", cascade ={ CascadeType.ALL },fetch=FetchType.LAZY)
 	private Map<Integer, Comment> comments = new HashMap<Integer, Comment>();
 
 	@JsonIgnore
@@ -141,11 +136,23 @@ public class Hotel implements Serializable{
 	}
 
 	public Map<Integer, Room> getRooms() {
-		return rooms;
+		return this.rooms;
 	}
 
 	public void setRooms(Map<Integer, Room> rooms) {
 		this.rooms = rooms;
+	}
+	
+	public Room addRoom(Room room) {
+		getRooms().put(room.getRoom_id(), room);
+		room.setHotel(this);
+		return room;
+	}
+
+	public Room removeRoom(Room room) {
+		getRooms().remove(room);
+		room.setHotel(null);
+		return room;
 	}
 
 	public Map<Integer, Comment> getComments() {
