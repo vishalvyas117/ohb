@@ -34,6 +34,7 @@ import com.ohb.app.repo.UserRepository;
 import com.ohb.app.service.HotelService;
 import com.ohb.app.service.RoomService;
 import com.ohb.app.util.OhbUtil;
+import com.ohb.app.util.ResponsePayLoad;
 import com.ohb.app.util.api.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -69,7 +70,7 @@ public class HotelController extends APIUtil{
     public String getAllHotels(
             @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
             @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
-		Map<String, Object> result = new HashMap();
+		ResponsePayLoad result=new ResponsePayLoad();
 			
         List<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
         /*products.forEach(hotel->
@@ -106,7 +107,7 @@ public class HotelController extends APIUtil{
         Hotel hotel = hotelRepository.findOne(hotel_id);
        /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel_id);*/
 
-        Map<String, Object> result = new HashMap();
+        ResponsePayLoad result=new ResponsePayLoad();
         result.put("Hotel", hotel);
         result.put("Booking", new Booking());
         //result.put("comments",hotel_comments);
@@ -123,7 +124,7 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_NAME, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getProductByName(@PathVariable(value="hotelname") String hotelname) {
-		Map<String, Object> result = new HashMap();
+		ResponsePayLoad result=new ResponsePayLoad();
         List<Hotel> hotels = hotelService.findHotelsByNameIn(hotelname);
         for(Hotel hotel:hotels){
        /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
@@ -142,7 +143,7 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_CITY, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getProductByCityName(@PathVariable(value="cityName") String cityName) {
-		Map<String, Object> result = new HashMap();
+		ResponsePayLoad result=new ResponsePayLoad();
 		
 		City city=cities.findByName(cityName);
         List<Hotel> hotels = hotelService.findHotelsByCity(city);
@@ -163,7 +164,7 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_ADDRESS, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getProductByaddressName(@PathVariable(value="address") String address) {
-		Map<String, Object> result = new HashMap();
+		ResponsePayLoad result=new ResponsePayLoad();
         List<Hotel> hotels = hotelService.findHotelsByAddress(address.trim());
         for(Hotel hotel:hotels){
         /*List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
@@ -182,7 +183,7 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_RATING, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getHotelstByRating(@PathVariable(value="rating") int rating) {
-		Map<String, Object> result = new HashMap();
+		ResponsePayLoad result=new ResponsePayLoad();
         List<Hotel> hotels = hotelService.findHotelsByRating(rating);
         for(Hotel hotel:hotels){
        /* List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
@@ -200,7 +201,7 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_BY_RATING_GREATOR, method = RequestMethod.GET, produces = APIName.CHARSET)
     public String getHotelstByRatingGreator(@PathVariable(value="rating") int rating) {
-		Map<String, Object> result = new HashMap();
+		ResponsePayLoad result=new ResponsePayLoad();
         List<Hotel> hotels = hotelService.findHotelsByUptoRating(rating);
         for(Hotel hotel:hotels){
         /*List<Comment> hotel_comments = comments.findCommentsByHotel(hotel.getHotel_id());
@@ -217,12 +218,13 @@ public class HotelController extends APIUtil{
     }
 	
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
     public String saveHotel(@RequestBody Hotel hotel) {
         Hotel currenthotel = hotelService.createHotel(hotel);
 
-        Map<String, Object> result = new HashMap();
+        ResponsePayLoad result=new ResponsePayLoad();
         result.put("Hotels", currenthotel);
         result.put("Rooms", new Room());
         result.put("Category", categories.findAll());

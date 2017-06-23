@@ -32,11 +32,11 @@ public class RoomType {
 		this.occupancy = occupancy;
 	}
 
-	public Integer getRoomid() {
+	public Integer getRoom_type_id() {
 		return room_type_id;
 	}
 
-	public void setRoomid(Integer room_type_id) {
+	public void setRoom_type_id(Integer room_type_id) {
 		this.room_type_id = room_type_id;
 	}
 

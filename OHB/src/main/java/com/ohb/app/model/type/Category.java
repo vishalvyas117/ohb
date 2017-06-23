@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="hotel_category")
 public class Category {
@@ -22,21 +25,18 @@ public class Category {
 	public Category() {
 		super();
 	}
-
 	public Category(Integer categoryid, String name) {
 		super();
 		this.category_id = categoryid;
 		this.name = name;
 	}
 
-	public Integer getCategoryid() {
+	public Integer getCategory_id() {
 		return category_id;
 	}
-
-	public void setCategoryid(Integer categoryid) {
-		this.category_id = categoryid;
+	public void setCategory_id(Integer category_id) {
+		this.category_id = category_id;
 	}
-
 	public String getName() {
 		return name;
 	}

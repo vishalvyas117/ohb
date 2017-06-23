@@ -1,5 +1,6 @@
 package com.ohb.app.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -21,19 +22,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "IMAGE")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
-public class Image {
+public class Image implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6205736393038149044L;
+
 
 	@Column(name = "IMAGE_PATH")
 	@NotNull
 	private String path;
 	
-	@JoinColumn(name = "HOTEL_ID")
-	private Integer hotel_id;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "hotel_id")
+	private Hotel hotel;
 
 	@Id
 	@Column(name = "IMAGE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long imageId;
+	private long image_id;
 
 	@Column(name = "INSERTION_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -44,10 +53,10 @@ public class Image {
 		super();
 	}
 
-	public Image(String path, Integer hotel, Date insertion_date) {
+	public Image(String path, Hotel hotel, Date insertion_date) {
 		super();
 		this.path = path;
-		this.hotel_id = hotel;
+		this.hotel = hotel;
 		this.insertion_date = insertion_date;
 	}
 
@@ -59,20 +68,20 @@ public class Image {
 		this.path = path;
 	}
 
-	public Integer getHotel_id() {
-		return hotel_id;
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setHotel_id(Integer hotel_id) {
-		this.hotel_id = hotel_id;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
-	public long getImageId() {
-		return imageId;
+	public long getImage_id() {
+		return image_id;
 	}
 
-	public void setImageId(long imageId) {
-		this.imageId = imageId;
+	public void setImage_id(long image_id) {
+		this.image_id = image_id;
 	}
 
 	public Date getInsertion_date() {

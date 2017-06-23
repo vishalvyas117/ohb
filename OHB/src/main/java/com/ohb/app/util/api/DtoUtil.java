@@ -12,8 +12,8 @@ public class DtoUtil {
 	
 	public static Room roomDtoUtil(Room room){
 		Room currentRoom=new Room();
-		if(room.getRoomId()!=null){
-			currentRoom.setRoomId(room.getRoomId());
+		if(room.getRoom_id()!=null){
+			currentRoom.setRoom_id(room.getRoom_id());
 		}
 		if(room.getFloor()>=0){
 			room.setFloor(room.getFloor());

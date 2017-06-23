@@ -74,7 +74,7 @@ public class RoomService {
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : rooms) {
 			Room dto = new Room();
-			dto.setRoomId(room.getRoomId());
+			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
 			dto.setType(room.getType());
 			dto.setPrice(room.getPrice());
@@ -93,7 +93,7 @@ public class RoomService {
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
 			Room dto = new Room();
-			dto.setRoomId(room.getRoomId());
+			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
 			dto.setType(room.getType());
 			dto.setPrice(room.getPrice());
@@ -113,7 +113,7 @@ public class RoomService {
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
 			Room dto = new Room();
-			dto.setRoomId(room.getRoomId());
+			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
 			dto.setType(room.getType());
 			dto.setPrice(room.getPrice());
@@ -132,7 +132,7 @@ public class RoomService {
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
 			Room dto = new Room();
-			dto.setRoomId(room.getRoomId());
+			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
 			dto.setType(room.getType());
 			dto.setPrice(room.getPrice());
@@ -150,7 +150,7 @@ public class RoomService {
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
 			Room dto = new Room();
-			dto.setRoomId(room.getRoomId());
+			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
 			dto.setType(room.getType());
 			dto.setPrice(room.getPrice());
@@ -168,7 +168,7 @@ public class RoomService {
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
 			Room dto = new Room();
-			dto.setRoomId(room.getRoomId());
+			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
 			dto.setType(room.getType());
 			dto.setPrice(room.getPrice());

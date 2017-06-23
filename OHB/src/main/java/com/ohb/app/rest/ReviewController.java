@@ -48,15 +48,14 @@ public class ReviewController extends APIUtil{
 	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "save review ", notes = "by all")
 	@RequestMapping(path = APIName.REVIEWS_BY_USER_ID, method = RequestMethod.POST, produces = APIName.CHARSET)
-	@ResponseBody
-	public String reviewByUser(@PathVariable("hotel_id") Integer hotel_id,@PathVariable("id") String id, @RequestBody Comment comment) {
+	public String reviewByUser(@PathVariable("hotel_id") Integer hotel_id,@PathVariable("user_id") String id, @RequestBody Comment comment) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Hotel hotel = hotels.findOne(hotel_id);
 		Date date = new Date();
     	comment.setDate(date);
     	User user =users.findOne(id);
     	comment.setUser(user);
-    	comment.setHotel_id(hotel_id);
+    	comment.setHotel(hotel);
     	Comment current=comments.save(comment);
     	current=comments.findOne(current.getComment_id());
 		result.put("hotel", hotel);
@@ -64,6 +63,24 @@ public class ReviewController extends APIUtil{
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 	}
+	
+	/*@RequestMapping(path = APIName.REVIEWS_BY_USER_ID, method = RequestMethod.POST, produces = APIName.CHARSET)
+	public String reviewByUser(@PathVariable("hotel_id") Integer hotel_id,@PathVariable("id") String id, @RequestBody Comment comment) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Hotel hotel = hotels.findOne(hotel_id);
+		Date date = new Date();
+    	comment.setDate(date);
+    	User user =users.findOne(id);
+    	comment.setUser(user);
+    	comment.setHotel(hotel);
+    	Comment current=comments.save(comment);
+    	current=comments.findOne(current.getComment_id());
+		result.put("hotel", hotel);
+		result.put("comment", current);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}*/
+	
 	
 	
 }

@@ -50,8 +50,9 @@ public class Comment {
 	
 	
 	
-	@Column(name = "HOTEL")
-	private Integer hotel_id;
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "hotel_id")
+	private Hotel hotel;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
@@ -60,13 +61,13 @@ public class Comment {
 	
 	public Comment() {}
 
-	public Comment(Integer id, String text, Date date, User user, boolean status, Integer hotel) {
+	public Comment(Integer id, String text, Date date, User user, boolean status, Hotel hotel) {
 		this.Comment_id = id;
 		this.text = text;
 		this.date = date;
 		this.user = user;
 		this.status = status;
-		this.hotel_id = hotel;
+		this.hotel = hotel;
 	}
 
 
@@ -104,12 +105,13 @@ public class Comment {
 		Comment_id = comment_id;
 	}
 
-	public Integer getHotel_id() {
-		return hotel_id;
+
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setHotel_id(Integer hotel_id) {
-		this.hotel_id = hotel_id;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
 	public User getUser() {

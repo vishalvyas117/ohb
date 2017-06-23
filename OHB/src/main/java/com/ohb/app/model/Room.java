@@ -1,5 +1,6 @@
 package com.ohb.app.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,12 @@ import com.ohb.app.model.type.RoomType;
 @Entity
 @Table(name = "ROOM")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
-public class Room implements Comparable<Object>{
+public class Room implements Serializable, Comparable<Object>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -375712481468043185L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ROOM_ID")
@@ -53,8 +59,9 @@ public class Room implements Comparable<Object>{
 	private RoomType type;
 	
 	
-    @Column(name = "hotel_id")
-	private Integer hotel;
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "hotel_id")
+	private Hotel hotel;
 
 	@Column(name = "PRICE")
 	private double price;
@@ -72,7 +79,7 @@ public class Room implements Comparable<Object>{
 		super();
 	}
 
-	public Room(Integer room_Id, int floor, String room_number, RoomType type, Integer hotel, double price) {
+	public Room(Integer room_Id, int floor, String room_number, RoomType type, Hotel hotel, double price) {
 		super();
 		this.room_id = room_Id;
 		this.floor = floor;
@@ -80,14 +87,6 @@ public class Room implements Comparable<Object>{
 		this.type = type;
 		this.hotel = hotel;
 		this.setPrice(price);
-	}
-
-	public Integer getRoomId() {
-		return room_id;
-	}
-
-	public void setRoomId(Integer roomId) {
-		this.room_id = roomId;
 	}
 
 	public int getFloor() {
@@ -114,11 +113,21 @@ public class Room implements Comparable<Object>{
 		this.type = type;
 	}
 
-	public Integer getHotel() {
+	
+
+	public Integer getRoom_id() {
+		return room_id;
+	}
+
+	public void setRoom_id(Integer room_id) {
+		this.room_id = room_id;
+	}
+
+	public Hotel getHotel() {
 		return hotel;
 	}
 
-	public void setHotel(Integer hotel) {
+	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
 	}
 

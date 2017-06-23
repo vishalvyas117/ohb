@@ -1,5 +1,6 @@
 package com.ohb.app.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,12 +33,17 @@ import com.ohb.app.model.type.City;
 @Entity
 @Table(name = "HOTEL")
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
-public class Hotel {
+public class Hotel implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1080914434324497890L;
 	@Id
 	@Column(name = "HOTEL_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer hotel_id;
+	
 	@Column(name = "HOTEL_NAME")
 	@NotNull
 	private String name;
@@ -50,7 +56,7 @@ public class Hotel {
 	private int rating;
 	private boolean status;
 
-	@JsonIgnore
+	//@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
 	@JsonProperty
@@ -59,28 +65,28 @@ public class Hotel {
 	private User manager;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = true)
+	@JsonSerialize
+	@JsonDeserialize	
+	@JsonProperty
+	@ManyToOne(optional=false)
+	@JoinColumn(name = "category_id", referencedColumnName="category_id",nullable=false,updatable=false)
 	private Category category;
 
-	@JsonIgnore
+	//@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false)
 	private City city;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
-	private Map<Integer, Comment> comment = new HashMap<Integer, Comment>();
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+	private Map<Integer, Comment> comments = new HashMap<Integer, Comment>();
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id")
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
 	private Map<Long, Image> images = new HashMap<Long, Image>();
 
 	public Hotel() {
@@ -143,11 +149,11 @@ public class Hotel {
 	}
 
 	public Map<Integer, Comment> getComments() {
-		return comment;
+		return comments;
 	}
 
 	public void setComments(Map<Integer, Comment> comments) {
-		this.comment = comments;
+		this.comments = comments;
 	}
 
 	public Integer getHotel_id() {
@@ -156,14 +162,6 @@ public class Hotel {
 
 	public void setHotel_id(Integer hotel_id) {
 		this.hotel_id = hotel_id;
-	}
-
-	public Map<Integer, Comment> getComment() {
-		return comment;
-	}
-
-	public void setComment(Map<Integer, Comment> comment) {
-		this.comment = comment;
 	}
 
 	public Map<Long, Image> getImages() {

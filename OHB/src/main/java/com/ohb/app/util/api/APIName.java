@@ -41,9 +41,9 @@ public class APIName {
 
     //review api link
     public static final String REVIEWS = "/reviews/{hotel_id}";
-    public static final String REVIEWS_BY_HOTEL_ID = "/{id}";
-    public static final String REVIEWS_BY_HOTEL_ADD = "/{id}/add";
-    public static final String REVIEWS_BY_USER_ID = "/{id}";
+    public static final String REVIEWS_BY_HOTEL_ID = "/{hotel_id}";
+   // public static final String REVIEWS_BY_HOTEL_ADD = "/{id}/add";
+    public static final String REVIEWS_BY_USER_ID = "/{user_id}";
     public static final String REVIEWS_ADD = "/add";
     
  // rooms api links

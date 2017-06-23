@@ -35,7 +35,7 @@ public class City {
 	}
 
 	@JsonCreator
-	public City(@JsonProperty("cityid") Integer cityid, @JsonProperty("city_name") String name) {
+	public City(@JsonProperty("city_id") Integer cityid, @JsonProperty("city_name") String name) {
 		super();
 		this.city_id = cityid;
 		this.setName(name);

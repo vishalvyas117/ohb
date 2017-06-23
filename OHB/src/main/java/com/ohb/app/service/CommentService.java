@@ -25,24 +25,24 @@ public class CommentService {
 	@Autowired
 	UserRepository userRepository;
 
-	public Comment createCommentbyHotel(Integer hotelId, Comment Comment) {
+	public Comment createCommentbyHotel(Hotel hotelId, Comment Comment) {
 		Comment dto = new Comment();
-		Comment.setHotel_id(hotelId);
+		Comment.setHotel(hotelId);
 		Comment.setStatus(true);
 		Comment comment = this.commentRepository.save(Comment);
-		dto.setHotel_id(comment.getHotel_id());
+		dto.setHotel(comment.getHotel());
 		dto.setText(comment.getText());
 		dto.setUser(comment.getUser());
 		dto.setDate(comment.getDate());
 		return dto;
 	}
 
-	public Comment createCommentbyUserAgainstHotel(Integer hotelId, String userId, Comment Comment) {
+	public Comment createCommentbyUserAgainstHotel(Hotel hotelId, String userId, Comment Comment) {
 		Comment dto = new Comment();
-		Comment.setHotel_id(hotelId);
+		Comment.setHotel(hotelId);
 		Comment.setStatus(true);
 		Comment comment = this.commentRepository.save(Comment);
-		dto.setHotel_id(comment.getHotel_id());
+		dto.setHotel(comment.getHotel());
 		dto.setText(comment.getText());
 		dto.setUser(comment.getUser());
 		dto.setDate(comment.getDate());
@@ -69,7 +69,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel_id(comment.getHotel_id());
+			dto.setHotel(comment.getHotel());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());
@@ -83,7 +83,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel_id(comment.getHotel_id());
+			dto.setHotel(comment.getHotel());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());
@@ -97,7 +97,7 @@ public class CommentService {
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();
-			dto.setHotel_id(comment.getHotel_id());
+			dto.setHotel(comment.getHotel());
 			dto.setText(comment.getText());
 			dto.setUser(comment.getUser());
 			dto.setDate(comment.getDate());

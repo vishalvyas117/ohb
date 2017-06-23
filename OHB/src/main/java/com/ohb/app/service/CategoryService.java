@@ -21,7 +21,7 @@ public class CategoryService {
 		List<Category> categoryList = new ArrayList<Category>();
 		for (Category category : page) {
 			Category dto = new Category();
-			dto.setCategoryid(category.getCategoryid());
+			dto.setCategory_id(category.getCategory_id());
 			dto.setName(category.getName());
 			categoryList.add(dto);
 		}

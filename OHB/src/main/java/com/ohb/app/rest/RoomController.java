@@ -79,8 +79,8 @@ public class RoomController extends APIUtil {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Hotel hotel=this.hotels.findOne(id);
 		Room currentRoom=this.rooms.findOne(room_id);
-		room.setHotel(id);
-		room.setRoomId(room_id);
+		room.setHotel(hotel);
+		room.setRoom_id(room_id);
 		currentRoom=this.rooms.save(room);
 		currentRoom=this.rooms.findOne(room_id);
 		result.put("hotel", currentRoom.getHotel());
@@ -109,15 +109,15 @@ public class RoomController extends APIUtil {
 	public String saveRooms(@PathVariable("hotel_id") Integer id, @RequestBody Room room) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Hotel hotel = hotels.findOne(id);
-		room.setHotel(id);
+		room.setHotel(hotel);
 		Room currentroom=new Room();
 		RoomType roomtype=new RoomType();
 		currentroom=roomService.createRoom(room);
 		if(currentroom.getType()!=null){
-			roomtype=this.roomTypes.findOne(currentroom.getType().getRoomid());
+			roomtype=this.roomTypes.findOne(currentroom.getType().getRoom_type_id());
 			currentroom.setType(roomtype);
 		}
-		currentroom.setHotel(id);
+		currentroom.setHotel(hotel);
 		Room updateRoom=DtoUtil.roomDtoUtil(currentroom);
 		result.put("hotel", hotel);
 		result.put("room", updateRoom);
