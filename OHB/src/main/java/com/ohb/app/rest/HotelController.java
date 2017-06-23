@@ -73,19 +73,20 @@ public class HotelController extends APIUtil{
 		ResponsePayLoad result=new ResponsePayLoad();
 			
         List<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
-        /*products.forEach(hotel->
-        Map::<Integer, Comment> comments=new HashMap<>();
-        hotel.setComments(comments.findCommentsByHotel(hotel))
-		);*/
         List<Comment> comment=new ArrayList<Comment>();
         Map<Integer, List<Comment>> comments=new HashMap<>();
+        List<Room> room=new ArrayList<Room>();
+        Map<Integer, List<Room>> rooms=new HashMap<>();
         for(Hotel hotel:products){
         comment=this.comments.findByHotel(hotel);
         comments.put(hotel.getHotel_id(), comment);
+        room=this.rooms.findByHotel(hotel);
+        rooms.put(hotel.getHotel_id(), room);
         System.out.println("comment  "+comments);
 		}
         result.put("hotels", products);
         result.put("comments", comments);
+        result.put("rooms", rooms);
         statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
         return writeObjectToJson(statusResponse);
     }
