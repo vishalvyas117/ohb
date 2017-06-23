@@ -46,6 +46,12 @@ public class HotelService {
 		} else {
 			dto.setRating(1);
 		}
+		if(hotel.getManager().getUserId()!= null){
+			dto.setManager(hotel.getManager());
+		}
+		if(hotel.isStatus()){
+			dto.setStatus(hotel.isStatus());
+		}
 		dto.setCity(hotel.getCity());
 		dto.setCategory(hotel.getCategory());
 		Hotel outHotel = this.hotelRepository.save(dto);

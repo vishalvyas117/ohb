@@ -51,12 +51,12 @@ public class Hotel implements Serializable{
 	private int rating;
 	private boolean status;
 
-	//@JsonIgnore
+	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
 	@JsonProperty
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true)
+	@ManyToOne(optional=false)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true,updatable=false,insertable=false)
 	private User manager;
 
 	@JsonIgnore
@@ -202,6 +202,7 @@ public class Hotel implements Serializable{
 	public void setManager(User manager) {
 		this.manager = manager;
 	}
+	
 	
 	@Override
     public String toString() {

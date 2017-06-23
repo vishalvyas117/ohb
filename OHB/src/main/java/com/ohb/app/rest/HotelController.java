@@ -235,7 +235,17 @@ public class HotelController extends APIUtil{
 
         return writeObjectToJson(statusResponse);
     }
-
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@ApiOperation(value = "get Hotel by Id", notes = "")
+    @RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.GET, produces = APIName.CHARSET)
+    public String saveHotelGET() {
+        ResponsePayLoad result=new ResponsePayLoad();
+        result.put("Hotels", new Hotel());
+        result.put("Category", categories.findAll());
+        result.put("City", cities.findAll());
+        statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 
+        return writeObjectToJson(statusResponse);
+    }
 }
