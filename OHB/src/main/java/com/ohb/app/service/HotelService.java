@@ -16,7 +16,7 @@ import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.repo.UserRepository;
 import com.ohb.app.util.TokenizerUtil;
 
-@Service
+@Service(value = "hotelService")
 public class HotelService {
 	@Autowired
 	HotelRepository hotelRepository;
@@ -32,6 +32,18 @@ public class HotelService {
 
 	@Autowired
 	RoomTypeRepository roomTypeRepository;
+	
+	
+	@Autowired
+	public HotelService(HotelRepository hotelRepository, CategoryService categoryService, UserRepository userRepository,
+			RoomRepository roomRepository, RoomTypeRepository roomTypeRepository) {
+		super();
+		this.hotelRepository = hotelRepository;
+		this.categoryService = categoryService;
+		this.userRepository = userRepository;
+		this.roomRepository = roomRepository;
+		this.roomTypeRepository = roomTypeRepository;
+	}
 
 	public Hotel createHotel(Hotel hotel) {
 		Hotel dto = new Hotel();
@@ -46,15 +58,15 @@ public class HotelService {
 		} else {
 			dto.setRating(1);
 		}
-		if(hotel.getManager().getUserId()!= null){
-			dto.setManager(hotel.getManager());
+		if(hotel.getManager()!= null){
+			dto.setManager(userRepository.findOne(hotel.getManager().toString()));
 		}
 		if(hotel.isStatus()){
 			dto.setStatus(hotel.isStatus());
 		}
 		dto.setCity(hotel.getCity());
 		dto.setCategory(hotel.getCategory());
-		Hotel outHotel = this.hotelRepository.save(dto);
+		Hotel outHotel = hotelRepository.save(dto);
 		if (outHotel == null) {
 			return null;
 		}
@@ -104,6 +116,16 @@ public class HotelService {
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
+	
+	public List<Hotel>  checkExsitingHotel(String name,String address) {
+		if (name == null) {
+			name="";
+		}if(address==null){
+			address="";
+		}
+		List<Hotel> page = this.hotelRepository.findHotelsByNameContaining(name);
+		return page;
+	}
 
 	public List<Hotel> findHotelsByRating(Integer rating) {
 		if (rating == null) {
@@ -137,7 +159,7 @@ public class HotelService {
 		List<Hotel> hotellist = new ArrayList<Hotel>();
 		for (Hotel hotel : page) {
 			Hotel dto = new Hotel();
-			dto.setHotelid(hotel.getHotelid());
+			dto.setHotel_id(hotel.getHotel_id());
 			dto.setName(hotel.getName());
 			dto.setRating(hotel.getRating());
 			dto.setCategory(hotel.getCategory());

@@ -72,7 +72,7 @@ public class HotelController extends APIUtil{
             @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
 		ResponsePayLoad result=new ResponsePayLoad();
 			
-        List<Hotel> products = hotelService.findAllforUser(pageNumber, pageSize);
+        Iterable<Hotel> products =  this.hotelRepository.findAll();
         List<Comment> comment=new ArrayList<Comment>();
         Map<Integer, List<Comment>> comments=new HashMap<>();
         List<Room> room=new ArrayList<Room>();
@@ -223,15 +223,21 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
     public String saveHotel(@RequestBody Hotel hotel) {
+		List<Hotel> excisted=this.hotelService.checkExsitingHotel(hotel.getName().toString(),hotel.getAddress().toString());
+		ResponsePayLoad result=new ResponsePayLoad();
+		if(excisted.get(0)!=null){
+			result.put("error", excisted.get(0).getName()+" already excited");
+			statusResponse = new StatusResponse(APIStatus.Hotel_ALREADY_EXIST.getCode(), result);
+		}else{
         Hotel currenthotel = hotelService.createHotel(hotel);
 
-        ResponsePayLoad result=new ResponsePayLoad();
         result.put("Hotels", currenthotel);
         result.put("Rooms", new Room());
         result.put("Category", categories.findAll());
         result.put("RoomsType", roomsType.getAllRoomType());
-        
         statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		}
+        
 
         return writeObjectToJson(statusResponse);
     }

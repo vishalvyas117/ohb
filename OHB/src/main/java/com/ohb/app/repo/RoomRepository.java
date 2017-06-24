@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
 
-@Repository(value = "roomRepository")
+@Repository
 public interface RoomRepository extends CrudRepository<Room, Integer>,
 JpaSpecificationExecutor<Room> {
 	

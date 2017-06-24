@@ -67,7 +67,7 @@ public class UserController extends APIUtil{
                 }
 
                 User userSignUp = new User();
-                userSignUp.setUserId(UniqueID.getUUID());
+                userSignUp.setUser_id(UniqueID.getUUID());
             
                 userSignUp.setCreateDate(new Date());
                 userSignUp.setEmail(email);
@@ -78,7 +78,7 @@ public class UserController extends APIUtil{
                 userSignUp.setLastName(user.getLastName());
 
                 try {
-                    userSignUp.setPassword(MD5Hash.MD5Encrypt(password + userSignUp.getUserId()));
+                    userSignUp.setPassword(MD5Hash.MD5Encrypt(password + userSignUp.getUser_id()));
                 } catch (NoSuchAlgorithmException ex) {
                     throw new RuntimeException("Encrypt user password error", ex);
                 }
@@ -118,7 +118,7 @@ public class UserController extends APIUtil{
             if (userLogin != null) {
                 String passwordHash = null;
                 try {
-                    passwordHash = MD5Hash.MD5Encrypt(password + userLogin.getUserId());
+                    passwordHash = MD5Hash.MD5Encrypt(password + userLogin.getUser_id());
                 } catch (NoSuchAlgorithmException ex) {
                     throw new RuntimeException("User login encrypt password error", ex);
                 }
@@ -128,7 +128,7 @@ public class UserController extends APIUtil{
                     if (passwordHash.equals(userLogin.getPassword())) {
                         UserToken userToken = new UserToken();
                         userToken.setToken(UniqueID.getUUID());
-                        userToken.setUserId(userLogin.getUserId());
+                        userToken.setUserId(userLogin.getUser_id());
 
                         Date currentDate = new Date();
                         userToken.setLoginDate(DateUtil.convertToUTC(currentDate));

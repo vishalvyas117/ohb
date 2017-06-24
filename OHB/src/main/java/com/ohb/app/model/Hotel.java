@@ -56,7 +56,7 @@ public class Hotel implements Serializable{
 	@JsonDeserialize	
 	@JsonProperty
 	@ManyToOne(optional=false)
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true,updatable=false,insertable=false)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true,updatable=false)
 	private User manager;
 
 	@JsonIgnore
@@ -95,13 +95,7 @@ public class Hotel implements Serializable{
 		this.category = category;
 	}
 
-	public Integer getHotelid() {
-		return hotel_id;
-	}
-
-	public void setHotelid(Integer hotelid) {
-		this.hotel_id = hotelid;
-	}
+	
 
 	public String getName() {
 		return name;

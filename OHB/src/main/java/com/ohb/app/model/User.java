@@ -89,12 +89,20 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getUserId() {
+	public String getUser_id() {
 		return user_id;
 	}
 
-	public void setUserId(String userId) {
-		this.user_id = userId;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getUsername() {

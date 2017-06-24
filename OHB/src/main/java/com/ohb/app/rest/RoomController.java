@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohb.app.api.response.StatusResponse;
@@ -34,7 +33,7 @@ import com.ohb.app.util.api.DtoUtil;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = APIName.HOTELROOM)
+@RequestMapping(value = APIName.HOTEL_ROOM)
 public class RoomController extends APIUtil {
 
 	@Autowired
@@ -50,14 +49,11 @@ public class RoomController extends APIUtil {
 	@Autowired
 	BookingService bookingServise;
 
-	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
 	@RequestMapping(path = APIName.ROOMS, method = RequestMethod.GET, produces = APIName.CHARSET)
-	public String showRooms(@PathVariable("hotel_id") Integer id,
-			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-			@RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
+	public String showRooms(@PathVariable("hotel_id") Integer hotel_id) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(id);
+		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(hotel_id);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
 		rooms.put(Integer.parseInt(r.getRoom_number()), r)
@@ -72,7 +68,6 @@ public class RoomController extends APIUtil {
 		return writeObjectToJson(statusResponse);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
 	@RequestMapping(path = APIName.ROOMS_ID, method = RequestMethod.PUT, produces = APIName.CHARSET)
 	public String UpdateRooms(@PathVariable("hotel_id") Integer id,@PathVariable("room_id") Integer room_id,@RequestBody Room room) {
@@ -104,11 +99,10 @@ public class RoomController extends APIUtil {
 	}
 
 	@ApiOperation(value = "save rooms ", notes = "by hotel management")
-	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
-	@ResponseBody
-	public String saveRooms(@PathVariable("hotel_id") Integer id, @RequestBody Room room) {
+	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, consumes=APIName.CHARSET,produces = APIName.CHARSET)
+	public String saveRooms(@PathVariable("hotel_id") Integer hotel_id, @RequestBody Room room) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Hotel hotel = hotels.findOne(id);
+		Hotel hotel = hotels.findOne(hotel_id);
 		room.setHotel(hotel);
 		Room currentroom=new Room();
 		RoomType roomtype=new RoomType();

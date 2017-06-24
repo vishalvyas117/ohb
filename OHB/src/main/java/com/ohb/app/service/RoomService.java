@@ -1,11 +1,9 @@
 package com.ohb.app.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,18 +19,19 @@ import com.ohb.app.repo.RoomTypeRepository;
 
 @Service
 public class RoomService {
-
+	@Autowired
 	RoomTypeRepository roomTypeRepository;
+	@Autowired
 	RoomRepository roomRepository;
+	@Autowired
 	HotelRepository hotelRepository;
 
-	@Autowired
+	/*@Autowired
 	public RoomService(RoomTypeRepository roomTypeRepository, RoomRepository roomRepository,HotelRepository hotelRepository) {
-		super();
 		this.roomTypeRepository = roomTypeRepository;
 		this.roomRepository = roomRepository;
 		this.hotelRepository=hotelRepository;
-	}
+	}*/
 
 	public RoomType createRoomType(RoomType roomtype) {
 		RoomType currentRoomType = new RoomType();
@@ -86,12 +85,13 @@ public class RoomService {
 		return roomlist;
 	}
 
-	public List<Room> getRoomsbyhotel(Integer hotelId) {
-		Hotel hotel=this.hotelRepository.findOne(hotelId);
-		List<Room> page = this.roomRepository.findByHotel(hotel);
+	public List<Room> getRoomsbyhotel(Integer id) {
+		// Hotel hotel=this.hotelRepository.findOne(id);
+		List<Room> page = (List<Room>) this.roomRepository.findAll();
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
+			if(room.getHotel().getHotel_id()==id){
 			Room dto = new Room();
 			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
@@ -101,6 +101,7 @@ public class RoomService {
 			dto.setBookings(room.getBookings());
 			dto.setDays_reserved(room.getDays_reserved());
 			roomlist.add(dto);
+			}
 		}
 		return roomlist;
 	}
