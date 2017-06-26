@@ -223,10 +223,10 @@ public class HotelController extends APIUtil{
 	@ApiOperation(value = "get Hotel by Id", notes = "")
     @RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
     public String saveHotel(@RequestBody Hotel hotel) {
-		List<Hotel> excisted=this.hotelService.checkExsitingHotel(hotel.getName().toString(),hotel.getAddress().toString());
+		Hotel excisted=this.hotelService.checkExsitingHotel(hotel.getName().toString(),hotel.getAddress().toString());
 		ResponsePayLoad result=new ResponsePayLoad();
-		if(excisted.get(0)!=null){
-			result.put("error", excisted.get(0).getName()+" already excited");
+		if(excisted!=null){
+			result.put("error", excisted.getName()+" already excited");
 			statusResponse = new StatusResponse(APIStatus.Hotel_ALREADY_EXIST.getCode(), result);
 		}else{
         Hotel currenthotel = hotelService.createHotel(hotel);

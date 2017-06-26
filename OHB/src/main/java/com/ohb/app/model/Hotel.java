@@ -27,7 +27,6 @@ import com.ohb.app.model.type.City;
 
 @Entity
 @Table(name = "HOTEL")
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Hotel implements Serializable{
 
 	/**
@@ -36,7 +35,7 @@ public class Hotel implements Serializable{
 	private static final long serialVersionUID = -1080914434324497890L;
 	@Id
 	@Column(name = "HOTEL_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer hotel_id;
 	
 	@Column(name = "HOTEL_NAME")
@@ -54,34 +53,34 @@ public class Hotel implements Serializable{
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
-	@JsonProperty
-	@ManyToOne(optional=false)
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true,updatable=false)
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id" , nullable = false)
 	private User manager;
 
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
-	@JsonProperty	
-	@ManyToOne(optional=false)
-	@JoinColumn(name = "category_id", referencedColumnName="category_id",nullable=false,updatable=false)
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
+	@JoinColumn(name = "category_id", referencedColumnName="category_id", nullable = false)
 	private Category category;
 
-	//@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize	
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false)
 	private City city;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "hotel", cascade ={ CascadeType.ALL },fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Integer, Comment> comments = new HashMap<Integer, Comment>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Long, Image> images = new HashMap<Long, Image>();
 
 	public Hotel() {

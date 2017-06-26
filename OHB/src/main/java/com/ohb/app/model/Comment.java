@@ -50,13 +50,16 @@ public class Comment {
 	
 	
 	
-	@ManyToOne(optional = false)
-    @JoinColumn(name = "hotel_id")
+	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize	
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = true)
 	private Hotel hotel;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "USER_ID", referencedColumnName = "user_id", nullable = true)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true)
 	private User user;
 	
 	public Comment() {}

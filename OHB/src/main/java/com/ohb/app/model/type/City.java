@@ -24,7 +24,7 @@ import com.ohb.app.model.Hotel;
 public class City {
 	@Id
 	@Column(name = "CITY_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer city_id;
 
 	@Column(name = "CITY_NAME")
@@ -41,12 +41,19 @@ public class City {
 		this.setName(name);
 	}
 
-	public Integer getCityid() {
+
+	/**
+	 * @return the city_id
+	 */
+	public Integer getCity_id() {
 		return city_id;
 	}
 
-	public void setCityid(Integer cityid) {
-		this.city_id = cityid;
+	/**
+	 * @param city_id the city_id to set
+	 */
+	public void setCity_id(Integer city_id) {
+		this.city_id = city_id;
 	}
 
 	public String getName() {

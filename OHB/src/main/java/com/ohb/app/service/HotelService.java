@@ -59,7 +59,7 @@ public class HotelService {
 			dto.setRating(1);
 		}
 		if(hotel.getManager()!= null){
-			dto.setManager(userRepository.findOne(hotel.getManager().toString()));
+			dto.setManager(userRepository.findOne(hotel.getManager().getUser_id().toString()));
 		}
 		if(hotel.isStatus()){
 			dto.setStatus(hotel.isStatus());
@@ -67,7 +67,7 @@ public class HotelService {
 		dto.setCity(hotel.getCity());
 		dto.setCategory(hotel.getCategory());
 		Hotel outHotel = hotelRepository.save(dto);
-		if (outHotel == null) {
+ 		if (outHotel == null) {
 			return null;
 		}
 		return outHotel;
@@ -112,18 +112,18 @@ public class HotelService {
 			return null;
 		}
 		Set<String> names = TokenizerUtil.addressTokenizer(name);
-		List<Hotel> page = this.hotelRepository.findHotelsByNameContaining(name);
+		List<Hotel> page = this.hotelRepository.findHotelsByNameContains(name);
 		List<Hotel> hotellist = fillList(page);
 		return hotellist;
 	}
 	
-	public List<Hotel>  checkExsitingHotel(String name,String address) {
+	public Hotel  checkExsitingHotel(String name,String address) {
 		if (name == null) {
 			name="";
 		}if(address==null){
 			address="";
 		}
-		List<Hotel> page = this.hotelRepository.findHotelsByNameContaining(name);
+		Hotel page = this.hotelRepository.findOneByNameAndAddress(name,address);
 		return page;
 	}
 

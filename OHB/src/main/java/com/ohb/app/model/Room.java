@@ -1,7 +1,6 @@
 package com.ohb.app.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -30,7 +25,6 @@ import com.ohb.app.model.type.RoomType;
 
 @Entity
 @Table(name = "ROOM")
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Room implements Serializable, Comparable<Object>{
 	/**
 	 * 
@@ -38,7 +32,7 @@ public class Room implements Serializable, Comparable<Object>{
 	private static final long serialVersionUID = -375712481468043185L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ROOM_ID")
 	private Integer room_id;
 
@@ -53,17 +47,15 @@ public class Room implements Serializable, Comparable<Object>{
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
-	@JsonProperty
-	@ManyToOne(optional=false)
-	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id",nullable=false,updatable=false)
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
+	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id")
 	private RoomType type;
 	
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
-	@JsonProperty
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-    @JoinColumn(name = "hotel_id", referencedColumnName="hotel_id",nullable=false,updatable=false)
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
+    @JoinColumn(name = "hotel_id", referencedColumnName="hotel_id")
 	private Hotel hotel;
 
 	@Column(name = "PRICE")
@@ -74,8 +66,7 @@ public class Room implements Serializable, Comparable<Object>{
 	private Map<String, Integer> dateReserved = new HashMap<String, Integer>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Booking.class)
-	
+	@OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Booking.class)
 	private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
 
 	public Room() {

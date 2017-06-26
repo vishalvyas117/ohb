@@ -77,6 +77,7 @@ public class User implements Serializable {
 	
 	@Column(name = "TOKEN")
 	private String token;
+	
 	public User() {
 		super();
 	}

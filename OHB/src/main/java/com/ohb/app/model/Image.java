@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "IMAGE")
@@ -35,13 +37,16 @@ public class Image implements Serializable{
 	private String path;
 	
 	
-	@ManyToOne(optional = false)
+	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize	
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
 	@JoinColumn(name = "hotel_id")
 	private Hotel hotel;
 
 	@Id
 	@Column(name = "IMAGE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long image_id;
 
 	@Column(name = "INSERTION_DATE")
