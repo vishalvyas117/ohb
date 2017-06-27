@@ -31,7 +31,7 @@ public class DateUtil {
        System.out.println("date leng"+dates.length);
        if (dates.length >=3) {
           actualDate= dates[1] + "-" + dates[0] + "-" + dates[2];
-          DateFormat mediumFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
+          DateFormat mediumFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
           return mediumFormat.parse(actualDate);
        }  
        return MAX_DATE;

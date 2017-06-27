@@ -60,10 +60,10 @@ public class APIName {
     public static final String ROOMS_PRICERANGE = "/price";
     
   //BOOKINGS
-    public static final String BOOKINGS = "bookings";
+    public static final String BOOKINGS = "/bookings";
     public static final String BOOKINGS_BY_USER= "/{user_id}";
     public static final String BOOKINGS_BY_HOTEL= "/{hotel_id}";
-    public static final String BOOKINGS_BY_CREATE= "/new/{hotel_id}";
+    public static final String BOOKINGS_BY_CREATE= "/new/{room_id}";
     public static final String BOOKINGS_BY_DATE= "/date";
     public static final String BOOKINGS_BETWEEN_DATE= "/datebetween";
 }
