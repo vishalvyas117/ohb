@@ -1,15 +1,20 @@
 package com.ohb.app.rest;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +32,7 @@ import com.ohb.app.util.ResponsePayLoad;
 import com.ohb.app.util.api.APIName;
 import com.ohb.app.util.api.APIStatus;
 import com.ohb.app.util.api.APIUtil;
+import com.ohb.app.util.api.DateUtil;
 import com.ohb.app.util.api.DtoUtil;
 
 import io.swagger.annotations.ApiOperation;
@@ -47,31 +53,13 @@ public class ReviewController extends APIUtil{
 	CommentService commentService;
 	
 	
-	/*@SuppressWarnings("unchecked")
-	@ApiOperation(value = "save review ", notes = "by all")
-	@RequestMapping(path = APIName.REVIEWS_BY_USER_ID, method = RequestMethod.POST, produces = APIName.CHARSET)
-	public String reviewByUser(@PathVariable("hotel_id") Integer hotel_id,@PathVariable("user_id") String id, @RequestBody Comment comment) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		Hotel hotel = hotels.findOne(hotel_id);
-		Date date = new Date();
-    	comment.setDate(date);
-    	User user =users.findOne(id);
-    	comment.setUser(user);
-    	comment.setHotel(hotel);
-    	Comment current=comments.save(comment);
-    	current=comments.findOne(current.getComment_id());
-		result.put("hotel", hotel);
-		result.put("comment", current);
-		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
-		return writeObjectToJson(statusResponse);
-	}*/
-	
 	@RequestMapping(path = APIName.REVIEWS_BY_USER_ID, method = RequestMethod.POST, produces = APIName.CHARSET)
 	public String reviewByUser(@PathVariable("hotel_id") Integer hotel_id,@PathVariable("user_id") String id, @RequestBody Comment comment) {
 		ResponsePayLoad result=new ResponsePayLoad();
 		Hotel hotel = hotels.findOne(hotel_id);
 		Date date = new Date();
-    	comment.setDate(date);
+		DateUtil.toDbString(date);
+    	comment.setDate(DateUtil.toDateString(date,TimeZone.getDefault()));
     	User user =users.findOne(id);
     	comment.setUser(user);
     	comment.setHotel(hotel);
@@ -93,5 +81,28 @@ public class ReviewController extends APIUtil{
 		return writeObjectToJson(statusResponse);
 	}
 	
+	@RequestMapping( method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String findCommentsByUserId(@PathVariable("hotel_id") Integer hotel_id) {
+		ResponsePayLoad result=new ResponsePayLoad();
+		Hotel hotel=this.hotels.findOne(hotel_id);
+		List<Comment> review=this.commentService.findCommentsByHotel(hotel);
+		result.put("hotel", hotel);
+		result.put("comment", review);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+	
+	@RequestMapping(path = APIName.REVIEWS_BY_DATE, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String findCommentsByDate(@PathVariable("hotel_id") Integer hotel_id,@RequestParam(value="date") String date) throws ParseException {
+		ResponsePayLoad result=new ResponsePayLoad();
+		/*DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date startDate = df.parse(date);*/
+		Hotel hotel=this.hotels.findOne(hotel_id);
+		List<Comment> review=this.commentService.findCommentsByDate(date);
+		result.put("hotel", hotel);
+		result.put("comment", review);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
 	
 }

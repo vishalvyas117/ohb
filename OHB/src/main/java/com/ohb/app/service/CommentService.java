@@ -96,8 +96,21 @@ public class CommentService {
 		return commentList;
 	}
 
-	public List<Comment> findCommentsByDate(Date date) {
+	public List<Comment> findCommentsByDate(String date) {
 		List<Comment> page = this.commentRepository.findCommentsByDate(date);
+		List<Comment> commentList = new ArrayList<Comment>();
+		for (Comment comment : page) {
+			Comment dto = new Comment();
+			dto.setHotel(comment.getHotel());
+			dto.setText(comment.getText());
+			dto.setUser(comment.getUser());
+			dto.setDate(comment.getDate());
+			commentList.add(dto);
+		}
+		return commentList;
+	}
+	public List<Comment> findCommentsByHotel(Hotel hotel){
+		List<Comment> page = this.commentRepository.findByHotel(hotel);
 		List<Comment> commentList = new ArrayList<Comment>();
 		for (Comment comment : page) {
 			Comment dto = new Comment();

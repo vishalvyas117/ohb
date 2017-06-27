@@ -40,10 +40,9 @@ public class Comment {
 	private String text;
 	
 	@Column(name = "COMMENT_DATE")
-	@Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "MM/dd/yyyy")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
-	private Date date;
+	private String date;
 	
 	@Column(name = "COMMENT_STATUS")
 	private boolean status;
@@ -64,7 +63,7 @@ public class Comment {
 	
 	public Comment() {}
 
-	public Comment(Integer id, String text, Date date, User user, boolean status, Hotel hotel) {
+	public Comment(Integer id, String text, String date, User user, boolean status, Hotel hotel) {
 		this.Comment_id = id;
 		this.text = text;
 		this.date = date;
@@ -82,11 +81,11 @@ public class Comment {
 		this.text = text;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
