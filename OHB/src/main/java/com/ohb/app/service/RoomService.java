@@ -87,7 +87,7 @@ public class RoomService {
 
 	public List<Room> getRoomsbyhotel(Integer id) {
 		Hotel hotel=this.hotelRepository.findOne(id);
-		List<Room> page = this.roomRepository.findRoomsByHotel(hotel);
+		List<Room> page = this.roomRepository.findByHotel(hotel);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -108,7 +108,7 @@ public class RoomService {
 
 	public List<Room> getRoomsbyRoomNumber(String roomNumber, Integer pageNum, Integer pageSize) {
 		Pageable pageable = new PageRequest(pageNum, pageSize, Direction.ASC, "hotel");
-		List<Room> page = this.roomRepository.findRoomsByRoom_number(roomNumber);
+		List<Room> page = this.roomRepository.findRoomsByRoom_Number(roomNumber);
 		/*Long totalCount = page.getTotalElements();
 		List<Room> rooms = page.getContent();*/
 		List<Room> roomlist = new ArrayList<Room>();
@@ -146,7 +146,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbyprice(double price) {
-		List<Room> page = this.roomRepository.findRoomsByPriceLessThanEqual(price);
+		List<Room> page = this.roomRepository.findRoomByPriceLessThanEqual(price);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -164,7 +164,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbypriceRange(double minprice,double maxprice) {
-		List<Room> page = this.roomRepository.findRoomsByPriceBetween(minprice,maxprice);
+		List<Room> page = this.roomRepository.findRoomByPriceBetween(minprice,maxprice);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {

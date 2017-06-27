@@ -45,7 +45,7 @@ public class RoomController extends APIUtil {
 	@Autowired
 	RoomService roomService;
 	@Autowired
-	HotelRepository hotels;
+	HotelRepository hotelRepository;
 	@Autowired
 	BookingService bookingServise;
 
@@ -53,6 +53,7 @@ public class RoomController extends APIUtil {
 	@RequestMapping(path = APIName.ROOMS, method = RequestMethod.GET, produces = APIName.CHARSET)
 	public String showRooms(@PathVariable("hotel_id") Integer hotel_id) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		Hotel hotel=this.hotelRepository.findOne(hotel_id.intValue());
 		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(hotel_id);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
@@ -72,7 +73,7 @@ public class RoomController extends APIUtil {
 	@RequestMapping(path = APIName.ROOMS_ID, method = RequestMethod.PUT, produces = APIName.CHARSET)
 	public String UpdateRooms(@PathVariable("hotel_id") Integer id,@PathVariable("room_id") Integer room_id,@RequestBody Room room) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Hotel hotel=this.hotels.findOne(id);
+		Hotel hotel=this.hotelRepository.findOne(id);
 		Room currentRoom=this.rooms.findOne(room_id);
 		room.setHotel(hotel);
 		room.setRoom_id(room_id);
@@ -87,9 +88,9 @@ public class RoomController extends APIUtil {
 	
 	@ApiOperation(value = "save rooms ", notes = "by hotel management")
 	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.GET, consumes=APIName.CHARSET,produces = APIName.CHARSET)
-	public String getRoom(@PathVariable("hotel_id") Integer id) {
+	public String getRoom(@PathVariable("hotel_id") Integer hotel_id) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Hotel hotel = hotels.findOne(id);
+		Hotel hotel = hotelRepository.findOne(hotel_id);
 		List<RoomType> roomtype=(List<RoomType>) this.roomTypes.findAll();
 		result.put("hotel", hotel);
 		result.put("room", new Room());
@@ -102,7 +103,7 @@ public class RoomController extends APIUtil {
 	@RequestMapping(path = APIName.HOTEL_REGISTER, method = RequestMethod.POST, consumes=APIName.CHARSET,produces = APIName.CHARSET)
 	public String saveRooms(@PathVariable("hotel_id") Integer hotel_id, @RequestBody Room room) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Hotel hotel = hotels.findOne(hotel_id);
+		Hotel hotel = hotelRepository.findOne(hotel_id);
 		room.setHotel(hotel);
 		Room currentroom=new Room();
 		RoomType roomtype=new RoomType();

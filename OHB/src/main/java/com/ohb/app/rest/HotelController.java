@@ -78,7 +78,7 @@ public class HotelController extends APIUtil{
         for(Hotel hotel:products){
         comment=this.comments.findByHotel(hotel);
         comments.put(hotel.getHotel_id(), comment);
-        room=this.rooms.findRoomsByHotel(hotel);
+        room=this.rooms.findByHotel(hotel);
         rooms.put(hotel.getHotel_id(), room);
         System.out.println("comment  "+comments);
 		}
@@ -95,7 +95,7 @@ public class HotelController extends APIUtil{
         Hotel hotel = hotelRepository.findOne(hotel_id);
         List<Comment> hotel_comments = comments.findByHotel(hotel);
         Map<Integer,Comment> com=new HashMap<Integer,Comment>();
-        List<Room> hotel_rooms = rooms.findRoomsByHotel(hotel);
+        List<Room> hotel_rooms = rooms.findByHotel(hotel);
         Map<Integer,Room> rom=new HashMap<Integer,Room>();
         hotel_comments.forEach(co->
         com.put(co.getComment_id(), co)

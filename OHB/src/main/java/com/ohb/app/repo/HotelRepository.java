@@ -7,6 +7,7 @@ import javax.persistence.QueryHint;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ohb.app.model.Hotel;
@@ -14,7 +15,7 @@ import com.ohb.app.model.type.Category;
 import com.ohb.app.model.type.City;
 
 @Repository(value = "hotelRepository")
-public interface HotelRepository extends CrudRepository<Hotel, Integer>, JpaSpecificationExecutor<Hotel> {
+public interface HotelRepository extends PagingAndSortingRepository<Hotel, Integer>, JpaSpecificationExecutor<Hotel> {
 
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByCity(City city);

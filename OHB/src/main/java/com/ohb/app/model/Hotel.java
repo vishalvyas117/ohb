@@ -71,7 +71,6 @@ public class Hotel implements Serializable{
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false)
 	private City city;
 
-	@JsonIgnore
 	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
