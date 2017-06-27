@@ -26,24 +26,8 @@ public class HotelService {
 
 	@Autowired
 	UserRepository userRepository;
-
-	@Autowired
-	RoomRepository roomRepository;
-
-	@Autowired
-	RoomTypeRepository roomTypeRepository;
 	
 	
-	@Autowired
-	public HotelService(HotelRepository hotelRepository, CategoryService categoryService, UserRepository userRepository,
-			RoomRepository roomRepository, RoomTypeRepository roomTypeRepository) {
-		super();
-		this.hotelRepository = hotelRepository;
-		this.categoryService = categoryService;
-		this.userRepository = userRepository;
-		this.roomRepository = roomRepository;
-		this.roomTypeRepository = roomTypeRepository;
-	}
 
 	public Hotel createHotel(Hotel hotel) {
 		Hotel dto = new Hotel();

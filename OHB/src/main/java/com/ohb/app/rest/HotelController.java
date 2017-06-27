@@ -67,9 +67,7 @@ public class HotelController extends APIUtil{
 
 	@ApiOperation(value = "get list of Hotels", notes = "")
     @RequestMapping(method = RequestMethod.GET, produces = APIName.CHARSET)
-    public String getAllHotels(
-            @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(required = false, defaultValue = Constant.DEFAULT_PAGE_SIZE) Integer pageSize) {
+    public String getAllHotels() {
 		ResponsePayLoad result=new ResponsePayLoad();
 			
         Iterable<Hotel> products =  this.hotelRepository.findAll();
@@ -80,7 +78,7 @@ public class HotelController extends APIUtil{
         for(Hotel hotel:products){
         comment=this.comments.findByHotel(hotel);
         comments.put(hotel.getHotel_id(), comment);
-        room=this.rooms.findByHotel(hotel);
+        room=this.rooms.findRoomsByHotel(hotel);
         rooms.put(hotel.getHotel_id(), room);
         System.out.println("comment  "+comments);
 		}
@@ -97,7 +95,7 @@ public class HotelController extends APIUtil{
         Hotel hotel = hotelRepository.findOne(hotel_id);
         List<Comment> hotel_comments = comments.findByHotel(hotel);
         Map<Integer,Comment> com=new HashMap<Integer,Comment>();
-        List<Room> hotel_rooms = rooms.findByHotel(hotel);
+        List<Room> hotel_rooms = rooms.findRoomsByHotel(hotel);
         Map<Integer,Room> rom=new HashMap<Integer,Room>();
         hotel_comments.forEach(co->
         com.put(co.getComment_id(), co)

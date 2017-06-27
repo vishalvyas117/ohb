@@ -86,12 +86,12 @@ public class RoomService {
 	}
 
 	public List<Room> getRoomsbyhotel(Integer id) {
-		// Hotel hotel=this.hotelRepository.findOne(id);
-		List<Room> page = (List<Room>) this.roomRepository.findAll();
+		Hotel hotel=this.hotelRepository.findOne(id);
+		List<Room> page = this.roomRepository.findRoomsByHotel(hotel);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
-			if(room.getHotel().getHotel_id()==id){
+			
 			Room dto = new Room();
 			dto.setRoom_id(room.getRoom_id());
 			dto.setRoom_number(room.getRoom_number());
@@ -101,14 +101,14 @@ public class RoomService {
 			dto.setBookings(room.getBookings());
 			dto.setDays_reserved(room.getDays_reserved());
 			roomlist.add(dto);
-			}
+			
 		}
 		return roomlist;
 	}
 
 	public List<Room> getRoomsbyRoomNumber(String roomNumber, Integer pageNum, Integer pageSize) {
 		Pageable pageable = new PageRequest(pageNum, pageSize, Direction.ASC, "hotel");
-		List<Room> page = this.roomRepository.getRoomsbyRoomNumber(roomNumber);
+		List<Room> page = this.roomRepository.findRoomsByRoom_number(roomNumber);
 		/*Long totalCount = page.getTotalElements();
 		List<Room> rooms = page.getContent();*/
 		List<Room> roomlist = new ArrayList<Room>();
@@ -128,7 +128,7 @@ public class RoomService {
 	
 	public List<Room> getRoomsbydaysReserved(String checkIn,String checkout) {
 		
-		List<Room> page = this.roomRepository.findRoomByDateReservedIsBetween(checkIn,checkout);
+		List<Room> page = this.roomRepository.findRoomsByDateReservedIsBetween(checkIn,checkout);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -146,7 +146,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbyprice(double price) {
-		List<Room> page = this.roomRepository.findRoomByPriceLessThanEqual(price);
+		List<Room> page = this.roomRepository.findRoomsByPriceLessThanEqual(price);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {
@@ -164,7 +164,7 @@ public class RoomService {
 	}
 	
 	public List<Room> getRoomsbypriceRange(double minprice,double maxprice) {
-		List<Room> page = this.roomRepository.findRoomByPriceBetween(minprice,maxprice);
+		List<Room> page = this.roomRepository.findRoomsByPriceBetween(minprice,maxprice);
 
 		List<Room> roomlist = new ArrayList<Room>();
 		for (Room room : page) {

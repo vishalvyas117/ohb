@@ -72,15 +72,15 @@ public class Hotel implements Serializable{
 	private City city;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Integer, Comment> comments = new HashMap<Integer, Comment>();
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "hotel", fetch = FetchType.EAGER)
 	private Map<Long, Image> images = new HashMap<Long, Image>();
 
 	public Hotel() {
