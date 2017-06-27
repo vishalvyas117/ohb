@@ -1,12 +1,8 @@
 package com.ohb.app.rest;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohb.app.api.response.StatusResponse;
 import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
-import com.ohb.app.model.Room;
 import com.ohb.app.model.User;
-import com.ohb.app.model.type.RoomType;
 import com.ohb.app.repo.CommentRepository;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.UserRepository;
@@ -33,9 +26,6 @@ import com.ohb.app.util.api.APIName;
 import com.ohb.app.util.api.APIStatus;
 import com.ohb.app.util.api.APIUtil;
 import com.ohb.app.util.api.DateUtil;
-import com.ohb.app.util.api.DtoUtil;
-
-import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(APIName.REVIEWS)
 public class ReviewController extends APIUtil{
