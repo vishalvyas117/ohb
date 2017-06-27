@@ -54,7 +54,7 @@ public class Comment {
 	@JsonSerialize
 	@JsonDeserialize	
 	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
-    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = true)
+    @JoinColumn(name = "hotel_id", referencedColumnName="hotel_id",nullable=false,updatable=false)
 	private Hotel hotel;
 	
 	@JsonIgnore

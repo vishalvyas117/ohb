@@ -41,7 +41,7 @@ public class Image implements Serializable{
 	@JsonSerialize
 	@JsonDeserialize	
 	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
-	@JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotel_id", referencedColumnName="hotel_id",nullable=false,updatable=false)
 	private Hotel hotel;
 
 	@Id

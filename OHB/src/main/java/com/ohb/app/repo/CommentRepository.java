@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
+import com.ohb.app.model.User;
 
 @Repository(value="commentRepository")
 public interface CommentRepository extends CrudRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
@@ -25,12 +26,15 @@ public interface CommentRepository extends CrudRepository<Comment, Integer>, Jpa
 	
 	//@Query(value = "select co from Comment ro where co.user =:User_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByUser(String User_id);
+	public List<Comment> findCommentsByUser(User user);
 	
 	//@Query(value = "select co from Comment ro where co.hotel=:Hotel_id and co.user =:User_id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
-	public List<Comment> findCommentsByUserAndHotel(Integer Hotel_id,String User_id);
+	public List<Comment> findCommentsByUserAndHotel(User user,Hotel hotel);
 	
 	//@Query(value = "select co from Comment ro where date(co.date) =:date")
 	public List<Comment> findCommentsByDate(@Param("date") Date date);
+	
+	public List<Comment> findCommentsByHotelAndUser(Hotel hotel,User user );
+	
 }
