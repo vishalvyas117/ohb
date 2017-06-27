@@ -51,11 +51,11 @@ public class Room implements Serializable, Comparable<Object>{
 	@JoinColumn(name = "room_type_id", referencedColumnName="room_type_id")
 	private RoomType type;
 	
-	//@JsonIgnore
+	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize	
 	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
-    @JoinColumn(name = "hotel_id", referencedColumnName="hotel_id",updatable=false)
+    @JoinColumn(name = "hotel_id", referencedColumnName="hotel_id",nullable=false,updatable=false)
 	private Hotel hotel;
 
 	@Column(name = "PRICE")

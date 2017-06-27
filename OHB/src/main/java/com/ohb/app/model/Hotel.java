@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.hibernate.annotations.Cascade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -70,8 +71,9 @@ public class Hotel implements Serializable{
 	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false)
 	private City city;
-
-	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "hotel", fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany( cascade = CascadeType.MERGE,mappedBy = "hotel")
+	@Cascade( {org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.DELETE} )
 	private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
 	@JsonIgnore
@@ -135,7 +137,7 @@ public class Hotel implements Serializable{
 		this.rooms = rooms;
 	}
 	
-	public Room addRoom(Room room) {
+	/*public Room addRoom(Room room) {
 		getRooms().put(room.getRoom_id(), room);
 		room.setHotel(this);
 		return room;
@@ -145,7 +147,7 @@ public class Hotel implements Serializable{
 		getRooms().remove(room);
 		room.setHotel(null);
 		return room;
-	}
+	}*/
 
 	public Map<Integer, Comment> getComments() {
 		return comments;

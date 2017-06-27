@@ -53,8 +53,8 @@ public class RoomController extends APIUtil {
 	@RequestMapping(path = APIName.ROOMS, method = RequestMethod.GET, produces = APIName.CHARSET)
 	public String showRooms(@PathVariable("hotel_id") Integer hotel_id) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Hotel hotel=this.hotelRepository.findOne(hotel_id.intValue());
-		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(hotel_id);
+		Hotel hotel=this.hotelRepository.findOne(hotel_id);
+		List<Room>hotel_rooms=this.roomService.getRoomsbyhotel(hotel);
 		Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 		hotel_rooms.forEach(r->
 		rooms.put(Integer.parseInt(r.getRoom_number()), r)
