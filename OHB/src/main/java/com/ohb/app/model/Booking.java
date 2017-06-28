@@ -17,7 +17,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "BOOKING")
@@ -41,19 +44,24 @@ public class Booking {
 
 	@Column(name = "BOOKING_STATUS")
 	private boolean state;
-
+	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = true)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true,insertable=false,updatable=false)
 	private User user;
-
+	
+	@JsonIgnore
+	@JsonSerialize
+	@JsonDeserialize
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID", nullable = true)
+	@JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = true,insertable=false,updatable=false)
 	private Room room;
 
 	public Booking() {
 		super();
 	}
-
+	@JsonCreator
 	public Booking(@JsonProperty("bookingid") Integer bookingid, @JsonProperty("CheckIn") String begin_date,
 			@JsonProperty("CheckOut") String end_date, @JsonProperty("available") boolean state,
 			@JsonProperty("Customer") User user, @JsonProperty("Room") Room room) {

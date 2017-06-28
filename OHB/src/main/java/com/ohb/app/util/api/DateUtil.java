@@ -63,7 +63,7 @@ public class DateUtil {
            fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
            fmt.setTimeZone(tz);
        } else {
-           fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss z");
+           fmt = new SimpleDateFormat("MM/dd/yyyy");
        }
        try {
            return fmt.parse(dateStr);

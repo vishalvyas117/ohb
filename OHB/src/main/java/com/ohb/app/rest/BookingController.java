@@ -5,12 +5,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +39,7 @@ import com.ohb.app.util.api.DateUtil;
 
 @RestController
 @RequestMapping(APIName.BOOKINGS)
-@SessionAttributes({"booking", "numberRooms","roomType"})
+//@SessionAttributes({"booking", "numberRooms","roomType"})
 public class BookingController extends APIUtil{
 	
 	@Autowired
@@ -65,6 +67,52 @@ public class BookingController extends APIUtil{
     	rooms_available.put(room, hotel);
     	result.put("room_available", rooms_available);
     	result.put("booking", new Booking());
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+		
+	}
+	
+	@RequestMapping(path = APIName.BOOKINGS_BY_CREATE, method = RequestMethod.POST, produces = APIName.CHARSET)
+	public String createBookingbyUser(@PathVariable("room_id") Integer room_id,@RequestBody Booking booking) {
+		ResponsePayLoad result=new ResponsePayLoad();
+		Room room=this.rooms.findOne(room_id);
+		RoomType rt=this.roomTypes.findOne(room.getType().getRoom_type_id());
+		List<String> dates=getDates(booking);
+		Hotel hotel=room.getHotel();
+		Map<String, Integer> dateReserved = new HashMap<String, Integer>();
+		Map<Integer,Room> roomsFromHotel = hotel.getRooms();
+		List<Room> rooms_available = new ArrayList<Room>();
+		int counter = 1;
+		
+			Map<String, Integer> room_bookings = room.getDays_reserved();
+			boolean found = false;
+			Iterator<String> itDates = dates.iterator();
+
+			while(itDates.hasNext()){
+				String day = itDates.next();
+				if(room_bookings.get(day) != null){
+					found = true;
+					break;
+				}
+			}	
+		if(!found && room.getType() == rt )
+			{						
+				rooms_available.add(room);
+				for(String date: dates){
+					room_bookings.put(date, booking.getBookingid());
+					dateReserved.put(date, room.getRoom_id());
+				}
+				counter++;
+			}
+			/*else if(counter > numberRooms)
+				break;*/
+		
+		Booking currentbooking=bookings.save(booking);
+		room.setDays_reserved(dateReserved);
+		Room roomupdate=this.rooms.save(room);
+		result.put("booking", currentbooking);
+		result.put("roomupdate", roomupdate);
+		result.put("message", "Thank you for using ohb , your booking is in progress");
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 		
