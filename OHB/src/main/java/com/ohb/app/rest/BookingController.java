@@ -94,7 +94,7 @@ public class BookingController extends APIUtil{
 		for(Integer entry : roomsFromHotel.keySet())
 		{
 			Room r = roomsFromHotel.get(entry);
-			Map<String, Integer> room_bookings = room.getDays_reserved();
+			Map<String, Integer> room_bookings = r.getDays_reserved();
 			boolean found = false;
 			Iterator<String> itDates = dates.iterator();
 
@@ -106,7 +106,7 @@ public class BookingController extends APIUtil{
 				}
 			}
 			
-		if(!found && room.getType() == rt  && counter <= numberRooms)
+		if(!found && r.getType() == rt  && counter <= numberRooms)
 			{						
 				rooms_available.add(room);
 				for(String date: dates){

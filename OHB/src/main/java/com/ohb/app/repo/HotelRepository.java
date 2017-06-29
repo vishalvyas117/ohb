@@ -38,6 +38,9 @@ public interface HotelRepository extends PagingAndSortingRepository<Hotel, Integ
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByCategory(Category category);
 	
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Hotel> findHotelsByNameOrAddressContains(String name,String address);
+	
 	/*Hotel findOneByHotel_id(Integer hotel_id);*/
 
 }

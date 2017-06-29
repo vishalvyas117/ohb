@@ -1,10 +1,15 @@
 package com.ohb.app.rest;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohb.app.api.response.StatusResponse;
+import com.ohb.app.model.Booking;
 import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
+import com.ohb.app.model.type.Category;
+import com.ohb.app.model.type.City;
 import com.ohb.app.model.type.RoomType;
+import com.ohb.app.repo.CategoryRepository;
+import com.ohb.app.repo.CityRepository;
 import com.ohb.app.repo.HotelRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
@@ -28,9 +38,11 @@ import com.ohb.app.util.api.APIName;
 import com.ohb.app.util.api.APIStatus;
 import com.ohb.app.util.api.APIUtil;
 import com.ohb.app.util.api.Constant;
+import com.ohb.app.util.api.DateUtil;
 import com.ohb.app.util.api.DtoUtil;
 
 import io.swagger.annotations.ApiOperation;
+import scala.collection.mutable.HashSet;
 
 @RestController
 @RequestMapping(value = APIName.HOTEL_ROOM)
@@ -48,8 +60,14 @@ public class RoomController extends APIUtil {
 	HotelRepository hotelRepository;
 	@Autowired
 	BookingService bookingServise;
+	@Autowired
+	CityRepository cityRepository;
+	
+	@Autowired
+	CategoryRepository categoryRepo;
+	
 
-	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	/*@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
 	@RequestMapping(path = APIName.ROOMS, method = RequestMethod.GET, produces = APIName.CHARSET)
 	public String showRooms(@PathVariable("hotel_id") Integer hotel_id) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -67,7 +85,7 @@ public class RoomController extends APIUtil {
 		result.put("orderedRooms", orderedRooms);
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
-	}
+	}*/
 	
 	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
 	@RequestMapping(path = APIName.ROOMS_ID, method = RequestMethod.PUT, produces = APIName.CHARSET)
@@ -229,6 +247,72 @@ public class RoomController extends APIUtil {
 			orderedRooms.add(rooms.get(key));
 		result.put("hotel", orderedRooms.get(0).getHotel());
 		result.put("orderedRooms", orderedRooms);
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+		return writeObjectToJson(statusResponse);
+	}
+	
+	
+	private List<String> getDates(String checkIn,String checkOut) {
+
+		List<String> dates = new ArrayList<String>();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(DateUtil.toDate(checkIn));
+		 
+		Date endDate=DateUtil.toDate(checkOut);
+
+		while (calendar.getTime().getTime() <= endDate.getTime()) {
+			Date result = calendar.getTime();
+			dates.add(DateUtil.toDateString(result, TimeZone.getDefault()));
+			calendar.add(Calendar.DATE, 1);
+		}
+		return dates;
+	}
+	
+	@ApiOperation(value = "get list of Rooms for perticular hotel", notes = "")
+	@RequestMapping(path = APIName.ROOMS, method = RequestMethod.GET, produces = APIName.CHARSET)
+	public String showhotelsbySearchParam(@RequestParam(name="checkIn",required=false) String checkIn, @RequestParam(name="checkOut",required=false)String checkout,
+			@RequestParam(name="address",required=false) String address,
+			@RequestParam(name="numberRooms",required=false) int numberRooms,@RequestParam(name="guest",required=false) int guest,
+			@RequestParam(name="room_type",required=false) int room_type,@RequestParam(name="category",required=false) int category) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Hotel> hotels=new ArrayList<Hotel>();
+		HashSet<Hotel> hoteles=new HashSet<Hotel>();
+		List<Room>roomsentity=new ArrayList<>();
+		HashSet<Room> roms=new HashSet<Room>();
+		if(address !=null){
+			City city=this.cityRepository.findByName(address);
+			if(city!=null){
+				hotels=this.hotelRepository.findHotelsByCity(city);
+			}else{
+				hotels=this.hotelRepository.findHotelsByNameOrAddressContains(address, address);
+			}
+			if(category>0){
+				if(hotels.size()>0){
+					for(Hotel ho:hotels){
+						if(ho.getCategory().getCategory_id()==category)
+							hoteles.add(ho);
+					}
+				}else{
+				Category cat=this.categoryRepo.findOne(category);
+				hotels=this.hotelRepository.findHotelsByCategory(cat);
+				}
+			}
+			if(guest>0){
+				roomsentity=this.rooms.getRoomsByGuestNumber(guest);
+			}
+			if(room_type>0){
+				if(roomsentity.size()>0){
+					for(Room ro:roomsentity){
+						if(ro.getType().getRoom_type_id()==room_type)
+							hoteles.add(ro.getHotel());
+					}
+				}
+			}
+		}
+		if(checkIn!=null && checkout!=null){
+			
+		}
+		
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 	}

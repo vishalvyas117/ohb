@@ -38,7 +38,8 @@ public interface RoomRepository extends CrudRepository<Room, Integer>, JpaSpecif
 	//@Query(value="select ro from Room ro where ro.price between 1? and ?2")
 	@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
 	public List<Room> findRoomByPriceBetween(double minprice,double maxprice);
-	/*@Modifying
-	@Query(value="update Room ro where ro.price between 1? and ?2")
-	public Room updateRoomById(Integer room_id);*/
+	
+	  @Query(value="SELECT * FROM room ro LEFT JOIN room_type rt ON rt.room_type_id=ro.room_type_id WHERE occupancy > ?1 ")
+		@QueryHints({@QueryHint(name="org.hibernate.cacheable",value="true")})
+		public List<Room> getRoomsByGuestNumber(int guest);
 }
