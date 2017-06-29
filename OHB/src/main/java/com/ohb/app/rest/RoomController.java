@@ -259,21 +259,21 @@ public class RoomController extends APIUtil {
 			@RequestParam(name = "room_type", required = false, defaultValue = "0") Integer room_type,
 			@RequestParam(name = "category", required = false, defaultValue = "0") Integer category) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<Hotel> hotels = null;
+		List<Hotel> hotels = new ArrayList<Hotel>();
 		HashSet<Hotel> hoteles = new HashSet<Hotel>();
 		List<Room> roomsentity = new ArrayList<>();
 		HashSet<Room> roms = new HashSet<Room>();
 		if (address != null) {
 			City city = this.cityRepository.findByName(address);
 			if (city != null) {
-				hotels = this.hotelRepository.findHotelsByCity(city);
+				hotels.addAll(this.hotelRepository.findHotelsByCity(city));
 			} else {
 				Set<String> addresses = TokenizerUtil.addressTokenizer(address);
-				hotels = this.hotelRepository.findHotelsByNameLike(address);
+				hotels.addAll(this.hotelRepository.findHotelsByNameLike(address));
 				if (hotels.size() > 0) {
 					hotels.forEach(ho -> hoteles.add(ho));
 				}
-				hotels = this.hotelRepository.findHotelsByAddressLike(address);
+				hotels.addAll(this.hotelRepository.findHotelsByAddressLike(address));
 				if (hotels.size() > 0) {
 					hotels.forEach(ho -> hoteles.add(ho));
 				}
@@ -282,14 +282,14 @@ public class RoomController extends APIUtil {
 				if (hotels.size() > 0) {
 					for (Hotel ho : hotels) {
 						if (ho.getCategory().getCategory_id() == category)
-							hoteles.add(ho);
+							hotels.add(ho);
 					}
 				} else {
 					Category cat = this.categoryRepo.findOne(category);
-					hotels = this.hotelRepository.findHotelsByCategory(cat);
-					if (hotels.size() > 0) {
+					hotels.addAll(this.hotelRepository.findHotelsByCategory(cat));
+					/*if (hotels.size() > 0) {
 						hotels.forEach(ho -> hoteles.add(ho));
-					}
+					}*/
 				}
 			}
 			if (guest > 0) {
@@ -299,7 +299,7 @@ public class RoomController extends APIUtil {
 				if (roomsentity.size() > 0) {
 					for (Room ro : roomsentity) {
 						if (ro.getType().getRoom_type_id() == room_type)
-							hoteles.add(ro.getHotel());
+							hotels.add(ro.getHotel());
 					}
 				}
 			}
@@ -319,7 +319,7 @@ public class RoomController extends APIUtil {
 					}
 				}
 				if (!found) {
-					hoteles.add(ro.getHotel());
+					hotels.add(ro.getHotel());
 				}
 			}
 		}
