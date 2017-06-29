@@ -323,7 +323,7 @@ public class RoomController extends APIUtil {
 			}
 		}
 		
-		result.put("hotels", hoteles);
+		result.put("hotels", hoteles.toList());
 		result.put("hotels_count", hoteles.size());
 		result.put("category", this.categoryRepo.findAll());
 		result.put("roomType", this.roomTypes.findAll());
