@@ -1,6 +1,7 @@
 package com.ohb.app.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -258,7 +259,7 @@ public class RoomController extends APIUtil {
 			@RequestParam(name = "room_type", required = false, defaultValue = "0") Integer room_type,
 			@RequestParam(name = "category", required = false, defaultValue = "0") Integer category) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<Hotel> hotels = new ArrayList<Hotel>();
+		List<Hotel> hotels = null;
 		HashSet<Hotel> hoteles = new HashSet<Hotel>();
 		List<Room> roomsentity = new ArrayList<>();
 		HashSet<Room> roms = new HashSet<Room>();
@@ -322,8 +323,7 @@ public class RoomController extends APIUtil {
 				}
 			}
 		}
-		
-		result.put("hotels", hoteles.toList());
+		result.put("hotels", hotels);
 		result.put("hotels_count", hoteles.size());
 		result.put("category", this.categoryRepo.findAll());
 		result.put("roomType", this.roomTypes.findAll());
