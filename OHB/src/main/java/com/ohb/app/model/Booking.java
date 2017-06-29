@@ -1,6 +1,7 @@
 package com.ohb.app.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,9 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -47,16 +50,16 @@ public class Booking {
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true,insertable=false,updatable=false)
+	@ManyToOne(optional=false,cascade=CascadeType.MERGE )
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = true)
 	private User user;
 	
 	@JsonIgnore
 	@JsonSerialize
 	@JsonDeserialize
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = true,insertable=false,updatable=false)
-	private Room room;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade( {org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.DELETE} )
+	private Set<Room> room;
 
 	public Booking() {
 		super();
@@ -64,7 +67,7 @@ public class Booking {
 	@JsonCreator
 	public Booking(@JsonProperty("bookingid") Integer bookingid, @JsonProperty("CheckIn") String begin_date,
 			@JsonProperty("CheckOut") String end_date, @JsonProperty("available") boolean state,
-			@JsonProperty("Customer") User user, @JsonProperty("Room") Room room) {
+			@JsonProperty("Customer") User user, @JsonProperty("Room") Set<Room> room) {
 		super();
 		this.booking_id = bookingid;
 		this.begin_date = begin_date;
@@ -72,14 +75,6 @@ public class Booking {
 		this.state = state;
 		this.user = user;
 		this.room = room;
-	}
-
-	public Integer getBookingid() {
-		return booking_id;
-	}
-
-	public void setBookingid(Integer bookingid) {
-		this.booking_id = bookingid;
 	}
 
 	public String getBegin_date() {
@@ -113,13 +108,19 @@ public class Booking {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public Room getRoom() {
+	public Integer getBooking_id() {
+		return booking_id;
+	}
+	public void setBooking_id(Integer booking_id) {
+		this.booking_id = booking_id;
+	}
+	public Set<Room> getRoom() {
 		return room;
 	}
-
-	public void setRoom(Room room) {
+	public void setRoom(Set<Room> room) {
 		this.room = room;
 	}
+
+	
 
 }

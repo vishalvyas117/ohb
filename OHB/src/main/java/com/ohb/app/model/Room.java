@@ -13,10 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cascade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -66,7 +69,8 @@ public class Room implements Serializable, Comparable<Object>{
 	private Map<String, Integer> dateReserved = new HashMap<String, Integer>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Booking.class)
+	@ManyToMany(cascade = CascadeType.MERGE,mappedBy = "room")
+	@Cascade( {org.hibernate.annotations.CascadeType.SAVE_UPDATE,org.hibernate.annotations.CascadeType.DELETE} )
 	private Map<Long, Booking> bookings = new HashMap<Long, Booking>();
 
 	public Room() {

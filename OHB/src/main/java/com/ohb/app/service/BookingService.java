@@ -91,7 +91,7 @@ public class BookingService {
 		List<Booking> hotellist = new ArrayList<Booking>();
 		for (Booking booking : page) {
 			Booking dto = new Booking();
-			dto.setBookingid(booking.getBookingid());
+			dto.setBooking_id(booking.getBooking_id());
 			dto.setBegin_date(booking.getBegin_date());
 			dto.setEnd_date(booking.getEnd_date());
 			dto.setRoom(booking.getRoom());
