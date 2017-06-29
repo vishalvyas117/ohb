@@ -1,10 +1,12 @@
 package com.ohb.app.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.QueryHint;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -40,7 +42,20 @@ public interface HotelRepository extends PagingAndSortingRepository<Hotel, Integ
 	
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByNameOrAddressContains(String name,String address);
+	@Query(value="from Hotel ro where ro.name in ?1")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Hotel> findHotelsByNameIn(Set<String> name);
+	@Query(value="from Hotel ro where ro.address in ?1")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Hotel> findHotelsByAddressIn(Set<String> address);
 	
-	/*Hotel findOneByHotel_id(Integer hotel_id);*/
+	@Query(value="from Hotel ro where ro.name LIKE %?1%")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Hotel> findHotelsByNameLike(String name);
+	@Query(value="from Hotel ro where ro.address LIKE %?1%")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Hotel> findHotelsByAddressLike(String address);
+	
+	
 
 }
