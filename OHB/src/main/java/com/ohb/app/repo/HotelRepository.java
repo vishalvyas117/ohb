@@ -55,6 +55,11 @@ public interface HotelRepository extends PagingAndSortingRepository<Hotel, Integ
 	@Query(value="from Hotel ro where ro.address LIKE %?1%")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Hotel> findHotelsByAddressLike(String address);
+	/*@Query(nativeQuery=true, value="from Hotel ro where ro.address LIKE %?1%")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Hotel> findHotelsforHomePage(String address);*/
+	
+	
 	
 	
 

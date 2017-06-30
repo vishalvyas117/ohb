@@ -1,7 +1,6 @@
 package com.ohb.app.rest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohb.app.api.response.StatusResponse;
-import com.ohb.app.model.Booking;
 import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
 import com.ohb.app.model.type.Category;
@@ -36,6 +34,7 @@ import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.service.BookingService;
 import com.ohb.app.service.RoomService;
+import com.ohb.app.util.ResponsePayLoad;
 import com.ohb.app.util.TokenizerUtil;
 import com.ohb.app.util.api.APIName;
 import com.ohb.app.util.api.APIStatus;
@@ -258,7 +257,7 @@ public class RoomController extends APIUtil {
 			@RequestParam(name = "guest", required = false) Integer guest,
 			@RequestParam(name = "room_type", required = false, defaultValue = "0") Integer room_type,
 			@RequestParam(name = "category", required = false, defaultValue = "0") Integer category) {
-		Map<String, Object> result = new HashMap<String, Object>();
+		ResponsePayLoad result = new ResponsePayLoad();
 		List<Hotel> hotels = new ArrayList<Hotel>();
 		HashSet<Hotel> hoteles = new HashSet<Hotel>();
 		List<Room> roomsentity = new ArrayList<>();
