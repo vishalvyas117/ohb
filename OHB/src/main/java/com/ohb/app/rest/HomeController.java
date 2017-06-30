@@ -11,24 +11,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohb.app.api.response.StatusResponse;
-import com.ohb.app.model.Base;
-import com.ohb.app.model.Booking;
-import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
 import com.ohb.app.model.Room;
 import com.ohb.app.model.User;
@@ -41,7 +32,6 @@ import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.service.BookingService;
 import com.ohb.app.service.RoomService;
-import com.ohb.app.util.OhbUtil;
 import com.ohb.app.util.ResponsePayLoad;
 import com.ohb.app.util.TokenizerUtil;
 import com.ohb.app.util.api.APIName;
@@ -74,7 +64,6 @@ public class HomeController extends APIUtil{
 	@Autowired
 	CategoryRepository categoryRepo;
 	User user;
-	//Base links;
 	boolean active=false;
 	
 	@Value("${app.url}")
