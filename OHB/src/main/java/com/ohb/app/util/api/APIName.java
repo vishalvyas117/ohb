@@ -11,7 +11,7 @@ public class APIName {
     // action user
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/logout";
-
+    public static final String SEARCH = "/search";
     // SSO
     public static final String OAUTH_LOGIN = VERSION + "oauth/login";
     public static final String OAUTH_IMPLICIT_LOGIN = VERSION + "oauth/implicit/login";

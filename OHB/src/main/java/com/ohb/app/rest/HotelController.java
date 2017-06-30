@@ -1,6 +1,10 @@
 package com.ohb.app.rest;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,17 +22,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ohb.app.api.response.StatusResponse;
 import com.ohb.app.model.Booking;
 import com.ohb.app.model.Comment;
 import com.ohb.app.model.Hotel;
+import com.ohb.app.model.Image;
 import com.ohb.app.model.Room;
 import com.ohb.app.model.type.City;
 import com.ohb.app.repo.CategoryRepository;
 import com.ohb.app.repo.CityRepository;
 import com.ohb.app.repo.CommentRepository;
 import com.ohb.app.repo.HotelRepository;
+import com.ohb.app.repo.ImageRepository;
 import com.ohb.app.repo.RoomRepository;
 import com.ohb.app.repo.RoomTypeRepository;
 import com.ohb.app.repo.UserRepository;
@@ -64,6 +72,11 @@ public class HotelController extends APIUtil{
 	UserRepository users;
 	@Autowired
 	CityRepository cities;
+	@Autowired
+	ImageRepository images;
+	
+	@Value("${app.user.root}")
+	private String imagepath;
 
 	@ApiOperation(value = "get list of Hotels", notes = "")
     @RequestMapping(method = RequestMethod.GET, produces = APIName.CHARSET)
@@ -252,4 +265,41 @@ public class HotelController extends APIUtil{
 
         return writeObjectToJson(statusResponse);
     }
+	
+	@RequestMapping(value="{hotel_id}/upload", method=RequestMethod.POST)
+	public String uploadImage(@PathVariable("hotel_id") Integer id, Model model,@RequestParam("files") MultipartFile files[] ){
+		ResponsePayLoad result=new ResponsePayLoad();
+		if(files.length > 0)
+		{
+			for(int i=0; i < files.length; i++){
+				
+				MultipartFile file = files[i];
+				try {
+					byte[] bytes = file.getBytes();
+					String path = imagepath + file.getOriginalFilename();
+					BufferedOutputStream stream =
+							new BufferedOutputStream(new FileOutputStream(new File(path)));
+					stream.write(bytes);
+					stream.close();
+					
+					Image image = new Image();
+					image.setHotel(hotelRepository.findOne(id));
+					image.setInsertion_date(new Date());
+					image.setPath(file.getOriginalFilename());
+					images.save(image);
+
+				} catch (Exception e) {
+				}
+			}
+			result.put("hotel", images.findImagesByHotelId(id));
+			result.put("message", "Image upload succeffully");
+			statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+
+	        return writeObjectToJson(statusResponse);
+		}
+		result.put("error", "Image not upload succeffully");
+		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
+
+        return writeObjectToJson(statusResponse);
+	}
 }

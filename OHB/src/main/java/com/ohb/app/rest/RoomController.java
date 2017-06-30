@@ -329,6 +329,7 @@ public class RoomController extends APIUtil {
 		statusResponse = new StatusResponse(APIStatus.OK.getCode(), result);
 		return writeObjectToJson(statusResponse);
 	}
+	
 
 	private List<String> getDates(String checkIn, String checkOut) {
 
