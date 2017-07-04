@@ -3,6 +3,7 @@ package com.ohb.app.rest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ohb.app.model.User;
 import com.ohb.app.model.UserToken;
 import com.ohb.app.repo.UserRepository;
+import com.ohb.app.service.MailService;
 import com.ohb.app.service.UserService;
 import com.ohb.app.service.UserTokenService;
 import com.ohb.app.util.MD5Hash;
@@ -43,6 +45,9 @@ public class UserController extends APIUtil{
     private UserService userService;
     @Autowired
     private UserTokenService userTokenService;
+    
+    @Autowired
+	private MailService mailService;
 
     @RequestMapping(path = APIName.USERS_REGISTER, method = RequestMethod.POST, produces = APIName.CHARSET)
     public String register(
@@ -65,6 +70,7 @@ public class UserController extends APIUtil{
                     statusResponse = new StatusResponse(APIStatus.ERR_INVALID_DATA);
                     return writeObjectToJson(statusResponse);
                 }
+                String uuid = UUID.randomUUID().toString();
 
                 User userSignUp = new User();
                 userSignUp.setUser_id(UniqueID.getUUID());
@@ -85,9 +91,12 @@ public class UserController extends APIUtil{
 
 //                userSignUp.setRoleId(Constant.USER_ROLE.REGISTED_USER.getRoleId());
                 userSignUp.setStatus(Constant.USER_STATUS.ACTIVE.getStatus());
-
+                userSignUp.setToken(uuid);
                 userService.save(userSignUp);
-                // do send mail notify...
+                if (userSignUp != null) {
+                	mailService.sendNewRegistration(user.getEmail(), userSignUp.getToken(), userSignUp);
+                }
+                
                 statusResponse = new StatusResponse(APIStatus.OK.getCode(), userSignUp);
             } else {
                 statusResponse = new StatusResponse(APIStatus.ERR_INVALID_DATA);
