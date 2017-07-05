@@ -37,6 +37,7 @@ public class MailService {
 
 	@Autowired
 	private JavaMailSender jmailSender;
+	
 	@Autowired
 	private MailContentBuilder mailContentBuilder;
 
@@ -44,19 +45,22 @@ public class MailService {
 	public void setMailSender(JavaMailSender jmailSender) {
 		this.jmailSender = jmailSender;
 	}
-
+	String message="";
 	public void jsendMail(String to, String subject, String msg,User user) {
 		
 
 			MimeMessagePreparator messagePreparator = mimeMessage -> {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-		        String content = mailContentBuilder.build(user);
+		        
 		        helper.setSubject(subject);
 		        helper.setFrom(fromEmail);
 				helper.setTo(to);
 				helper.setText(msg, true);
 				helper.setSentDate(new Date());
+				String content = mailContentBuilder.build(user);
 				helper.setText(content, true);
+				
+				
 		    };
 		    try {
 		    	jmailSender.send(messagePreparator);
