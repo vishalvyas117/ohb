@@ -46,21 +46,23 @@ public class MailService {
 		this.jmailSender = jmailSender;
 	}
 	String message="";
-	public void jsendMail(String to, String subject, String msg,User user) {
+	public void jsendMail(String to, String subject, String msg,User user,String url) {
 		
 
 			MimeMessagePreparator messagePreparator = mimeMessage -> {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-		        
+				String fullname= user.getFirstName()+" "+user.getLastName();
 		        helper.setSubject(subject);
 		        helper.setFrom(fromEmail);
 				helper.setTo(to);
 				helper.setText(msg, true);
 				helper.setSentDate(new Date());
-				String content = mailContentBuilder.build(user);
-				helper.setText(content, true);
-				
-				
+				//String content = mailContentBuilder.build(user);
+				mimeMessage.setContent("<h2>  Dear "+fullname+" ,<br/>"
+						+ " Welcome to OHB<br/> "
+						+ " we are leading hotel booking organization <br/>"
+						+ " your account has been been created, please click on below url for activate you account<br/>"
+						+ ""+url+"</h2>"  , "text/html");
 		    };
 		    try {
 		    	jmailSender.send(messagePreparator);
@@ -96,10 +98,10 @@ public class MailService {
 
 	public void sendNewRegistration(String to, String token, User user) {
 		String url = appUrl + "user/activate?activation=" + token;
-		String subject = "Please activate your account";
+		String subject = "Welcome to OHB";
 		String text = "Welcome " + user.getFirstName() + " " + user.getLastName()
 				+ " thanks for registering on Ohb, Please click the following link to activate your account: " + url;
-		jsendMail(to, subject, text,user);
+		jsendMail(to, subject, text,user,url);
 	}
 
 	public void sendNewActivationRequest(String to, String token, User user) {

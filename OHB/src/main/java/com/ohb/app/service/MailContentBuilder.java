@@ -28,6 +28,6 @@ public class MailContentBuilder {
         context.setVariable("email", user.getEmail());
         context.setVariable("password", user.getPassword());
         context.setVariable("url", url);
-        return templateEngine.process("activateaccount", context);
+        return templateEngine.process("activeacc", context);
     }
 }

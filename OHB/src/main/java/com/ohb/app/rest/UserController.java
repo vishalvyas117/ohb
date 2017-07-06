@@ -30,6 +30,7 @@ import com.ohb.app.model.User;
 import com.ohb.app.model.UserToken;
 import com.ohb.app.repo.UserRepository;
 import com.ohb.app.service.MailService;
+import com.ohb.app.service.SMSServive;
 import com.ohb.app.service.UserService;
 import com.ohb.app.service.UserTokenService;
 import com.ohb.app.util.MD5Hash;
@@ -94,6 +95,19 @@ public class UserController extends APIUtil{
                 userSignUp.setToken(uuid);
                 userService.save(userSignUp);
                 if (userSignUp != null) {
+                	char[] otp=SMSServive.generateOTP(4);
+                	String output="";
+                	for(char c:otp){
+                		output+=c+" ";
+                	}
+                	String otpbody="Dear "+userSignUp.getFirstName()+userSignUp.getLastName()+", Welcome to OHB,"
+                			+ "your activation OTP is " +output+" . Treat this as confidential,please do not share it";
+                	if(userSignUp.getPhone()!=null && userSignUp.getPhone()!=""){
+                		String phone=userSignUp.getPhone();
+                	SMSServive.sendMessage(otpbody,phone);
+                	
+                	
+                	}
                 	mailService.sendNewRegistration(user.getEmail(), userSignUp.getToken(), userSignUp);
                 }
                 
